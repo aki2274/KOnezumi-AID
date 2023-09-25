@@ -1,3 +1,6 @@
+import re
+from typing import Tuple
+
 def set_prisetnum(name:str):
     data = gene_df[gene_df['name']==name]
     cdsStart =int(data['cdsStart'].to_list()[0])
@@ -5,7 +8,7 @@ def set_prisetnum(name:str):
     end = data['exonEnds'].to_list()[0]#最後に空白があるからその対処
     start_list = list(start.split(','))
     end_list = list(end.split(','))
-    return cdsStart,start_list,end_list
+    return data,cdsStart,start_list,end_list
 
 def target_gene_start(name,target):
     data = gene_df[gene_df['name']==name]
@@ -14,14 +17,10 @@ def target_gene_start(name,target):
     result = target+num
     return result    
 
-def exon_data(name,sequence_data):
-    data = gene_df[gene_df['name']==name]
-    set_num =int(data['txStart'])
-    start = data['exonStarts'].to_list()[0]#最後に空白があるからその対処
-    end = data['exonEnds'].to_list()[0]
-    exon_seq_list = []
-    start_list = [num for num in start.split(",")]
-    end_list = [num for num in end.split(",")]
+def get_exon_seq(name,sequence_data:str)->str:
+    data,cdsStart,start_list,end_list = set_prisetnum(name)
+    set_num =int(data['txStart'])  
+    exon_seq_list =[] 
     for s in range(len(start_list)-1):#最後が空白なので-1している
         start_num = int(start_list[s])- set_num
         end_num= int(end_list[s]) - set_num
@@ -29,44 +28,38 @@ def exon_data(name,sequence_data):
         exon_seq_list.append(exon_seq)
     return ''.join(exon_seq_list)
 
-def where_start_codon(name):
-    data = gene_df[gene_df['name']==name]
-    cdsStart =int(data['cdsStart'].to_list()[0])
+def where_codonstart(name)->int:
+    data,cdsStart,start_list,end_list = set_prisetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])-int(data['txStart'].to_list()[0])
-    start = data['exonStarts'].to_list()[0]
-    end = data['exonEnds'].to_list()[0]#最後に空白があるからその対処
-    start = list(start.split(','))
-    end = list(end.split(','))
-    for s in range(len(start)-1):
-        if (int(start[s]) <= cdsStart<=int(end[s])):
+    for s in range(len(start_list)-1):
+        if (int(start_list[s]) <= cdsStart<=int(end_list[s])):
              exon_num =s
             
     return exon_num
 
-def start_codon(name,exon_data,exon_num):
-    data = gene_df[gene_df['name']==name]
+def make_cds_seq(name,exon_data,exon_num):
+    data,cdsStart,start_list,end_list = set_prisetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])-int(data['txStart'].to_list()[0])
     CDs =''
-    start = data['exonStarts'].to_list()[0]
-    end = data['exonEnds'].to_list()[0]#最後に空白があるからその対処
-    start = list(start.split(','))
-    end = list(end.split(','))
     cds_list=[]
     if exon_num == 0:
             cds_list.append(exon_data[set_num:])
             
-    
-    
     else:     
-        start_num = int(data['cdsStart'].to_list()[0])- int(start[exon_num])
+        start_num = int(data['cdsStart'].to_list()[0])- int(start_list[exon_num])
 
         for s in range(exon_num):
-            start_num += int(end[s])-int(start[s])
+            start_num += int(end_list[s])-int(start_list[s])
         cds_list.append(exon_data[start_num:])
         
     return ''.join(cds_list)
 
-def end_codon(cds_seq):
+
+
+#ここまで動作確認した
+
+
+def get_stopcodon_num(cds_seq)->list:
     matches = re.finditer('(?=(CAA)|(?=(CAG))|(?=(CGA))|(?=(TGG)))', cds_seq)
     result=[]
     for match in matches:
@@ -77,19 +70,15 @@ def end_codon(cds_seq):
     return result
 
 def add_num_list(name):
-    data = gene_df[gene_df['name']==name]
+    data,cdsStart,start_list,end_list = set_prisetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])
-    start = data['exonStarts'].to_list()[0]
-    end = data['exonEnds'].to_list()[0]#最後に空白があるからその対処
-    start = list(start.split(','))
-    end = list(end.split(','))
     add_list=[]
     num = 0
-    for s in range(len(start)-1):
+    for s in range(len(start_list)-1):
         element_list=[]
         element_list.append(num)
         
-        num += int(end[s])-int(start[s])
+        num += int(end_list[s])-int(start_list[s])
         
         element_list.append(num)
         add_list.append(element_list)
@@ -97,17 +86,13 @@ def add_num_list(name):
     return add_list
 
 def add_num_correct(name,number_list, interval_list,exon_num):
-    data = gene_df[gene_df['name']==name]
+    data,cdsStart,start_list,end_list = set_prisetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])
-    start = data['exonStarts'].to_list()[0]
-    end = data['exonEnds'].to_list()[0]#最後に空白があるからその対処
-    start = list(start.split(','))
-    end = list(end.split(','))
     add_result=[]
     
     number_list = np.array(number_list)
     start_num=int(interval_list[exon_num][0])
-    number_list = number_list + (set_num-int(start[exon_num])+start_num)
+    number_list = number_list + (set_num-int(start_list[exon_num])+start_num)
     number_list = number_list.tolist()#ここでエクソン上で何番目かになってる（cdsからエクソン上に）
     
     
@@ -131,18 +116,12 @@ def add_num_correct(name,number_list, interval_list,exon_num):
     return add_result
 
 def add_num(name,number_list, interval_list,exon_num):
-
-    data = gene_df[gene_df['name']==name]
+    data,cdsStart,start_list,end_list = set_prisetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])
-    start = data['exonStarts'].to_list()[0]
-    end = data['exonEnds'].to_list()[0]#最後に空白があるからその対処
-    start = list(start.split(','))
-    end = list(end.split(','))
-    add_result=[]
     
     number_list = np.array(number_list)
     start_num=int(interval_list[exon_num][0])
-    number_list = number_list + (set_num-int(start[exon_num])+start_num)
+    number_list = number_list + (set_num-int(start_list[exon_num])+start_num)
     number_list = number_list.tolist()#ここでエクソン上で何番目かになってる（cdsからエクソン上に）
 
     
@@ -159,20 +138,16 @@ def add_num(name,number_list, interval_list,exon_num):
         if i == 0:
             add_result.append(set_num)
         else:
-            add_result.append(int(start[i]))
+            add_result.append(int(start_list[i]))
 
     return add_result
 
-def where_end_codon(name):
-    data = gene_df[gene_df['name']==name]
-    cdsStart =int(data['cdsEnd'].to_list()[0])
+def where_codonend(name):
+    data,cdsStart,start_list,end_list = set_prisetnum(name)
     set_num =int(data['cdsEnd'].to_list()[0])-int(data['txStart'].to_list()[0])
-    start = data['exonStarts'].to_list()[0]
-    end = data['exonEnds'].to_list()[0]#最後に空白があるからその対処
-    start = list(start.split(','))
-    end = list(end.split(','))
+    
     for s in range(len(start)-1):
-        if (int(start[s]) <= cdsStart<=int(end[s])):
+        if (int(start_list[s]) <= cdsStart<=int(end_list[s])):
              exon_num =s
             
     return exon_num
@@ -180,20 +155,16 @@ def where_end_codon(name):
 def farfrom_last_exon(name,target_start):#exonが1つの場合うまくいかないはず
     target = target_start.tolist()
     
-    data = gene_df[gene_df['name']==name]
-    start = data['exonStarts'].to_list()[0]
-    end = data['exonEnds'].to_list()[0]
-    start = list(start.split(','))
-    end = list(end.split(','))
+    data,cdsStart,start_list,end_list = set_prisetnum(name)
     exonCount = where_end_codon(name)
     count = int(data['exonCount'])
-    start.pop()
-    end.pop()
+    start_list.pop()
+    end_list.pop()
     target_exon_num=[]
     for i in range(len(target)):
         target_num = target[i]
-        for s in range(len(start)):
-            if (int(start[s]) <= target_num <=int(end[s])):
+        for s in range(len(start_list)):
+            if (int(start_list[s]) <= target_num <=int(end_list[s])):
                 target_exon_num.append(s)
     
     bool_list = []
