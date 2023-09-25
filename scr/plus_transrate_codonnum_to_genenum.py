@@ -54,11 +54,6 @@ def make_cds_seq(name,exon_data,exon_num):
         
     return ''.join(cds_list)
 
-
-
-#ここまで動作確認した
-
-
 def get_stopcodon_num(cds_seq)->list:
     matches = re.finditer('(?=(CAA)|(?=(CAG))|(?=(CGA))|(?=(TGG)))', cds_seq)
     result=[]
@@ -69,7 +64,7 @@ def get_stopcodon_num(cds_seq)->list:
             result.append(start_pos)
     return result
 
-def add_num_list(name):
+def add_num_list(name)->list:
     data,cdsStart,start_list,end_list = set_prisetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])
     add_list=[]
@@ -85,7 +80,7 @@ def add_num_list(name):
         
     return add_list
 
-def add_num_correct(name,number_list, interval_list,exon_num):
+def correct_added_num(name,number_list, interval_list,exon_num):#エクソンのはじめから何番目であるかに変換する
     data,cdsStart,start_list,end_list = set_prisetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])
     add_result=[]
@@ -133,7 +128,7 @@ def add_num(name,number_list, interval_list,exon_num):
             if int(interval[0]) <= int(number) < int(interval[1]):
                 indices.append(index)
                 break
-            
+    add_result = []     
     for i in indices:
         if i == 0:
             add_result.append(set_num)
@@ -145,50 +140,9 @@ def add_num(name,number_list, interval_list,exon_num):
 def where_codonend(name):
     data,cdsStart,start_list,end_list = set_prisetnum(name)
     set_num =int(data['cdsEnd'].to_list()[0])-int(data['txStart'].to_list()[0])
-    
-    for s in range(len(start)-1):
-        if (int(start_list[s]) <= cdsStart<=int(end_list[s])):
+    cdsEnd = int(data['cdsEnd'].to_list()[0])
+    for s in range(len(start_list)-1):
+        if (int(start_list[s]) <= cdsEnd<=int(end_list[s])):
              exon_num =s
             
     return exon_num
-
-def farfrom_last_exon(name,target_start):#exonが1つの場合うまくいかないはず
-    target = target_start.tolist()
-    
-    data,cdsStart,start_list,end_list = set_prisetnum(name)
-    exonCount = where_end_codon(name)
-    count = int(data['exonCount'])
-    start_list.pop()
-    end_list.pop()
-    target_exon_num=[]
-    for i in range(len(target)):
-        target_num = target[i]
-        for s in range(len(start_list)):
-            if (int(start_list[s]) <= target_num <=int(end_list[s])):
-                target_exon_num.append(s)
-    
-    bool_list = []
-    if count != 1:
-        for t in range(len(target_exon_num)):
-            if target_exon_num[t]==exonCount:
-                bool_list.append(False)
-            
-            elif target_exon_num[t]==exonCount-1:
-                if int(end[exonCount-1])-target[t]<50:
-                    bool_list.append(False)
-                else:
-                    bool_list.append(True)
-                
-            else:
-                bool_list.append(True)
-            
-    else:
-        for t in range(len(target_exon_num)):
-            bool_list.append(True)
-    
-    
-            
-
-    result =[target_start[s] for s in range(len(target_start)) if bool_list[s]]
-
-    return result
