@@ -11,10 +11,10 @@ def make_preset(name):
     chrom = str(name_df.loc[0,'chrom'])
     txStart = str(name_df.loc[0,'txStart'])
     txEnd = str(name_df.loc[0,'txEnd'])
-    return name_df, crhom, txStart, txEnd
+    return name_df, chrom, txStart, txEnd
 
 def get_CtoT_target_seq(name):
-    name_df, crhom, txStart, txEnd = make_preset(name)
+    name_df, chrom, txStart, txEnd = make_preset(name)
 
     query = f'{name}::{chrom}:{txStart}-{txEnd}'
     seq = base_data[query]
@@ -43,4 +43,3 @@ def get_CtoT_target_seq(name):
     result = np.array(farfrom_last_exon(name,result))
     
     return result
-

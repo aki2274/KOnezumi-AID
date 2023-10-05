@@ -1,12 +1,14 @@
 import re
 from typing import Tuple
+import numpy as np
+from pandas as pd
 
 def read_fasta(path : str) -> str:
     sequences = {}
     seq_id = None
     current_seq = ""
     
-    with open(file_path, "r") as file:
+    with open(path, "r") as file:
         for line in file:
             line = line.strip()
 
@@ -41,7 +43,7 @@ def read_refFlat(path: str) -> str:
         contents=sort_dataset(line)
         result.append(contents)
     return result
-def make_datasets(path,pathfa)->Tuple[any,dict[str:str]]:
+def make_datasets(path,path_fa)->Tuple[any,dict[str:str]]:
     gene_data =read_refFlat(path)
     col_names =['geneName','name','chrom','strand','txStart','txEnd','cdsStart','cdsEnd','exonCount','exonStarts','exonEnds']
     gene_df=pd.DataFrame(gene_data,columns=col_names)

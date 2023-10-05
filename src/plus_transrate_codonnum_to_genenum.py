@@ -1,5 +1,7 @@
 import re
 from typing import Tuple
+import numpy as np
+from pandas as pd
 
 def set_presetnum(name:str):
     data = gene_df[gene_df['name']==name]
@@ -18,7 +20,7 @@ def target_gene_start(name,target):
     return result    
 
 def get_exon_seq(name,sequence_data:str)->str:
-    data,cdsStart,start_list,end_list = set_prisetnum(name)
+    data,cdsStart,start_list,end_list = set_presetnum(name)
     set_num =int(data['txStart'])  
     exon_seq_list =[] 
     for s in range(len(start_list)-1):#最後が空白なので-1している
@@ -29,7 +31,7 @@ def get_exon_seq(name,sequence_data:str)->str:
     return ''.join(exon_seq_list)
 
 def where_codonstart(name)->int:
-    data,cdsStart,start_list,end_list = set_prisetnum(name)
+    data,cdsStart,start_list,end_list = set_presetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])-int(data['txStart'].to_list()[0])
     for s in range(len(start_list)-1):
         if (int(start_list[s]) <= cdsStart<=int(end_list[s])):
@@ -38,7 +40,7 @@ def where_codonstart(name)->int:
     return exon_num
 
 def make_cds_seq(name,exon_data,exon_num):
-    data,cdsStart,start_list,end_list = set_prisetnum(name)
+    data,cdsStart,start_list,end_list = set_presetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])-int(data['txStart'].to_list()[0])
     CDs =''
     cds_list=[]
@@ -65,7 +67,7 @@ def get_stopcodon_num(cds_seq)->list:
     return result
 
 def add_num_list(name)->list:
-    data,cdsStart,start_list,end_list = set_prisetnum(name)
+    data,cdsStart,start_list,end_list = set_presetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])
     add_list=[]
     num = 0
@@ -81,7 +83,7 @@ def add_num_list(name)->list:
     return add_list
 
 def correct_added_num(name,number_list, interval_list,exon_num):#エクソンのはじめから何番目であるかに変換する
-    data,cdsStart,start_list,end_list = set_prisetnum(name)
+    data,cdsStart,start_list,end_list = set_presetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])
     add_result=[]
     
@@ -111,7 +113,7 @@ def correct_added_num(name,number_list, interval_list,exon_num):#エクソンの
     return add_result
 
 def add_num(name,number_list, interval_list,exon_num):
-    data,cdsStart,start_list,end_list = set_prisetnum(name)
+    data,cdsStart,start_list,end_list = set_presetnum(name)
     set_num =int(data['cdsStart'].to_list()[0])
     
     number_list = np.array(number_list)
@@ -138,7 +140,7 @@ def add_num(name,number_list, interval_list,exon_num):
     return add_result
 
 def where_codonend(name):
-    data,cdsStart,start_list,end_list = set_prisetnum(name)
+    data,cdsStart,start_list,end_list = set_presetnum(name)
     set_num =int(data['cdsEnd'].to_list()[0])-int(data['txStart'].to_list()[0])
     cdsEnd = int(data['cdsEnd'].to_list()[0])
     for s in range(len(start_list)-1):
