@@ -1,5 +1,5 @@
 import pytest
-from scr import plus_target
+from src import plus_target
 
 def test_get_CtoT_target():
     test_seq_list = ['CCANNNNNNNNNNNNNNNNNNTGG','CAGNNNNNNNNNNNNNNNNGG','CAGNNNNNNNNNNNNNNNNGGCGANNNNNNNNNNNNNNNNGG',

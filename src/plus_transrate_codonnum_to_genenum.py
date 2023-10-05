@@ -1,7 +1,7 @@
 import re
 from typing import Tuple
 
-def set_prisetnum(name:str):
+def set_presetnum(name:str):
     data = gene_df[gene_df['name']==name]
     cdsStart =int(data['cdsStart'].to_list()[0])
     start = data['exonStarts'].to_list()[0]
