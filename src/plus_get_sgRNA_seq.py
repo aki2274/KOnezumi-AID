@@ -1,9 +1,10 @@
 #datasetのimportの方法は？
-from src import plus_get_target_num
-from src import plus_transrate_codonnum_to_genenum
-
+import plus_get_target_num
+import plus_transrate_codonnum_to_genenum
 AID = plus_get_target_num
-conv_sc = plus_transrate_codonnum_to_genenu
+conv_sc = plus_transrate_codonnum_to_genenum
+
+#name = input()
 
 def make_preset(name):
     name_df=gene_df[gene_df['name']==name].reset_index()
@@ -42,3 +43,4 @@ def get_CtoT_target_seq(name):
     result = np.array(farfrom_last_exon(name,result))
     
     return result
+
