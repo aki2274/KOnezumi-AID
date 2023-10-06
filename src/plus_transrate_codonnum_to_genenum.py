@@ -1,7 +1,7 @@
 import re
 from typing import Tuple
 import numpy as np
-from pandas as pd
+import pandas as pd
 
 def set_presetnum(name:str):
     data = gene_df[gene_df['name']==name]
