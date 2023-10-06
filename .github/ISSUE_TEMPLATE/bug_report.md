@@ -19,7 +19,5 @@ assignees: ''
 
 **Python version**
 
-**cstag version**
-
 **Additional context**
 Add any other context or screenshots about the bug here.
