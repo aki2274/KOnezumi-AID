@@ -2,16 +2,15 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: feature
+labels: request
 assignees: ''
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-**Describe the solution you'd like**
+### As Is（今の状態を記載）
 
-**Describe alternatives you've considered**
+### To Be （理想の状態を記載。タスク完了の条件にもなる。）
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+### アクション（改善のための具体的なアクションを記載）
+
+### 課題 （現状分かっている課題を記載）
