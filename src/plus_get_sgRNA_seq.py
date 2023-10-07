@@ -1,8 +1,7 @@
 #datasetのimportの方法は？
-import plus_get_target_num
-import plus_transrate_codonnum_to_genenum
-AID = plus_get_target_num
-conv_sc = plus_transrate_codonnum_to_genenum
+import plus_get_target_num as AID
+import plus_transrate_codonnum_to_genenum as conv_sc
+
 
 #name = input()
 
