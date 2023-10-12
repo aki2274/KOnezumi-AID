@@ -26,7 +26,7 @@ def CtoT_target_start(target_list,que)->list:#CXXのCの位置を出す
     return result
 
 def get_AtoG_target(seq)->list:
-    match = re.findall('(?=(CC\w{21}))', seq)
+    match = re.findall(r'(?=(CC\w{18,21}))', seq)
     target_list=[]
     for i in range(len(match)):
         target_1 = match[i][20:23]
@@ -52,7 +52,7 @@ def AtoG_target_start(target_list,que):#TGGのTの位置を出す
             add_seq = re.search('GGT',seq)
             add_num =add_seq.start()
             start_index = match.start()
-            result.append(start_index+20-add_num)
+            result.append(start_index+len(seq)-3-add_num)
     result = list(dict.fromkeys(result))
     return result
 
