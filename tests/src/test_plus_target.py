@@ -1,5 +1,5 @@
 import pytest
-from scr.get_guiderna_seq import find_ct_target, find_ag_target
+from src.get_guiderna_seq import find_ct_target, find_ag_target
 
 
 #################################
