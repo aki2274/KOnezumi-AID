@@ -11,9 +11,9 @@ def get_re_comp(seq:str)->str:
     return ''.join(result)
 
 def find_ct_target(seq:str)->list:
-    match = re.findall(r'(?=(\w{18,20}GG))', seq)#ここ不安
+    match = re.findall(r'(?=(\w{21}GG))', seq)
     target_list=[]
-    target_list =[ True if target[0:3] =='CAA' or target[0:3] =='CAG'or target[0:3] =='CGA' else False for target in match]       
+    target_list = [True if target[1:4] in ('CAA', 'CAG', 'CGA') or target[2:5] in ('CAA', 'CAG', 'CGA') or target[3:6] in ('CAA', 'CAG', 'CGA') else False for target in match]      
     result =[match[s] for s in range(len(match)) if target_list[s]]
     result = list(dict.fromkeys(result))
     return result

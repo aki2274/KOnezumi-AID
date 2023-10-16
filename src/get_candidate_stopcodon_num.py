@@ -12,4 +12,3 @@ def set_presetnum(name:str,gene_df):
     end_list = list(end.split(','))
     return data,cdsStart,start_list,end_list
 
-def 
