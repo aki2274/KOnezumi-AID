@@ -18,11 +18,12 @@ def find_ct_target(seq:str)->list:
     result = list(dict.fromkeys(result))
     return result
 
-def get_ct_target_num(target_list,que)->list:#CXXのCの位置を出す
+def get_ct_target_num(que,target_list)->list:#CXXのCの位置を出す
     result = []
     for i in target_list:
         matches = re.finditer(i, que)
-        result = [match.start() for match in matches]
+        num = [re.search(r"(CAA|CAG|CGA)",str(match.group())).start()+match.start() for match in matches]
+        result.append(num[0])
     result = list(dict.fromkeys(result))
     return result
 
@@ -35,7 +36,7 @@ def find_ag_target(seq:str)->list:
     return result
 
 
-def get_ag_target_num(target_list,que)->list:#TGGのTの位置を出す
+def get_ag_target_num(que,target_list)->list:#TGGのTの位置を出す
     result = []
     for i in target_list:
         matches = re.finditer(i, que)

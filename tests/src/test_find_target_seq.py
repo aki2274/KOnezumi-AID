@@ -83,10 +83,3 @@ expected = [[],[],[]]
 @pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
 def test_get_AtoG_target_not_candidate(seq, expected):
     assert find_ag_target(seq) == expected
-
-
-#################################
-# Get start index of target base
-#################################
-
-
