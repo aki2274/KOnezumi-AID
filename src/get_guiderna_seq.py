@@ -4,12 +4,10 @@ import numpy as np
 import pandas as pd
 
 
-def get_re_comp(seq: str) -> str:
-    complementary = {"A": "T", "T": "A", "G": "C", "C": "G"}
-    rev_seq = seq[::-1]
-    result = []
-    result = [complementary[base.upper()] for base in rev_seq]
-    return "".join(result)
+complementary = {"A": "T", "T": "A", "G": "C", "C": "G", "N": "N"}
+
+def get_revcomp(seq: str) -> str:
+    return "".join(complementary[base.upper()] for base in seq[::-1])
 
 
 def find_ct_target(seq: str) -> list:
