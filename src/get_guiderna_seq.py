@@ -29,16 +29,6 @@ def get_index_of_ct_target_seq(seq: str, targets: list[str]) -> list[int]:
     return positions
 
 
-# def get_ct_target_num(que, target_list) -> list:  # CXXのCの位置を出す
-#     result = []
-#     for i in target_list:
-#         matches = re.finditer(i, que)
-#         num = [re.search(r"(CAA|CAG|CGA)", str(match.group())).start() + match.start() for match in matches]
-#         result.append(num[0])
-#     result = list(dict.fromkeys(result))
-#     return result
-
-
 def find_ag_target(seq: str) -> list:
     match = re.findall(r"(?=(CC\w{18,21}))", seq)
     target_list = []
