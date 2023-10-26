@@ -1,5 +1,5 @@
 import pytest
-from src.get_guiderna_seq import find_ct_target, find_ag_target
+from src.get_guiderna_seq import find_ct_target_seq, find_ag_target
 
 
 #################################
@@ -36,7 +36,7 @@ expected = [
     ]
 @pytest.mark.parametrize("seq, expected", zip(seq_candidates, expected))
 def test_get_CtoT_target(seq, expected):
-    assert find_ct_target(seq) == expected
+    assert find_ct_target_seq(seq) == expected
 
 
 seq_not_candidates = [
@@ -49,7 +49,7 @@ seq_not_candidates = [
 expected = [[],[],[],[],[]]
 @pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
 def test_get_CtoT_target_not_candidate(seq, expected):
-    assert find_ct_target(seq) == expected
+    assert find_ct_target_seq(seq) == expected
 
 
 # G-to-A conversion
