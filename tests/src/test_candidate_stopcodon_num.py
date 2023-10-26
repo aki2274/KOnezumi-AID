@@ -1,3 +1,4 @@
+'''
 import pytest
 import pandas as pd
 import src.get_candidate_stopcodon_index as gcsi
@@ -23,7 +24,6 @@ expected =''
 sample_df =''
 
 
-'''
 @pytest.mark.parametrize("transcripts_name,gene_df,gene_seq_data,expected", zip(sample_name,sample_df,sample_seq, expected))
 def test_get_sxon_seq(transcripts_name,gene_df,gene_seq_data,expected):
     assert gcsi.get_exon_seq(transcripts_name,gene_df,gene_seq_data) == excepted
