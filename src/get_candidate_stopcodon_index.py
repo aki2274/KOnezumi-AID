@@ -3,6 +3,10 @@ from typing import Tuple
 import numpy as np
 import pandas as pd
 
+#####
+#seaech candedate stopcodon index
+#####
+
 def setup(transcripts_name:str,gene_df,gene_seq_data:dict):
     data = gene_df[gene_df['name']==transcripts_name].reset_index()
     chrom = str(data.loc[0,'chrom'])
@@ -31,16 +35,16 @@ def get_startcodon_exonindex(transcripts_name,gene_df,gene_seq_data)->int:
     orf_seq,data,txStart,cdsStart,exon_start_list,exon_end_list = setup(transcripts_name,gene_df,gene_seq_data)
     for s in range(len(exon_start_list)):
         if (exon_start_list[s] <= cdsStart<=exon_end_list[s]):
-             exon_num =s          
-    return exon_num
+             exon_index=s          
+    return exon_index
 
 def get_stopcodon_exonindex(transcripts_name,gene_df,gene_seq_data)->int:
     orf_seq,data,txStart,cdsStart,exon_start_list,exon_end_list = setup(transcripts_name,gene_df,gene_seq_data)
     cdsEnd = int(data['cdsEnd'])
     for s in range(len(exon_start_list)):
         if (exon_start_list[s] <= cdsEnd<= exon_end_list[s]):
-             exon_num =s          
-    return exon_num
+             exon_index =s          
+    return exon_index
 
 def get_cdsseq(transcripts_name,gene_df,gene_seq_data,exon_seq,startcodon_exonindex,endcodon_exonindex):
     orf_seq,data,txStart,cdsStart,exon_start_list,exon_end_list = setup(transcripts_name,gene_df,gene_seq_data)
@@ -71,5 +75,28 @@ def get_cdsseq(transcripts_name,gene_df,gene_seq_data,exon_seq,startcodon_exonin
 
 def get_stopcodon_num(cds_seq)->list:
     matches = re.finditer(r'(?=(CAA)|(?=(CAG))|(?=(CGA))|(?=(TGG)))', cds_seq)
-    result = [match.start() for match in matches if (match.start() % 3) == 0]#1の可能性もある
-    return result
+    codon_index_list = [match.start() for match in matches if (match.start() % 3) == 0]#1の可能性もある
+    return codon_index_list
+
+#####
+#Change stopcodon exon index to genome index
+#####
+
+def get_number_of_exon(transcripts_name,gene_df,gene_seq_data,codon_index_list)->int:
+    orf_seq,data,txStart,cdsStart,exon_start_list,exon_end_list = setup(transcripts_name,gene_df,gene_seq_data)
+    exon_range_list=[]
+    num = 0
+    for s in range(len(exon_start_list)):
+        element_list=[]
+        element_list.append(num) 
+        num += exon_end_list[s]-exon_start_list[s]
+        element_list.append(num)
+        exon_range_list.append(element_list)
+        num += 1
+    exon_index_list = []
+    for t in range(len(codon_index_list)):
+        for s in range(len(exon_range_list)):
+            if exon_range_list[s][0] <= codon_index_list[t] <= exon_range_list[s][1]:
+                exon_index_list.append(s)
+    return exon_index_list
+
