@@ -18,8 +18,8 @@ seq_candidates = [
     "NNNCAANNNNNNNNNNNNNNNGG",
     "NNNCAGNNNNNNNNNNNNNNNGG",
     "NNNCGANNNNNNNNNNNNNNNGG",
-    "NNCAGNNNNNNNNNNNNNNNNGGCGANNNNNNNNNNNNNNNNGG", #multipme candidates
-    "NNCAGCAANNNNNNNNNNNNNGGTGG", #multipme candidates
+    "NNCAGNNNNNNNNNNNNNNNNGGCGANNNNNNNNNNNNNNNNGG",  # multipme candidates
+    "NNCAGCAANNNNNNNNNNNNNGGTGG",  # multipme candidates
 ]
 expected = [
     ["NCAANNNNNNNNNNNNNNNNNGG"],
@@ -33,7 +33,9 @@ expected = [
     ["NNNCGANNNNNNNNNNNNNNNGG"],
     ["NNCAGNNNNNNNNNNNNNNNNGG", "GGCGANNNNNNNNNNNNNNNNGG"],
     ["NNCAGCAANNNNNNNNNNNNNGG", "AGCAANNNNNNNNNNNNNGGTGG"],
-    ]
+]
+
+
 @pytest.mark.parametrize("seq, expected", zip(seq_candidates, expected))
 def test_get_CtoT_target(seq, expected):
     assert find_ct_target_seq(seq) == expected
@@ -43,10 +45,12 @@ seq_not_candidates = [
     "NNNNNNNNNNNNNNNNNNNNNGG",
     "NNAGNNNNNNNNNNNNNNNNNGG",
     "NCTANNNNNNNNNNNNNNNNNGG",
-    "NNNNCGANNNNNNNNNNNNNNGG", # no CGA in target window (-17~-19 from PAM)
-    "NNNNCGANNNNNNNNNNNNNNAG", # no PAM
+    "NNNNCGANNNNNNNNNNNNNNGG",  # no CGA in target window (-17~-19 from PAM)
+    "NNNNCGANNNNNNNNNNNNNNAG",  # no PAM
 ]
-expected = [[],[],[],[],[]]
+expected = [[], [], [], [], []]
+
+
 @pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
 def test_get_CtoT_target_not_candidate(seq, expected):
     assert find_ct_target_seq(seq) == expected
@@ -59,27 +63,32 @@ seq_candidates = [
     "CCNNNNNNNNNNNNNNNNTGGNN",
     "CCNNNNNNNNNNNNNNNNNTGGN",
     "CCNNNNNNNNNNNNNNNNNNTGG",
-    "CCNNNNNNNNNNNNNNNNNNTGGCCANNNNNNNNNNNNNNNNNTGG", #multipme candidates
-    "CCNCCCNNNNNNNNNNNNNNTGGTGGNNNN", #multipme candidates
+    "CCNNNNNNNNNNNNNNNNNNTGGCCANNNNNNNNNNNNNNNNNTGG",  # multipme candidates
+    "CCNCCCNNNNNNNNNNNNNNTGGTGGNNNN",  # multipme candidates
 ]
 expected = [
     ["CCNNNNNNNNNNNNNNNTGGNNN"],
     ["CCNNNNNNNNNNNNNNNNTGGNN"],
     ["CCNNNNNNNNNNNNNNNNNTGGN"],
     ["CCNNNNNNNNNNNNNNNNNNTGG"],
-    ["CCNNNNNNNNNNNNNNNNNNTGG", "CCANNNNNNNNNNNNNNNNNTGG"],["CCNCCCNNNNNNNNNNNNNNTGG", "CCCNNNNNNNNNNNNNNTGGTGG", "CCNNNNNNNNNNNNNNTGGTGGN"],
+    ["CCNNNNNNNNNNNNNNNNNNTGG", "CCANNNNNNNNNNNNNNNNNTGG"],
+    ["CCNCCCNNNNNNNNNNNNNNTGG", "CCCNNNNNNNNNNNNNNTGGTGG", "CCNNNNNNNNNNNNNNTGGTGGN"],
 ]
+
+
 @pytest.mark.parametrize("seq, expected", zip(seq_candidates, expected))
 def test_get_AtoG_target(seq, expected):
     assert find_ag_target(seq) == expected
 
 
 seq_not_candidates = [
-    "CCNNNNNNNNNNNNNNNTTTNNN", # no TGG
-    "CCNNNNNNNNNNNNNNTGGNNNN", # no TGG in target window (+17~+19 from PAM)
-    "CANNNNNNNNNNNNNNNTGGNNN", # no PAM
+    "CCNNNNNNNNNNNNNNNTTTNNN",  # no TGG
+    "CCNNNNNNNNNNNNNNTGGNNNN",  # no TGG in target window (+17~+19 from PAM)
+    "CANNNNNNNNNNNNNNNTGGNNN",  # no PAM
 ]
-expected = [[],[],[]]
+expected = [[], [], []]
+
+
 @pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
 def test_get_AtoG_target_not_candidate(seq, expected):
     assert find_ag_target(seq) == expected
