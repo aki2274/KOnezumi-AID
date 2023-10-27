@@ -4,7 +4,6 @@ from typing import Tuple
 import numpy as np
 import pandas as pd
 
-
 complementary = {"A": "T", "T": "A", "G": "C", "C": "G", "N": "N"}
 
 
@@ -15,46 +14,52 @@ def get_revcomp(seq: str) -> str:
 def find_ct_target_seq(seq: str) -> list[str]:
     matches = re.findall(r"(?=(\w{21}GG))", seq)
     # Check for the presence of "CAA", "CAG", or "CGA" in the next 3 positions.
-    targets = [match for match in matches if any(match[i : i + 3] in {"CAA", "CAG", "CGA"} for i in range(1, 4))]
+    targets = [
+        match
+        for match in matches
+        if any(match[i : i + 3] in {"CAA", "CAG", "CGA"} for i in range(1, 4))
+    ]
     # Remove duplicates while preserving order
     return list(dict.fromkeys(targets))
 
 
 def get_index_of_ct_target_seq(seq: str, targets: list[str]) -> list[int]:
+    # Get the index of "C" in "CAA", "CAG", or "CGA" in candidate gRNA
     positions = []
     for target in targets:
+        # Add the index of the candidate gRNA start position in the ORF and the index of "C" form gRNA start position
         for match in re.finditer(target, seq):
-            position = re.search(r"(CAA|CAG|CGA)", match.group()).start() + match.start()
+            position = (
+                re.search(r"(CAA|CAG|CGA)", match.group()).start() + match.start()
+            )
             positions.append(position)
     return positions
 
 
-def find_ag_target(seq: str) -> list:
-    match = re.findall(r"(?=(CC\w{18,21}))", seq)
-    target_list = []
-    target_list = [
-        True
-        if target[20:23] == "TGG" or target[19:22] == "TGG" or target[18:21] == "TGG" or target[17:20] == "TGG"
-        else False
-        for target in match
+def find_ag_target(seq: str) -> list[str]:
+    matches = re.findall(r"(?=(CC\w{18,21}))", seq)
+    # Check for the presence of "TGG" in the next 4 positions.
+    targets = [
+        match
+        for match in matches
+        if any(match[i : i + 3] in {"TGG"} for i in range(17, 21))
     ]
-    result = [match[s] for s in range(len(match)) if target_list[s]]
-    result = list(dict.fromkeys(result))
-    return result
+    # Remove duplicates while preserving order
+    targets = list(dict.fromkeys(targets))
+    return targets
 
 
-def get_ag_target_num(que, target_list) -> list:  # TGGのTの位置を出す
-    result = []
-    for i in target_list:
-        matches = re.finditer(i, que)
-        for match in matches:
+def get_ag_target_num(seq: str, targets: list[str]) -> list[int]:
+    # Get the index of "T" in "TGG" in candidate gRNA
+    positions = []
+    for target in targets:
+        for match in re.finditer(target, seq):
             rev_match = match.group()[::-1]
-            rev_seq = re.search("GGT", rev_match)
-            add_num = rev_seq.start()
-            start_index = match.start()
-            result.append(start_index + len(rev_match) - 3 - add_num)
-    result = list(dict.fromkeys(result))
-    return result
+            add_num = re.search("GGT", rev_match).start()
+            # Get the index of the candidate gRNA end position in the ORF and back to "T" in "TGG"
+            positions.append(match.start() + len(rev_match) - 3 - add_num)
+    positions = list(dict.fromkeys(positions))
+    return positions
 
 
 """
