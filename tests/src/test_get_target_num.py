@@ -1,5 +1,5 @@
 import pytest
-from src.get_guiderna_seq import get_index_of_ct_target_seq, get_ag_target_num
+from src.get_guiderna_seq import get_index_of_ct_target_seq, get_index_of_ag_target_seq
 
 
 #################################
@@ -82,7 +82,7 @@ expected = [[17], [18], [19], [20], [20, 43], [20, 23]]
 
 @pytest.mark.parametrize("seq,candidates,expected", zip(input_seq, seq_candidates, expected))
 def test_get_AtoG_target(seq, candidates, expected):
-    assert get_ag_target_num(seq, candidates) == expected
+    assert get_index_of_ag_target_seq(seq, candidates) == expected
 
 
 input_seq = [
@@ -96,4 +96,4 @@ expected = [[], [], []]
 
 @pytest.mark.parametrize("seq,candidates,expected", zip(input_seq, seq_not_candidates, expected))
 def test_get_AtoG_target_not_candidates(seq, candidates, expected):
-    assert get_ag_target_num(seq, candidates) == expected
+    assert get_index_of_ag_target_seq(seq, candidates) == expected
