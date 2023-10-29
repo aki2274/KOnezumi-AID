@@ -1,5 +1,5 @@
 import pytest
-from src.get_guiderna_seq import get_index_of_ct_target_seq, get_index_of_ag_target_seq
+from src.get_guiderna_seq import get_index_of_ct_target_seq, get_index_of_ga_target_seq
 
 
 #################################
@@ -38,7 +38,9 @@ seq_candidates = [
 expected = [[1], [1], [1], [2], [2], [2], [3], [3], [3], [2, 23], [2, 5]]
 
 
-@pytest.mark.parametrize("seq,candidates,expected", zip(input_seq, seq_candidates, expected))
+@pytest.mark.parametrize(
+    "seq,candidates,expected", zip(input_seq, seq_candidates, expected)
+)
 def test_get_CtoT_target(seq, candidates, expected):
     assert get_index_of_ct_target_seq(seq, candidates) == expected
 
@@ -54,7 +56,9 @@ seq_not_candidates = [[], [], [], [], []]
 expected = [[], [], [], [], []]
 
 
-@pytest.mark.parametrize("seq,candidates,expected", zip(input_seq, seq_not_candidates, expected))
+@pytest.mark.parametrize(
+    "seq,candidates,expected", zip(input_seq, seq_not_candidates, expected)
+)
 def test_get_CtoT_target_not_candidate(seq, candidates, expected):
     assert get_index_of_ct_target_seq(seq, candidates) == expected
 
@@ -80,9 +84,11 @@ seq_candidates = [
 expected = [[17], [18], [19], [20], [20, 43], [20, 23]]
 
 
-@pytest.mark.parametrize("seq,candidates,expected", zip(input_seq, seq_candidates, expected))
+@pytest.mark.parametrize(
+    "seq,candidates,expected", zip(input_seq, seq_candidates, expected)
+)
 def test_get_AtoG_target(seq, candidates, expected):
-    assert get_index_of_ag_target_seq(seq, candidates) == expected
+    assert get_index_of_ga_target_seq(seq, candidates) == expected
 
 
 input_seq = [
@@ -94,6 +100,8 @@ seq_not_candidates = [[], [], []]
 expected = [[], [], []]
 
 
-@pytest.mark.parametrize("seq,candidates,expected", zip(input_seq, seq_not_candidates, expected))
+@pytest.mark.parametrize(
+    "seq,candidates,expected", zip(input_seq, seq_not_candidates, expected)
+)
 def test_get_AtoG_target_not_candidates(seq, candidates, expected):
-    assert get_index_of_ag_target_seq(seq, candidates) == expected
+    assert get_index_of_ga_target_seq(seq, candidates) == expected
