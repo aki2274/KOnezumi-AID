@@ -1,8 +1,6 @@
 from __future__ import annotations
+
 import re
-from typing import Tuple
-import numpy as np
-import pandas as pd
 
 complementary = {"A": "T", "T": "A", "G": "C", "C": "G", "N": "N"}
 
@@ -14,11 +12,7 @@ def get_revcomp(seq: str) -> str:
 def find_ct_target_seq(seq: str) -> list[str]:
     matches = re.findall(r"(?=(\w{21}GG))", seq)
     # Check for the presence of "CAA", "CAG", or "CGA" in the next 3 positions.
-    targets = [
-        match
-        for match in matches
-        if any(match[i : i + 3] in {"CAA", "CAG", "CGA"} for i in range(1, 4))
-    ]
+    targets = [match for match in matches if any(match[i : i + 3] in {"CAA", "CAG", "CGA"} for i in range(1, 4))]
     # Remove duplicates while preserving order
     return list(dict.fromkeys(targets))
 
@@ -29,27 +23,21 @@ def get_index_of_ct_target_seq(seq: str, targets: list[str]) -> list[int]:
     for target in targets:
         # Add the index of the candidate gRNA start position in the ORF and the index of "C" form gRNA start position
         for match in re.finditer(target, seq):
-            position = (
-                re.search(r"(CAA|CAG|CGA)", match.group()).start() + match.start()
-            )
+            position = re.search(r"(CAA|CAG|CGA)", match.group()).start() + match.start()
             positions.append(position)
     return positions
 
 
-def find_ag_target(seq: str) -> list[str]:
+def find_ag_target_seq(seq: str) -> list[str]:
     matches = re.findall(r"(?=(CC\w{18,21}))", seq)
     # Check for the presence of "TGG" in the next 4 positions.
-    targets = [
-        match
-        for match in matches
-        if any(match[i : i + 3] in {"TGG"} for i in range(17, 21))
-    ]
+    targets = [match for match in matches if any(match[i : i + 3] in {"TGG"} for i in range(17, 21))]
     # Remove duplicates while preserving order
     targets = list(dict.fromkeys(targets))
     return targets
 
 
-def get_ag_target_num(seq: str, targets: list[str]) -> list[int]:
+def get_index_of_ag_target_seq(seq: str, targets: list[str]) -> list[int]:
     # Get the index of "T" in "TGG" in candidate gRNA
     positions = []
     for target in targets:
