@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import re
 
-complementary = {"A": "T", "T": "A", "G": "C", "C": "G", "N": "N"}
-
 
 def get_revcomp(seq: str) -> str:
-    return "".join(complementary[base.upper()] for base in seq[::-1])
+    """Reverse complement a DNA sequence."""
+    complement = {"A": "T", "C": "G", "G": "C", "T": "A", "N": "N"}
+    return "".join(complement[nt] for nt in seq[::-1])
 
 
 def find_ct_target_seq(seq: str) -> list[str]:
