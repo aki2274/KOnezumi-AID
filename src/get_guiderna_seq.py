@@ -40,7 +40,7 @@ def find_ga_target_seq(seq: str) -> list[str]:
     targets = [
         match
         for match in matches
-        if any(match[i : i + 3] in {"TGG"} for i in range(17, 21))
+        if any(match[i : i + 3] == "TGG" for i in range(17, 21))
     ]
     # Remove duplicates while preserving order
     targets = list(dict.fromkeys(targets))
