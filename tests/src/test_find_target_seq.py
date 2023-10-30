@@ -1,5 +1,9 @@
 import pytest
+<<<<<<< Updated upstream
 from src.get_guiderna_seq import find_ct_target_seq, find_ga_target_seq
+=======
+from src.get_guiderna_seq import find_ct_target_seq, find_ga_target
+>>>>>>> Stashed changes
 
 
 #################################
@@ -78,7 +82,11 @@ expected = [
 
 @pytest.mark.parametrize("seq, expected", zip(seq_candidates, expected))
 def test_get_AtoG_target(seq, expected):
+<<<<<<< Updated upstream
     assert find_ga_target_seq(seq) == expected
+=======
+    assert find_ga_target(seq) == expected
+>>>>>>> Stashed changes
 
 
 seq_not_candidates = [
@@ -91,4 +99,8 @@ expected = [[], [], []]
 
 @pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
 def test_get_AtoG_target_not_candidate(seq, expected):
+<<<<<<< Updated upstream
     assert find_ga_target_seq(seq) == expected
+=======
+    assert find_ga_target(seq) == expected
+>>>>>>> Stashed changes

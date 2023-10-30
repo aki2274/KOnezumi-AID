@@ -34,7 +34,11 @@ def get_index_of_ct_target_seq(seq: str, targets: list[str]) -> list[int]:
     return positions
 
 
+<<<<<<< Updated upstream
 def find_ga_target_seq(seq: str) -> list[str]:
+=======
+def find_ga_target(seq: str) -> list[str]:
+>>>>>>> Stashed changes
     matches = re.findall(r"(?=(CC\w{18,21}))", seq)
     # Check for the presence of "TGG" in the next 4 positions.
     targets = [
@@ -47,7 +51,11 @@ def find_ga_target_seq(seq: str) -> list[str]:
     return targets
 
 
+<<<<<<< Updated upstream
 def get_index_of_ga_target_seq(seq: str, targets: list[str]) -> list[int]:
+=======
+def get_ga_target_num(seq: str, targets: list[str]) -> list[int]:
+>>>>>>> Stashed changes
     # Get the index of "T" in "TGG" in candidate gRNA
     positions = []
     for target in targets:
