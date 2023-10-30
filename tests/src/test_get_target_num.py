@@ -1,9 +1,5 @@
 import pytest
-<<<<<<< Updated upstream
 from src.get_guiderna_seq import get_index_of_ct_target_seq, get_index_of_ga_target_seq
-=======
-from src.get_guiderna_seq import get_index_of_ct_target_seq, get_ga_target_num
->>>>>>> Stashed changes
 
 
 #################################
@@ -92,11 +88,7 @@ expected = [[17], [18], [19], [20], [20, 43], [20, 23]]
     "seq,candidates,expected", zip(input_seq, seq_candidates, expected)
 )
 def test_get_AtoG_target(seq, candidates, expected):
-<<<<<<< Updated upstream
     assert get_index_of_ga_target_seq(seq, candidates) == expected
-=======
-    assert get_ga_target_num(seq, candidates) == expected
->>>>>>> Stashed changes
 
 
 input_seq = [
@@ -112,8 +104,4 @@ expected = [[], [], []]
     "seq,candidates,expected", zip(input_seq, seq_not_candidates, expected)
 )
 def test_get_AtoG_target_not_candidates(seq, candidates, expected):
-<<<<<<< Updated upstream
     assert get_index_of_ga_target_seq(seq, candidates) == expected
-=======
-    assert get_ga_target_num(seq, candidates) == expected
->>>>>>> Stashed changes
