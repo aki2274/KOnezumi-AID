@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import re
+import numpy as np
+import pandas as pd
 
 
 def get_revcomp(seq: str) -> str:
@@ -31,6 +33,7 @@ def get_index_of_ct_target_seq(seq: str, targets: list[str]) -> list[int]:
                 re.search(r"(CAA|CAG|CGA)", match.group()).start() + match.start()
             )
             positions.append(position)
+    positions = list(dict.fromkeys(positions))
     return positions
 
 
@@ -60,11 +63,10 @@ def get_index_of_ga_target_seq(seq: str, targets: list[str]) -> list[int]:
     return positions
 
 
-"""
-def get_targetstart_num(name,target,gene_df)->list:
-    data = gene_df[gene_df['name']==name]
-    num = data['txStart'].astype(int).to_numpy()
-    target = np.array(target)
-    result = target+num
-    return result    
-"""
+def get_targetstart_num(
+    name: str, target: list[int], gene_df: pd.DataFrame
+) -> list[int]:
+    data = gene_df[gene_df["name"] == name]
+    num = data["txStart"].astype(int).to_numpy()
+    targetable_seq_idex = np.array(target) + num
+    return targetable_seq_idex  # list かnp.arrayかは後の処理にあわせる
