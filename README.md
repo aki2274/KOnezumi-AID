@@ -11,7 +11,7 @@ https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/
 https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/
 )
 #### Use as pandas.DataFrame in this code
-DataFrame refFlat has 11 column.
+DataFrame refFlat has 11 columns.
 - string  geneName;           "Name of gene as it appears in Genome Browser." 
 - string  name;               "Name of gene" 
 - string  chrom;              "Chromosome name" 
