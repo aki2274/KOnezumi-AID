@@ -103,7 +103,7 @@ def get_cdsseq(
         cds_end = exon_seq[:-end_index]
 
     if startcodon_exonindex == 0:
-        start_index = ds.cdsStart - ds.txStart  # exon_start_list[0]の意味のはず
+        start_index = ds.cdsStart - ds.exon_start_list[0]
         cds_seq = cds_end[start_index:]
     else:
         start_index = ds.cdsStart - ds.exon_start_list[startcodon_exonindex]
