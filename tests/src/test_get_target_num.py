@@ -1,5 +1,8 @@
 import pytest
-from src.get_guiderna_seq import get_index_of_ct_target_seq, get_index_of_ga_target_seq
+from src.get_guiderna_index import (
+    get_index_of_ct_target_seq,
+    get_index_of_ga_target_seq,
+)
 
 
 #################################
