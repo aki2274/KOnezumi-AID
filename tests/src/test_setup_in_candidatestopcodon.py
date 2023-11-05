@@ -1,5 +1,6 @@
 import pytest
 import pandas as pd
+from dataclasses import dataclass
 from src.get_candidate_stopcodon_index import setup
 
 # Make test data
@@ -42,24 +43,40 @@ test_seq = [
     {"t1::1:0-100": "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN"}
 ]  # dict key is "{transcripts_name}::{chrom}:{txStart}-{txEnd}". Value is orf_seq.
 
+
 # setup module return DataClass
-expected = [
-    {
-        "orf_seq": "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN",
-        "data": test_df[test_df["name"] == "t1"],
-        "txStart": 0,
-        "txEnd": 30,
-        "cdsStart": 10,
-        "cdsEnd": 25,
-        "exonCount": 3,
-        "exon_start_list": [0, 5, 15],
-        "exon_end_list": [3, 13, 29],
-    }
-]
+@dataclass
+class expected_dataclass:
+    orf_seq: str
+    data: pd.DataFrame
+    txStart: int
+    txend: int
+    cdsStart: int
+    cdsEnd: int
+    exonCount: int
+    exon_start_list: list[int]
+    exon_end_list: list[int]
+
+
+expected_return = expected_dataclass(
+    "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN",
+    test_df[test_df["name"] == "t1"],
+    0,
+    30,
+    10,
+    25,
+    3,
+    [0, 5, 15],
+    [3, 13, 29],
+)
+expected = [expected_return]
 
 
 @pytest.mark.parametrize(
-    "transcripts_name,gene_df,gene_seq_data,expected",
+    "transcripts_name",
+    "gene_df",
+    "gene_seq_data",
+    "expected",
     zip(test_name, [test_df], test_seq, expected),
 )
 def test_setup_data(transcripts_name, gene_df, gene_seq_data, expected):
