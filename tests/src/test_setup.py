@@ -1,47 +1,22 @@
+import os
 import pytest
 import pandas as pd
 from dataclasses import dataclass
-from src.get_candidate_stopcodon_index import setup
+from src.set_gene_dataframe import setup
 
 # Make test data
 # txStart とexonStart[0]は一致している必要がある
-# test_df = pd.read_csv("test/data/test_genedata.csv")
-gene_data = [
-    [
-        "A",
-        "t1",
-        "1",
-        "+",
-        "0",
-        "30",
-        "10",
-        "25",
-        "3",
-        "0,5,15",
-        "3,13,29",
-    ]
-]
+test_data_path = os.path.join(
+    os.path.dirname(__file__), "..", "data", "test_genedata.csv"
+)
+test_df = pd.read_csv(test_data_path)
 
-col_names = [
-    "geneName",
-    "name",
-    "chrom",
-    "strand",
-    "txStart",
-    "txEnd",
-    "cdsStart",
-    "cdsEnd",
-    "exonCount",
-    "exonStarts",
-    "exonEnds",
-]
-test_df = pd.DataFrame(gene_data, columns=col_names)
 
 test_name = ["t1"]  # test_df["name"]
 
-test_seq = [
-    {"t1::1:0-100": "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN"}
-]  # dict key is "{transcripts_name}::{chrom}:{txStart}-{txEnd}". Value is orf_seq.
+test_seq = {
+    "t1::chr1:0-30": "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN"
+}  # dict key is "{transcripts_name}::{chrom}:{txStart}-{txEnd}". Value is orf_seq.
 
 
 # setup module return DataClass
