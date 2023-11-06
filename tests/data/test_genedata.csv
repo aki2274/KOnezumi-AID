@@ -1,2 +1,2 @@
 ,geneName,name,chrom,strand,txStart,txEnd,cdsStart,cdsEnd,exonCount,exonStarts,exonEnds
-0,"A", "t1", "1", "+", "0", "30", "10", "25", "3", "0,5,15", "3,13,29",
+0,A,t1,chr1,+,0,30,10,25,3,"0,5,15","3,13,29"
