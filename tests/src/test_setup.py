@@ -2,7 +2,7 @@ import os
 import pytest
 import pandas as pd
 from dataclasses import dataclass
-from src.set_gene_dataframe import setup
+from src import set_gene_dataframe as sgd
 
 # Make test data
 # txStart とexonStart[0]は一致している必要がある
@@ -14,9 +14,9 @@ test_df = pd.read_csv(test_data_path)
 
 test_name = ["t1"]  # test_df["name"]
 
-test_seq = {
-    "t1::chr1:0-30": "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN"
-}  # dict key is "{transcripts_name}::{chrom}:{txStart}-{txEnd}". Value is orf_seq.
+test_seq = [
+    {"t1::chr1:0-30": "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN"}
+]  # dict key is "{transcripts_name}::{chrom}:{txStart}-{txEnd}". Value is orf_seq.
 
 
 # setup module return DataClass
@@ -35,7 +35,7 @@ class expected_dataclass:
 
 expected_return = expected_dataclass(
     "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN",
-    test_df[test_df["name"] == "t1"],
+    test_df[test_df["name"] == "t1"].reset_index(),
     0,
     30,
     10,
@@ -48,11 +48,8 @@ expected = [expected_return]
 
 
 @pytest.mark.parametrize(
-    "transcripts_name",
-    "gene_df",
-    "gene_seq_data",
-    "expected",
+    "transcripts_name,gene_df,gene_seq_data,expected",
     zip(test_name, [test_df], test_seq, expected),
 )
 def test_setup_data(transcripts_name, gene_df, gene_seq_data, expected):
-    assert setup(transcripts_name, gene_df, gene_seq_data) == expected
+    assert sgd.setup(transcripts_name, gene_df, gene_seq_data) == expected
