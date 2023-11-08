@@ -3,7 +3,7 @@ data/*
 tmp*
 
 #NoteBook file
-*/.ipynb
+*.ipynb
 
 # vscode
 .vscode/*
