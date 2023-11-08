@@ -19,11 +19,11 @@ test_data_path = os.path.join(
     os.path.dirname(__file__), "..", "data", "test_genedata.csv"
 )
 test_df = pd.read_csv(test_data_path)
-test_seq = {"t1::chr1:0-30": "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN"}
+test_seq = {"t1::chr1:0-30": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN"}
 test_gene_dataclass = set_dataclass("t1", test_df, test_seq)
 
 #####
-expected_return = ["NNNNNNNNATGNNNNNNNNNNNNNN"]  # NNN + NNNNNATG + NNNNNNNNNNNNNN
+expected_return = ["NNNNNNNNATGANNNNNNNNNNNNN"]  # NNN + NNNNNATG + NNNNNNNNNNNNNNN
 
 
 @pytest.mark.parametrize(
@@ -58,12 +58,12 @@ def test_get_stopcodon_exonindex(test_dataclass, expected):
 
 
 #####
-exon_seq = ["NNNNNNNNATGNNNNNNNNNNNNNN"]
+exon_seq = ["NNNNNNNNATGANNNNNNNNNNNNN"]
 startcodon_exonindex = [1]
 endcodon_exonindex = [2]
-expected_return = ["ATGNNNNNNNNNNNN"]
+expected_return = ["ATGANNNNNNNNN"]  # ATG +ANNNNNNNNN
 
-"""
+
 @pytest.mark.parametrize(
     "test_dataclass,exon_seq,start_index,end_index,expected",
     zip(
@@ -76,4 +76,3 @@ expected_return = ["ATGNNNNNNNNNNNN"]
 )
 def test_get_cdsseq(test_dataclass, exon_seq, start_index, end_index, expected):
     assert get_cdsseq(test_dataclass, exon_seq, start_index, end_index) == expected
-"""
