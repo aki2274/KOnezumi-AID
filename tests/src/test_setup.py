@@ -1,8 +1,8 @@
 import os
 import pytest
 import pandas as pd
-from dataclasses import dataclass
-from src import set_gene_dataframe as sgd
+from dataclasses import dataclass, asdict
+from src.set_gene_dataclass import set_dataclass
 
 # Make test data
 # txStart とexonStart[0]は一致している必要がある
@@ -21,9 +21,8 @@ test_seq = [
 
 # setup module return DataClass
 @dataclass
-class expected_dataclass:
+class DataClass:
     orf_seq: str
-    data: pd.DataFrame
     txStart: int
     txend: int
     cdsStart: int
@@ -33,9 +32,8 @@ class expected_dataclass:
     exon_end_list: list[int]
 
 
-expected_return = expected_dataclass(
+expected_return = DataClass(
     "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN",
-    test_df[test_df["name"] == "t1"].reset_index(),
     0,
     30,
     10,
@@ -52,4 +50,6 @@ expected = [expected_return]
     zip(test_name, [test_df], test_seq, expected),
 )
 def test_setup_data(transcripts_name, gene_df, gene_seq_data, expected):
-    assert sgd.setup(transcripts_name, gene_df, gene_seq_data) == expected
+    assert asdict(set_dataclass(transcripts_name, gene_df, gene_seq_data)) == asdict(
+        expected
+    )
