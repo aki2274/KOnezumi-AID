@@ -5,7 +5,6 @@ from dataclasses import dataclass
 @dataclass
 class DataClass:
     orf_seq: str
-    data: pd.DataFrame
     txStart: int
     txend: int
     cdsStart: int
@@ -15,7 +14,7 @@ class DataClass:
     exon_end_list: list[int]
 
 
-def setup(
+def set_dataclass(
     transcripts_name: str, gene_df: pd.DataFrame, gene_seq_data: dict
 ) -> DataClass:
     # make dataset from refFlat.txt(gene_df) data
@@ -36,7 +35,6 @@ def setup(
     exon_end_list = [int(x) for x in list(end.split(","))]
     set_data = DataClass(
         orf_seq,
-        data,
         txStart,
         txEnd,
         cdsStart,
