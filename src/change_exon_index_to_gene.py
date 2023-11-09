@@ -23,7 +23,9 @@ class DataClass:
 
 
 # 　エクソンごとの範囲を取得、candidateが何番目のエクソンか知る、
-def get_range_of_exon(ds: DataClass, cdsStart_exon_index: int) -> int:
+def get_range_of_exon(
+    ds: DataClass, cdsStart_exon_index: int
+) -> int:  # cdsStart_exon_index can get 'get_startcodon_exonindex'function
     # エクソンごとの範囲を取得
     exon_range_list = []
     num = 0
