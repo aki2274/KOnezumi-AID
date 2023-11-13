@@ -5,7 +5,7 @@ import re
 def get_revcomp(seq: str) -> str:
     """Reverse complement a DNA sequence."""
     complement = {"A": "T", "C": "G", "G": "C", "T": "A", "N": "N"}
-    return "".join(complement[nt] for nt in seq[::-1])
+    return "".join(complement[nt.upper()] for nt in seq[::-1])
 
 
 def find_ct_target_seq(seq: str) -> list[str]:
