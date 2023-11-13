@@ -23,7 +23,7 @@ def set_dataclass(
     chrom = str(data.loc[0, "chrom"])
     txStart = str(data.loc[0, "txStart"])
     txEnd = str(data.loc[0, "txEnd"])
-    query = f"{transcripts_name}::{chrom}:{txStart}-{txEnd}"
+    query = f"{transcripts_name}::{chrom}:{txStart}-{txEnd}"  # 重複がないことを確認する必要がある。
     txStart = int(data["txStart"].iloc[0])
     txEnd = int(data["txEnd"].iloc[0])
     orf_seq = gene_seq_data[query]
