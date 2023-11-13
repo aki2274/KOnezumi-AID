@@ -3,7 +3,7 @@ import re
 import pandas as pd
 
 
-def read_fasta(path: str) -> str:
+def read_fasta(path: str) -> dict[str, str]:
     sequences = {}
     seq_id = None
     current_seq = ""
