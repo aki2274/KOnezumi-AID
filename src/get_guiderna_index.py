@@ -24,6 +24,6 @@ def get_index_of_ga_target_seq(seq: str, targets: list[str]) -> list[int]:
             rev_match = match.group()[::-1]
             add_num = re.search("GGT", rev_match).start()
             # Get the index of the candidate gRNA end position in the ORF and back to "T" in "TGG"
-            positions.append(match.start() + len(rev_match) - 3 - add_num)
+            positions.append(match.start() + len(match.group()) - 3 - add_num)
     positions = list(dict.fromkeys(positions))
     return positions
