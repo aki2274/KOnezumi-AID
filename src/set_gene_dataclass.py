@@ -1,5 +1,4 @@
 from __future__ import annotations
-import pandas as pd
 from dataclasses import dataclass
 
 
@@ -16,22 +15,26 @@ class DataClass:
 
 
 def set_dataclass(
-    transcripts_name: str, gene_df: pd.DataFrame, gene_seq_data: dict
+    transcript_name: str, refflat_data: list[dict], gene_seq_data: dict
 ) -> DataClass:
-    # make dataset from refFlat.txt(gene_df) data
-    data = gene_df[gene_df["name"] == transcripts_name].reset_index()
-    chrom = str(data.loc[0, "chrom"])
-    txStart = str(data.loc[0, "txStart"])
-    txEnd = str(data.loc[0, "txEnd"])
-    query = f"{transcripts_name}::{chrom}:{txStart}-{txEnd}"  # 重複がないことを確認する必要がある。
-    txStart = int(data["txStart"].iloc[0])
-    txEnd = int(data["txEnd"].iloc[0])
+    # make dataset from refFlat.txt(exported csv) data
+    data_filtered_transcript = [
+        gene_data for gene_data in refflat_data if gene_data["name"] == transcript_name
+    ][
+        0
+    ]  # 転写産物名に重複がないことを確認する
+    chrom = str(data_filtered_transcript["chrom"])
+    txStart = str(data_filtered_transcript["txStart"])
+    txEnd = str(data_filtered_transcript["txEnd"])
+    query = f"{transcript_name}::{chrom}:{txStart}-{txEnd}"  # 重複がないことを確認する必要がある。
+    txStart = int(data_filtered_transcript["txStart"])
+    txEnd = int(data_filtered_transcript["txEnd"])
     orf_seq = gene_seq_data[query]
-    cdsStart = int(data["cdsStart"].iloc[0])
-    cdsEnd = int(data["cdsEnd"].iloc[0])
-    exonCount = int(data["exonCount"].iloc[0])
-    start = data.at[0, "exonStarts"]
-    end = data.at[0, "exonEnds"]
+    cdsStart = int(data_filtered_transcript["cdsStart"])
+    cdsEnd = int(data_filtered_transcript["cdsEnd"])
+    exonCount = int(data_filtered_transcript["exonCount"])
+    start = data_filtered_transcript["exonStarts"]
+    end = data_filtered_transcript["exonEnds"]
     exon_start_list = [int(x) for x in list(start.split(","))]
     exon_end_list = [int(x) for x in list(end.split(","))]
     set_data = DataClass(
