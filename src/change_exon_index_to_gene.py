@@ -1,13 +1,11 @@
 from __future__ import annotations
 from dataclasses import dataclass
 import numpy as np
-import pandas as pd
 
 
 @dataclass
-class DataClass:
+class GeneData:
     orf_seq: str
-    data: pd.DataFrame
     txStart: int
     txend: int
     cdsStart: int
@@ -24,7 +22,7 @@ class DataClass:
 
 # 　エクソンごとの範囲を取得、candidateが何番目のエクソンか知る、
 def get_range_of_exon(
-    ds: DataClass, cdsStart_exon_index: int
+    ds: GeneData, cdsStart_exon_index: int
 ) -> int:  # cdsStart_exon_index can get 'get_startcodon_exonindex'function
     # エクソンごとの範囲を取得
     exon_range_list = []
