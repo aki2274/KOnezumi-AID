@@ -2,31 +2,26 @@ from __future__ import annotations
 import csv
 
 
-# import ORF data each gene.
-def read_fasta(path: str) -> dict[str, str]:
-    sequences = {}
-    seq_id = None
-    current_seq = ""
-    with open(path, "r") as file:
+def read_fasta(path_fasta: str) -> dict[str, str]:
+    fasta = {}
+    identifier = None
+    sequence = ""
+
+    with open(path_fasta, "r") as file:
         for line in file:
             line = line.strip()
             if line.startswith(">"):
-                if seq_id is not None:
-                    sequences[seq_id] = current_seq
-                    current_seq = ""
-                seq_id = line[1:]
+                if identifier is not None:
+                    fasta[identifier] = sequence
+                identifier = line.lstrip(">")
+                sequence = ""
             else:
-                current_seq += line
-        if seq_id is not None and current_seq != "":
-            sequences[seq_id] = current_seq
-    return sequences
+                sequence += line
+        fasta[identifier] = sequence
+
+    return fasta
 
 
-# import anotation data each transcription
-def read_csv(path: str) -> list[dict[str, str]]:
-    result = []
-    with open(path, newline="") as csvfile:
-        reader = csv.DictReader(csvfile, delimiter=",")
-        for row in reader:
-            result.append(row)
-    return result
+def read_csv(path_csv: str) -> list[dict[str, str]]:
+    with open(path_csv, newline="") as csvfile:
+        return [row for row in csv.DictReader(csvfile, delimiter=",")]
