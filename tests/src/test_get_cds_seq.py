@@ -2,8 +2,8 @@ from __future__ import annotations
 import os
 import pytest
 import numpy as np
-import pandas as pd
 from dataclasses import dataclass
+from src.import_dataset import read_csv
 from src.set_gene_dataclass import set_dataclass
 from src.get_candidate_stopcodon_index import (
     get_exon_seq,
@@ -18,7 +18,7 @@ from src.get_candidate_stopcodon_index import (
 test_data_path = os.path.join(
     os.path.dirname(__file__), "..", "data", "test_genedata.csv"
 )
-test_df = pd.read_csv(test_data_path)
+test_df = read_csv(test_data_path)
 test_seq = {"t1::chr1:0-30": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN"}
 test_gene_dataclass = set_dataclass("t1", test_df, test_seq)
 
