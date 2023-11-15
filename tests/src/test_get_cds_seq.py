@@ -7,8 +7,8 @@ from src.import_dataset import read_csv
 from src.set_gene_dataclass import set_dataclass
 from src.get_candidate_stopcodon_index import (
     get_exon_seq,
-    get_startcodon_exonindex,
-    get_stopcodon_exonindex,
+    get_startcodon_exon_num,
+    get_stopcodon_exon_num,
     get_cdsseq,
 )
 
@@ -42,8 +42,8 @@ expected_return = [1]
     "test_dataclass,expected",
     zip([test_gene_dataclass], expected_return),
 )
-def test_get_startcodon_exonindex(test_dataclass, expected):
-    assert get_startcodon_exonindex(test_dataclass) == expected
+def test_get_startcodon_exon_num(test_dataclass, expected):
+    assert get_startcodon_exon_num(test_dataclass) == expected
 
 
 #####
@@ -53,8 +53,8 @@ expected_return = [2]
 @pytest.mark.parametrize(
     "test_dataclass,expected", zip([test_gene_dataclass], expected_return)
 )
-def test_get_stopcodon_exonindex(test_dataclass, expected):
-    assert get_stopcodon_exonindex(test_dataclass) == expected
+def test_get_stopcodon_exon_num(test_dataclass, expected):
+    assert get_stopcodon_exon_num(test_dataclass) == expected
 
 
 #####
