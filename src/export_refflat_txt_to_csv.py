@@ -30,5 +30,9 @@ def export_genedata_csv(path_refFlat: str):
         "exonEnds",
     ]
     results = [dict(zip(key_names, value)) for value in values_refflat]
-    export_data = pd.DataFrame(results)
-    export_data.to_csv("genedata.csv", index=False)
+    df = pd.DataFrame(results)
+    # Remove duplicates of transcriptions
+    duplicates_df = df[df.duplicated("name", keep=False)]
+    unique_df = df.drop_duplicates("name", keep=False)
+    export_data = unique_df[~unique_df["geneName"].isin(duplicates_df["geneName"])]
+    export_data.to_csv("refFlat_genedata.csv", index=False)
