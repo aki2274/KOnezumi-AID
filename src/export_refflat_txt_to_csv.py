@@ -1,20 +1,20 @@
 from __future__ import annotations
-import re
 import pandas as pd
 
 
-def read_refFlat(path: str) -> list[str]:
-    with open(path, "r", encoding="utf-8") as file:
-        lines = file.readlines()
+
+def read_refFlat(path_refFlat: str) -> list[str]:
     result = []
-    for line in lines:
-        line = re.split("\s+", line)
-        contents = [element.rstrip(",") for element in line[:-1]]
-        result.append(contents)
+    with open(path_refFlat, "r") as file:
+        for line in file:
+            line = line.strip().split("\t")
+            # Remove the trailing comma
+            line = [element.strip(",") for element in line]
+            result.append(line)
     return result
 
 
-def export_genedata_csv(path_refFlat: str):
+def export_genedata_csv(path_refFlat: str, path_output: str = "refFlat_genedata.csv") -> None:
     values_refflat = read_refFlat(path_refFlat)
     key_names = [
         "geneName",
@@ -35,4 +35,4 @@ def export_genedata_csv(path_refFlat: str):
     duplicates_df = df[df.duplicated("name", keep=False)]
     unique_df = df.drop_duplicates("name", keep=False)
     export_data = unique_df[~unique_df["geneName"].isin(duplicates_df["geneName"])]
-    export_data.to_csv("refFlat_genedata.csv", index=False)
+    export_data.to_csv(path_output, index=False)
