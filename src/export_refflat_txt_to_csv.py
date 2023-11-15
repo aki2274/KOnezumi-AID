@@ -2,7 +2,6 @@ from __future__ import annotations
 import pandas as pd
 
 
-
 def read_refFlat(path_refFlat: str) -> list[str]:
     result = []
     with open(path_refFlat, "r") as file:
@@ -14,7 +13,9 @@ def read_refFlat(path_refFlat: str) -> list[str]:
     return result
 
 
-def export_genedata_csv(path_refFlat: str, path_output: str = "refFlat_genedata.csv") -> None:
+def export_genedata_csv(
+    path_refFlat: str, path_output: str = "refFlat_genedata.csv"
+) -> None:
     values_refflat = read_refFlat(path_refFlat)
     key_names = [
         "geneName",
