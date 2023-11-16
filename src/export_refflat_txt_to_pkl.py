@@ -13,8 +13,8 @@ def read_refFlat(path_refFlat: str) -> list[str]:
     return result
 
 
-def export_genedata_csv(
-    path_refFlat: str, path_output: str = "refFlat_genedata.csv"
+def export_genedata_pkl(
+    path_refFlat: str, path_output: str = "refFlat_genedata.pkl"
 ) -> None:
     values_refflat = read_refFlat(path_refFlat)
     key_names = [
@@ -36,4 +36,4 @@ def export_genedata_csv(
     duplicates_df = df[df.duplicated("name", keep=False)]
     unique_df = df.drop_duplicates("name", keep=False)
     export_data = unique_df[~unique_df["geneName"].isin(duplicates_df["geneName"])]
-    export_data.to_csv(path_output, index=False)
+    export_data.to_pickle(path_output)
