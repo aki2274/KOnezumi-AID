@@ -11,7 +11,7 @@ from src.change_exon_index_to_gene import (
 )
 
 test_data_path = os.path.join(
-    os.path.dirname(__file__), "..", "data", "test_genedata.csv"
+    os.path.dirname(__file__), "..", "data", "test_genedata.pkl"
 )
 test_df = read_pkl(test_data_path)
 test_seq = {"t1::chr1:0-30": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN"}

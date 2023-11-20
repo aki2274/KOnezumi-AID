@@ -2,15 +2,15 @@ from __future__ import annotations
 import os
 import pytest
 from dataclasses import dataclass, asdict
-from src.import_dataset import read_csv
+from src.import_dataset import read_pkl
 from src.set_gene_dataclass import set_dataclass
 
 # Make test data
 # txStart とexonStart[0]は一致している必要がある
 test_data_path = os.path.join(
-    os.path.dirname(__file__), "..", "data", "test_genedata.csv"
+    os.path.dirname(__file__), "..", "data", "test_genedata.pkl"
 )
-input_genedata = read_csv(test_data_path)
+input_genedata = read_pkl(test_data_path)
 
 
 input_transcript_name = ["t1"]  # test_df["name"]

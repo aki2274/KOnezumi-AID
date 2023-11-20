@@ -3,7 +3,7 @@ import os
 import pytest
 import numpy as np
 from dataclasses import dataclass
-from src.import_dataset import read_csv
+from src.import_dataset import read_pkl
 from src.set_gene_dataclass import set_dataclass
 from src.get_candidate_stopcodon_index import (
     get_exon_seq,
@@ -16,11 +16,11 @@ from src.get_candidate_stopcodon_index import (
 # test dataset
 #####
 test_data_path = os.path.join(
-    os.path.dirname(__file__), "..", "data", "test_genedata.csv"
+    os.path.dirname(__file__), "..", "data", "test_genedata.pkl"
 )
-test_df = read_csv(test_data_path)
-test_seq = {"t1::chr1:0-30": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN"}
-test_gene_dataclass = set_dataclass("t1", test_df, test_seq)
+test_list_dict = read_pkl(test_data_path)
+orf_seq_dict = {"t1::chr1:0-30": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN"}
+test_gene_dataclass = set_dataclass("t1", test_list_dict, orf_seq_dict)
 
 #####
 expected_return = ["NNNNNNNNATGANNNNNNNNNNNNN"]  # NNN + NNNNNATG + NNNNNNNNNNNNNNN
