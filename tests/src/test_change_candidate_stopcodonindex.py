@@ -2,7 +2,7 @@ from __future__ import annotations
 import os
 import pytest
 from src.set_gene_dataclass import set_dataclass
-from src.import_dataset import read_csv
+from src.import_dataset import read_pkl
 from src.get_candidate_stopcodon_index import get_startcodon_exon_num
 from src.change_exon_index_to_gene import (
     get_range_of_exon,
@@ -13,7 +13,7 @@ from src.change_exon_index_to_gene import (
 test_data_path = os.path.join(
     os.path.dirname(__file__), "..", "data", "test_genedata.csv"
 )
-test_df = read_csv(test_data_path)
+test_df = read_pkl(test_data_path)
 test_seq = {"t1::chr1:0-30": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN"}
 test_gene_dataclass = set_dataclass("t1", test_df, test_seq)
 
