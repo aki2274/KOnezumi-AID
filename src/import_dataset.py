@@ -1,5 +1,5 @@
 from __future__ import annotations
-import csv
+import pickle
 
 
 def read_fasta(path_fasta: str) -> dict[str, str]:
@@ -22,6 +22,6 @@ def read_fasta(path_fasta: str) -> dict[str, str]:
     return fasta
 
 
-def read_csv(path_csv: str) -> list[dict[str, str]]:
-    with open(path_csv, newline="") as csvfile:
-        return [row for row in csv.DictReader(csvfile, delimiter=",")]
+def read_pkl(path_pkl: str) -> list[dict[str, str]]:
+    with open(path_pkl, mode="rb") as pklfile:
+        return pickle.load(pklfile)
