@@ -1,7 +1,5 @@
 from __future__ import annotations
-import os
 import pytest
-import numpy as np
 from dataclasses import dataclass
 from src.set_gene_dataclass import set_dataclass
 from src.get_cds_seq import (
