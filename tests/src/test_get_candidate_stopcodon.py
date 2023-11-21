@@ -1,13 +1,13 @@
 from __future__ import annotations
 import pytest
-from src.get_candidate_stopcodon_index import get_candidate_stopcodon_index
+from src.find_candidate_stopcodon import get_candidate_stopcodon_index
 
 test_candidate_cds_seq = [
     "ATGCAANNN",
     "ATGCAGNNNNN",
     "ATGCGANNNNN",
     "ATGTGGNNNNN",
-    "ATGCAANNNNNNTGG",  #
+    "ATGCAANNNNNNTGG",  # multiple candidate stopcodon
 ]
 
 
@@ -22,7 +22,11 @@ def test_get_candidate_stopcodon_index(test_candidate_cds_seq, expected):
     assert get_candidate_stopcodon_index(test_candidate_cds_seq) == expected
 
 
-test_not_candidate_cds_seq = ["ATGNCAANNN", "ATGNNCAANNN", "ATGNNNCGG"]
+test_not_candidate_cds_seq = [
+    "ATGNCAANNN",  # CAA is not a codon (mod3 = 1)
+    "ATGNNCAANNN",  # CAA is not a codon (mod3 != 2)
+    "ATGNNNCGG",  # CGG is not candidate stopcodon
+]
 
 
 expected = [[], [], []]
