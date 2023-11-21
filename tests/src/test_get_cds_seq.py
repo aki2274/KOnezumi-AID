@@ -4,7 +4,7 @@ import pytest
 import numpy as np
 from dataclasses import dataclass
 from src.set_gene_dataclass import set_dataclass
-from src.get_candidate_stopcodon_index import (
+from src.get_cds_seq import (
     get_exon_seq,
     get_startcodon_exon_num,
     get_stopcodon_exon_num,
