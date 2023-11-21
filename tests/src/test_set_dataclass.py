@@ -2,17 +2,26 @@ from __future__ import annotations
 import os
 import pytest
 from dataclasses import dataclass, asdict
-from src.import_dataset import read_pkl
 from src.set_gene_dataclass import set_dataclass
 
 # Make test data
 # txStart とexonStart[0]は一致している必要がある
-test_data_path = os.path.join(
-    os.path.dirname(__file__), "..", "data", "test_genedata.pkl"
-)
-input_genedata = read_pkl(test_data_path)
 
-
+input_genedata = [
+    {
+        "geneName": "A",
+        "name": "t1",
+        "chrom": "chr1",
+        "strand": "+",
+        "txStart": "0",
+        "txEnd": "30",
+        "cdsStart": "10",
+        "cdsEnd": "25",
+        "exonCount": "3",
+        "exonStarts": "0,5,15",
+        "exonEnds": "3,13,29",
+    }
+]
 input_transcript_name = ["t1"]  # test_df["name"]
 
 input_seq = [
