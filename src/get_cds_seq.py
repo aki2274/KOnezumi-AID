@@ -13,12 +13,6 @@ class GeneData:
     exon_start_list: list[int]
     exon_end_list: list[int]
 
-
-#####
-# Seaech candedate stopcodon index
-#####
-
-
 def get_exon_seq(ds: GeneData) -> str:
     # make seq spliced by exons (NOT cds)
     exon_seq_list = []
