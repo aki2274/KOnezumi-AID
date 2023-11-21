@@ -63,7 +63,9 @@ def get_cdsseq(
                 ds.exon_end_list[endcodon_exon_num - s]
                 - ds.exon_start_list[endcodon_exon_num - s]
             )
-        exon_seq_to_stopcodon = exon_seq[:-stopcodon_index]
+        exon_seq_to_stopcodon = exon_seq[
+            :-stopcodon_index
+        ]  # get seq from exon_seq to stopcodon
 
     startcodon_index = ds.cdsStart - ds.exon_start_list[startcodon_exon_num]
     if startcodon_exon_num == 0:  # if startcodon is in the first exon
