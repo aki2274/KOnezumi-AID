@@ -18,6 +18,7 @@ def get_index_of_ct_target_seq(orf_seq: str, targets: list[str]) -> list[int]:
 
 def get_index_of_ga_target_seq(orf_seq: str, targets: list[str]) -> list[int]:
     # Get the index of "T" in "TGG" in candidate gRNA (the index on the ORF)
+    # To reduce the work of comparison with candidate stop codons (TGG), obtain the index of "T".
     positions = []
     for target in targets:
         for match in re.finditer(target, orf_seq):
