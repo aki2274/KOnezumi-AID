@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pytest
 from src.get_guiderna_seq import find_ct_target_seq, find_ga_target_seq
 
