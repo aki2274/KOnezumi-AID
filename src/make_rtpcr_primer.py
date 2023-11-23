@@ -20,9 +20,7 @@ def export_candidate_primer(exon_seq: str) -> dict:
             "PRIMER_OPT_GC_PERCENT": 50.0,
             "PRIMER_MAX_GC": 60.0,
             "PRIMER_MAX_SELF_ANY": 8,
-            "PRIMER_PAIR_MAX_COMPL_ANY": 8,  # プライマー間での3 base以上の相補的配列をここで考慮する？
             "PRIMER_MAX_SELF_END": 3,
-            "PRIMER_MAX_SELF_END ": 3,  # これでいい？
             "PRIMER_MAX_POLY_X": 4,
             "PRIMER_WT_TM_GT": 0.5,
             "PRIMER_WT_TM_LT": 0.5,
