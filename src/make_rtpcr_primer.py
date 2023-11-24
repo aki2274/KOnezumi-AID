@@ -8,6 +8,7 @@ def export_candidate_primer(exon_seq: str) -> dict:
             "SEQUENCE_TEMPLATE": exon_seq,
         },
         global_args={
+            "PRIMER_NUM_RETURN": 30,
             "PRIMER_PRODUCT_SIZE_RANGE": [[80, 150], [150, 300]],
             "PRIMER_MIN_SIZE": 17,
             "PRIMER_OPT_SIZE": 20,
