@@ -1,5 +1,5 @@
 import pytest
-from src.get_guiderna_seq import get_revcomp
+from src.get_reverse_complement import get_revcomp
 
 # small letter means low complexity region
 input_seq = ["ATGCAAATTTGGGCCC", "NNNNNNNNNN", "ATCGN", "atgc", "nnn", "ATGCatgc"]
