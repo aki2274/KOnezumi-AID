@@ -36,26 +36,19 @@ def export_candidate_primer(exon_seq: str) -> dict:
     return result
 
 
-# select primers from the result of export_candidate_primer
-
-
-def get_left_candidate_primer(
-    primer_result: dict,
-) -> list[str]:
-    # get the left primer sequence from primer_result
-    return [primer_data["SEQUENCE"] for primer_data in primer_result["PRIMER_LEFT"]]
-
-
-def get_right_candidate_primer(
-    primer_result: dict,
-) -> list[str]:
-    # get the right primer sequence from primer_result
-    return [primer_data["SEQUENCE"] for primer_data in primer_result["PRIMER_RIGHT"]]
-
-
 def get_candidate_primer_pairs(
-    left_candidate_primer: list[str],
-    right_candidate_primer: list[str],
-) -> list[str]:
-    # get the primer pairs from primer_result
-    return list(zip(left_candidate_primer, right_candidate_primer))
+    primer_result: dict,
+) -> list[dict]:
+    # get dict primer quality score and the primer pairs
+    # the primer quality score is will change in src/select_good_primers.py
+    return [
+        {
+            "primer_score": 999,
+            "intron_len": 0,
+            "left_primer": left_primer_data["SEQUENCE"],
+            "right_primer": right_primer_data["SEQUENCE"],
+        }
+        for (left_primer_data, right_primer_data) in zip(
+            primer_result["PRIMER_LEFT"], primer_result["PRIMER_RIGHT"]
+        )
+    ]
