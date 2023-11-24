@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 def get_primer_exon_num(
     primer_index_list: list[int],  # マッパーで得られるプライマーの位置なので型が違うかも。
     exon_range: list[list[int, int]],
