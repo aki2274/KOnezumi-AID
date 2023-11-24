@@ -3,6 +3,7 @@ import primer3
 
 
 def export_candidate_primer(exon_seq: str) -> dict:
+    # the result is a dict of primer3 output.
     result = primer3.bindings.design_primers(
         seq_args={
             "SEQUENCE_TEMPLATE": exon_seq,
@@ -32,3 +33,29 @@ def export_candidate_primer(exon_seq: str) -> dict:
             "PRIMER_PAIR_WT_COMPL_END": 1,
         },
     )
+    return result
+
+
+# select primers from the result of export_candidate_primer
+
+
+def get_left_candidate_primer(
+    primer_result: dict,
+) -> list[str]:
+    # get the left primer sequence from primer_result
+    return [primer_data["SEQUENCE"] for primer_data in primer_result["PRIMER_LEFT"]]
+
+
+def get_right_candidate_primer(
+    primer_result: dict,
+) -> list[str]:
+    # get the right primer sequence from primer_result
+    return [primer_data["SEQUENCE"] for primer_data in primer_result["PRIMER_RIGHT"]]
+
+
+def get_candidate_primer_pairs(
+    left_candidate_primer: list[str],
+    right_candidate_primer: list[str],
+) -> list[str]:
+    # get the primer pairs from primer_result
+    return list(zip(left_candidate_primer, right_candidate_primer))
