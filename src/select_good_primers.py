@@ -15,7 +15,7 @@ def select_exon_juncton_primers(
     return primer_quality_score
 
 
-def select_exon_juncton_primers(
+def label_primers_quality(
     primer_quality_score: list[int],
     primer_pair_intron_len: list[int],
 ) -> list[str]:
