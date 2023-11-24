@@ -16,25 +16,26 @@ class GeneData:
 
 def check_exon_junction(
     candidate_primer_pairs: list[dict],
-    primer_index_list: list[int],  # マッパーで得られるプライマーの位置なので型が違うかも。
+    left_primer_index_list: list[int],  # マッパーで得られるプライマーの位置なので型が違うかも。
+    right_primer_index_list: list[int],
     exon_range: list[int],
 ) -> bool:
     # primer_index_list is the index in exon. if return True, then the primer is in exon junction.
     result = []
-    for left_primer, right_primer in zip(
-        candidate_primer_pairs["left_primer"], candidate_primer_pairs["right_primer"]
+    for primer_data, primer_num in zip(
+        candidate_primer_pairs, range(len(candidate_primer_pairs))
     ):
-        left_primer_longth = len(left_primer)
-        right_primer_longth = len(right_primer)
+        left_primer_longth = len(primer_data["left_primer"])
+        right_primer_longth = len(primer_data["right_primer"])
         bool_list = []
-        # check if the left primer is in any exon junction
+        # check if the primer is in any exon junction
         for exon_num in range(len(exon_range)):
             if exon_range[exon_num][1] in range(
-                primer_index_list[exon_num],
-                primer_index_list[exon_num] + left_primer_longth + 1,
+                left_primer_index_list[primer_num],
+                left_primer_index_list[primer_num] + left_primer_longth + 1,
             ) or exon_range[exon_num][1] in range(
-                primer_index_list[exon_num],
-                primer_index_list[exon_num] + right_primer_longth + 1,
+                right_primer_index_list[primer_num],
+                right_primer_index_list[primer_num] + right_primer_longth + 1,
             ):
                 bool_list.append(True)
             else:
