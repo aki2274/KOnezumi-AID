@@ -16,17 +16,17 @@ candidate_primer_info = [
         },
         {
             "primer_score": 999,
-            "intron_len": 0,
+            "intron_len": 1000,
             "left_primer": "agcaaaagtgtgaagcgccc",
             "right_primer": "atctcgatcaccacgggctg",
             "left_primer_start": 10,
             "ringt_primer_start": 114,
             "left_primer_exon_num": 0,
-            "right_primer_exon_num": 0,
+            "right_primer_exon_num": 2,
         },
         {
             "primer_score": 999,
-            "intron_len": 0,
+            "intron_len": 500,
             "left_primer": "agcaaaagtgtgaagcgccc",
             "right_primer": "atctcgatcaccacgggctg",
             "left_primer_start": 27,
@@ -42,7 +42,7 @@ candidate_primer_info = [
             "left_primer_start": 27,
             "ringt_primer_start": 114,
             "left_primer_exon_num": 0,
-            "right_primer_exon_num": 2,
+            "right_primer_exon_num": 0,
         },
     ]
 ]
@@ -62,18 +62,18 @@ expected_output = [
             "right_primer_exon_num": 0,
         },
         {
-            "primer_score": 999,
-            "intron_len": 0,
+            "primer_score": 2,
+            "intron_len": 1000,
             "left_primer": "agcaaaagtgtgaagcgccc",
             "right_primer": "atctcgatcaccacgggctg",
             "left_primer_start": 10,
             "ringt_primer_start": 114,
             "left_primer_exon_num": 0,
-            "right_primer_exon_num": 0,
+            "right_primer_exon_num": 2,
         },
         {
-            "primer_score": 999,
-            "intron_len": 0,
+            "primer_score": 3,
+            "intron_len": 500,
             "left_primer": "agcaaaagtgtgaagcgccc",
             "right_primer": "atctcgatcaccacgggctg",
             "left_primer_start": 27,
@@ -82,14 +82,14 @@ expected_output = [
             "right_primer_exon_num": 1,
         },
         {
-            "primer_score": 999,
+            "primer_score": 4,
             "intron_len": 0,
             "left_primer": "agcaaaagtgtgaagcgccc",
             "right_primer": "atctcgatcaccacgggctg",
             "left_primer_start": 27,
             "ringt_primer_start": 114,
             "left_primer_exon_num": 0,
-            "right_primer_exon_num": 2,
+            "right_primer_exon_num": 0,
         },
     ]
 ]
@@ -99,7 +99,5 @@ expected_output = [
     "candidate_primer_info,exon_junction_bool,expected",
     zip(candidate_primer_info, exon_junction_bools, expected_output),
 )
-def test_label_primers_quality(
-    self, candidate_primer_info, exon_junction_bool, expected
-):
+def test_label_primers_quality(candidate_primer_info, exon_junction_bool, expected):
     assert label_primers_quality(candidate_primer_info, exon_junction_bool) == expected
