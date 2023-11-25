@@ -1,5 +1,6 @@
 from __future__ import annotations
 import primer3
+from src.get_reverse_complement import get_revcomp
 
 
 def export_candidate_primer(exon_seq: str) -> dict:
@@ -37,18 +38,31 @@ def export_candidate_primer(exon_seq: str) -> dict:
 
 
 def get_candidate_primer_pairs(
+    exon_seq: str,
     primer_result: dict,
+    exon_range: list[list[int, int]],
 ) -> list[dict]:
     # get dict primer quality score and the primer pairs
     # the primer quality score is will change in src/select_good_primers.py
-    return [
+    candidate_primer_info = [
         {
             "primer_score": 999,
             "intron_len": 0,
             "left_primer": left_primer_data["SEQUENCE"],
             "right_primer": right_primer_data["SEQUENCE"],
+            "left_primer_start": exon_seq.find(left_primer_data["SEQUENCE"]),
+            "right_primer_start": exon_seq.find(
+                get_revcomp(right_primer_data["SEQUENCE"])
+            ),
         }
         for (left_primer_data, right_primer_data) in zip(
             primer_result["PRIMER_LEFT"], primer_result["PRIMER_RIGHT"]
         )
     ]
+    for primer in candidate_primer_info:
+        for s in range(len(exon_range)):
+            if exon_range[s][0] <= primer["left_primer_start"] <= exon_range[s][1]:
+                primer["left_primer_exon_num"] = s
+            if exon_range[s][0] <= primer["right_primer_start"] <= exon_range[s][1]:
+                primer["right_primer_exon_num"] = s
+    return candidate_primer_info
