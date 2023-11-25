@@ -18,13 +18,13 @@ def label_primers_quality(
         if primer_data["primer_score"] == 1:
             continue
 
-        elif primer_data["intron_len"] > 1000:
-            primer_data["primer_score"] = 1
+        elif primer_data["intron_len"] >= 1000:
+            primer_data["primer_score"] = 2
 
-        elif primer_data["intron_len"] > 500:
-            primer_data["primer_score"] = 1
+        elif primer_data["intron_len"] >= 500:
+            primer_data["primer_score"] = 3
 
         else:
-            primer_data["primer_score"] = 1
+            primer_data["primer_score"] = 4
 
     return candidate_primer_info
