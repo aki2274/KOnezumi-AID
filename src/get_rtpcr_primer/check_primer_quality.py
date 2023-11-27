@@ -20,7 +20,7 @@ def check_exon_junction(
 ) -> bool:
     # primer_index_list is the index in exon. if return True, then the primer is in exon junction.
     result = []
-    for (primer_data,) in candidate_primer_info:
+    for primer_data in candidate_primer_info:
         left_primer_longth = len(primer_data["left_primer"])
         right_primer_longth = len(primer_data["right_primer"])
         bool_list = []
@@ -28,10 +28,12 @@ def check_exon_junction(
         for exon_num in range(
             len(exon_range) - 1
         ):  # -1 because the last exon has no junction in the right side.
-            if exon_range[exon_num][1] in range(
+            print(exon_range[exon_num][1] - 1)
+            print(primer_data["left_primer_start"])
+            if (exon_range[exon_num][1] - 1) in range(
                 primer_data["left_primer_start"],
                 primer_data["left_primer_start"] + left_primer_longth + 1,
-            ) or exon_range[exon_num][1] in range(
+            ) or (exon_range[exon_num][1] - 1) in range(
                 primer_data["right_primer_start"],
                 primer_data["right_primer_start"] + right_primer_longth + 1,
             ):
