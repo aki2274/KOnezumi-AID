@@ -28,8 +28,6 @@ def check_exon_junction(
         for exon_num in range(
             len(exon_range) - 1
         ):  # -1 because the last exon has no junction in the right side.
-            print(exon_range[exon_num][1] - 1)
-            print(primer_data["left_primer_start"])
             if (exon_range[exon_num][1] - 1) in range(
                 primer_data["left_primer_start"],
                 primer_data["left_primer_start"] + left_primer_longth + 1,
@@ -47,7 +45,7 @@ def check_exon_junction(
 
 def rewrite_primer_pair_intron_len(
     candidate_primer_info: list[dict],
-    ds: GeneData,
+    ds: GeneData,  # ここが単一じゃないとだめになってるので修正必要
 ) -> list[int]:
     # get intron length between primer pairs
     intron_len_list = []
