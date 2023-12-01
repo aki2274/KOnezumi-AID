@@ -45,8 +45,9 @@ def check_exon_junction(
 
 def rewrite_primer_pair_intron_len(
     candidate_primer_info: list[dict],
-    ds: GeneData,  # ここが単一じゃないとだめになってるので修正必要
-) -> list[int]:
+    ds: GeneData,
+    # dsは、単一遺伝子のGeneDataクラスのインスタンス。転写産物名だけだと複数マッチしてる可能性ありなので修正いる？
+) -> list[dict]:
     # get intron length between primer pairs
     intron_len_list = []
     # the length is not considered the length of the exons in primer pairs.
