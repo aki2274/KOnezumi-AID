@@ -1,6 +1,6 @@
 from __future__ import annotations
 import pytest
-from src.get_guiderna_index import (
+from src.nominate_candidate_stopcodon.get_guiderna_index import (
     get_index_of_ct_target_seq,
     get_index_of_ga_target_seq,
 )
