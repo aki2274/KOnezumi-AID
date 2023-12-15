@@ -27,8 +27,8 @@ def check_exon_junction(
             len(exon_range) - 1
         ):  # -1 because the last exon has no junction in the right side.
             if (exon_range[exon_num][1] - 1) in range(
-                primer_data["left_primer_start"] - +left_primer_length,
-                primer_data["left_primer_start"] + 1,
+                primer_data["left_primer_end"] - +left_primer_length,
+                primer_data["left_primer_end"] + 1,
             ):
                 primer_data["left_cross_junction"] = 1
 

@@ -51,9 +51,8 @@ def get_candidate_primer_pairs(
             "intron_len": 0,
             "left_primer": left_primer_data["SEQUENCE"],
             "right_primer": right_primer_data["SEQUENCE"],
-            "left_primer_start": exon_seq.find(
-                left_primer_data["SEQUENCE"] + len(left_primer_data["SEQUENCE"])
-            ),
+            "left_primer_end": exon_seq.find(left_primer_data["SEQUENCE"])
+            + len(left_primer_data["SEQUENCE"]),
             "right_primer_start": exon_seq.find(
                 get_revcomp(right_primer_data["SEQUENCE"])
             ),
@@ -64,7 +63,7 @@ def get_candidate_primer_pairs(
     ]
     for primer in candidate_primer_info:
         for s in range(len(exon_range)):
-            if exon_range[s][0] <= primer["left_primer_start"] <= exon_range[s][1]:
+            if exon_range[s][0] <= primer["left_primer_end"] <= exon_range[s][1]:
                 primer["left_primer_exon_num"] = s
             if exon_range[s][0] <= primer["right_primer_start"] <= exon_range[s][1]:
                 primer["right_primer_exon_num"] = s
