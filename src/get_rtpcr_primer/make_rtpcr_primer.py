@@ -46,11 +46,14 @@ def get_candidate_primer_pairs(
     # the primer quality score is will change in src/select_good_primers.py
     candidate_primer_info = [
         {
-            "primer_score": 999,
+            "left_cross_junction": 0,
+            "right_cross_junction": 0,
             "intron_len": 0,
             "left_primer": left_primer_data["SEQUENCE"],
             "right_primer": right_primer_data["SEQUENCE"],
-            "left_primer_start": exon_seq.find(left_primer_data["SEQUENCE"]),
+            "left_primer_start": exon_seq.find(
+                left_primer_data["SEQUENCE"] + len(left_primer_data["SEQUENCE"])
+            ),
             "right_primer_start": exon_seq.find(
                 get_revcomp(right_primer_data["SEQUENCE"])
             ),
