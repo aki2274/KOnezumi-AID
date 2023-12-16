@@ -26,15 +26,15 @@ def check_exon_junction(
         for exon_num in range(
             len(exon_range) - 1
         ):  # -1 because the last exon has no junction in the right side.
-            if (exon_range[exon_num][1] - 1) in range(
+            if (exon_range[exon_num][1]) in range(
                 primer_data["left_primer_end"] - +left_primer_length,
-                primer_data["left_primer_end"] + 1,
+                primer_data["left_primer_end"],
             ):
                 primer_data["left_cross_junction"] = 1
 
             if (exon_range[exon_num][1] - 1) in range(
                 primer_data["right_primer_start"],
-                primer_data["right_primer_start"] + right_primer_length + 1,
+                primer_data["right_primer_start"] + right_primer_length,
             ):
                 primer_data["right_cross_junction"] = 1
     return candidate_primer_info
