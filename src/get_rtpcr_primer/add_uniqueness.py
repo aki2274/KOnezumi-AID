@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 def read_uniqueness(file_path) -> list[list]:
     with open(file_path, "r") as file:
         uniq_counts = [line.strip().split() for line in file]
