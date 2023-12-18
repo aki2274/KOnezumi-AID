@@ -19,10 +19,15 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
+          auto-update-conda: true
           python-version: ${{ matrix.python-version }}
+          activate-environment: test-env
+          channels: bioconda, conda-forge, defaults, anaconda
+          
 
       - name: Install dependencies
         run: |
+          conda install -c bioconda bowtie -y
           python -m pip install --upgrade pip pytest numpy pandas primer3-py
 
       - name: Run pytest on Linux🐧, macOS🍎
