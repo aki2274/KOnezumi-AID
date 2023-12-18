@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pytest
 from src.get_rtpcr_primer.export_fasta import export_fasta
 
