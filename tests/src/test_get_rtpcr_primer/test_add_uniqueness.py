@@ -46,11 +46,11 @@ def test_add_uniqueness():
             "left_primer": "CCCC",
             "right_primer": "GGGG",
             "left_0_uniq": "12",
-            "right_0_uniq": "0",
+            "right_0_uniq": 0,
             "left_1_uniq": "12",
-            "right_1_uniq": "0",
+            "right_1_uniq": 0,
             "left_2_uniq": "12",
-            "right_2_uniq": "0",
+            "right_2_uniq": 0,
         },
     ]
     assert (
