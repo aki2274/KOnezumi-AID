@@ -1,0 +1,5 @@
+     23 ATGC
+      7 TCGA
+      7 TTTT
+      3 AAAA
+     12 CCCC
