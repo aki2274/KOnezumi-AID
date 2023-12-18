@@ -17,8 +17,8 @@ def test_exprt_fasta():
             "right_primer_exon_num": 2,
         }
     ]
-    export_fasta(data)
-    with open("data/reads/candidateprimer.fa", "r") as file:
+    export_fasta(data, "tests/data/reads/candidateprimer.fa")
+    with open("tests/data/reads/candidateprimer.fa", "r") as file:
         assert (
             file.read()
             == ">agcaaaagtgtgaagcgccc\nagcaaaagtgtgaagcgccc\n>atctcgatcaccacgggctg\natctcgatcaccacgggctg\n"
