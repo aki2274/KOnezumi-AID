@@ -12,4 +12,4 @@ def test_read_uniqueness():
         ["12", "CCCC"],
     ]
 
-    assert read_uniqueness(r"tests\data\uniq\test_counts.txt") == expected
+    assert read_uniqueness("tests/data/uniq/test_counts.txt") == expected
