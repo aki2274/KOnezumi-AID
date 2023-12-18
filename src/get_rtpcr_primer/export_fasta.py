@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 
-def export_fasta(data: list[dict]) -> None:
-    file_path = "data/reads/candidateprimer.fa"
+def export_fasta(
+    data: list[dict], file_path: str = "data/reads/candidateprimer.fa"
+) -> None:
     processed_names = set()
 
     with open(file_path, "w") as file:
