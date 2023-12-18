@@ -16,8 +16,9 @@ def test_get_uniqueness():
     process = subprocess.Popen(["bash", "-c", test_shell], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     _, stderr = process.communicate()
 
-    # 標準エラー出力があれば表示する
-    if stderr:
+    # 終了コードが成功(0)でない場合は例外を発生させ、エラーメッセージを表示する
+    exit_code = process.returncode
+    if exit_code != 0:
         raise Exception(stderr.decode())
 
     expected_sam = read_sam("tests/data/uniq/e_coli_1000.sam")
