@@ -4,10 +4,15 @@ def read_uniqueness(file_path) -> list[list]:
     return uniq_counts
 
 
-def add_uniqueness(candidate: list[dict]) -> list[dict]:
-    miss_0 = read_uniqueness("data/uniq/0_miss_counts.txt")
-    miss_1 = read_uniqueness("data/uniq/1_miss_counts.txt")
-    miss_2 = read_uniqueness("data/uniq/2_miss_counts.txt")
+def add_uniqueness(
+    candidate: list[dict],
+    miss_0_path: str = "data/uniq/0_miss_counts.txt",
+    miss_1_path: str = "data/uniq/1_miss_counts.txt",
+    miss_2_path: str = "data/uniq/2_miss_counts.txt",
+) -> list[dict]:
+    miss_0 = read_uniqueness(miss_0_path)
+    miss_1 = read_uniqueness(miss_1_path)
+    miss_2 = read_uniqueness(miss_2_path)
 
     for primer in candidate:
         left_primer = primer["left_primer"]
