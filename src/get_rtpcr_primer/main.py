@@ -1,5 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from pathlib import Path
 import subprocess
 
 from src.get_rtpcr_primer.make_rtpcr_primer import (
@@ -60,6 +61,7 @@ def main(exon_seq: str, exon_range: tuple[int, int], ds: GeneData) -> list[dict]
     candidate_pairs = check_exon_junction(candidate_pairs, exon_range)
     candidate_pairs = rewrite_primer_pair_intron_len(candidate_pairs, ds)
     export_fasta(candidate_pairs)
-    subprocess.run([r"src\get_rtpcr_primer\get_uniqueness.sh"])
+    path_get_uniqueness = Path("src", "get_rtpcr_primer", "get_uniqueness.sh")
+    subprocess.run([path_get_uniqueness])
     candidate_pairs = add_uniqueness(candidate_pairs)
     return candidate_pairs
