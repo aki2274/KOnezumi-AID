@@ -39,7 +39,6 @@ def main(exon_seq: str, exon_range: tuple[int, int], ds: GeneData) -> list[dict]
         list[dict]: the candidate candidate rt-qPCR primer pairs.
 
     Example:
-        >>> import cstag
         >>> exon_seq = "ATGCAT...ATGCAT"
         >>> exon_range = [[1, 10], [10, 30], [30, 40], [40, 80]]
         >>> ds = GeneData(...)
