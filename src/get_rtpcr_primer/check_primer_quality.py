@@ -31,13 +31,13 @@ def check_exon_junction(
                 primer_data["left_primer_end"] - +left_primer_length,
                 primer_data["left_primer_end"],
             ):
-                primer_data["left_cross_junction"] = 1
+                primer_data["left_cross_junction"] = True
 
             if (exon_range[exon_num][1] - 1) in range(
                 primer_data["right_primer_start"],
                 primer_data["right_primer_start"] + right_primer_length,
             ):
-                primer_data["right_cross_junction"] = 1
+                primer_data["right_cross_junction"] = True
     return return_info
 
 
