@@ -19,7 +19,8 @@ def check_exon_junction(
     exon_range: list[int],
 ) -> list[dict]:
     # primer_index_list is the index in exon. if return True, then the primer is in exon junction.
-    for primer_data in candidate_primer_info:
+    return_info = candidate_primer_info.copy()
+    for primer_data in return_info:
         left_primer_length = len(primer_data["left_primer"])
         right_primer_length = len(primer_data["right_primer"])
         # check if the primer is in any exon junction
@@ -37,7 +38,7 @@ def check_exon_junction(
                 primer_data["right_primer_start"] + right_primer_length,
             ):
                 primer_data["right_cross_junction"] = 1
-    return candidate_primer_info
+    return return_info
 
 
 def rewrite_primer_pair_intron_len(
