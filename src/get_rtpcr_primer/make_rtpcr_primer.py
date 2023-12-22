@@ -42,12 +42,18 @@ def get_candidate_primer_pairs(
     primer_result: dict,
     exon_range: list[list[int, int]],
 ) -> list[dict]:
-    # get dict primer quality score and the primer pairs
-    # the primer quality score is will change in src/select_good_primers.py
+    """
+    Get dict of primer quality info and the primer pairs
+    _cross_junction : the primer cross the exon junction or not
+    intron_len : the length of intron between the two primers
+    left_primer_end : the end position of left primer
+    right_primer_start : the start position of right primer
+    _primer_exon_num : the exon number of left primer
+    """
     candidate_primer_info = [
         {
-            "left_cross_junction": 0,
-            "right_cross_junction": 0,
+            "left_cross_junction": False,
+            "right_cross_junction": False,
             "intron_len": 0,
             "left_primer": left_primer_data["SEQUENCE"],
             "right_primer": right_primer_data["SEQUENCE"],
@@ -62,9 +68,19 @@ def get_candidate_primer_pairs(
         )
     ]
     for primer in candidate_primer_info:
+        exon_start = 0
+        exon_end = 1
         for s in range(len(exon_range)):
-            if exon_range[s][0] <= primer["left_primer_end"] <= exon_range[s][1]:
+            if (
+                exon_range[s][exon_start]
+                <= primer["left_primer_end"]
+                <= exon_range[s][exon_end]
+            ):
                 primer["left_primer_exon_num"] = s
-            if exon_range[s][0] <= primer["right_primer_start"] <= exon_range[s][1]:
+            if (
+                exon_range[s][exon_start]
+                <= primer["right_primer_start"]
+                <= exon_range[s][exon_end]
+            ):
                 primer["right_primer_exon_num"] = s
     return candidate_primer_info
