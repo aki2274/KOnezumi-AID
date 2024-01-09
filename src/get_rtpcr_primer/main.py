@@ -27,6 +27,11 @@ class GeneData:
     exon_end_list: list[int]
 
 
+miss_0_path = Path("data", "uniq", "0_miss_counts.txt")
+miss_1_path = Path("data", "uniq", "1_miss_counts.txt")
+miss_2_path = Path("data", "uniq", "2_miss_counts.txt")
+
+
 def main(exon_seq: str, exon_range: tuple[int, int], ds: GeneData) -> list[dict]:
     """
     Export candidate rt-qPCR primers, based on exon seq.
@@ -63,5 +68,7 @@ def main(exon_seq: str, exon_range: tuple[int, int], ds: GeneData) -> list[dict]
     export_fasta(candidate_pairs)
     path_get_uniqueness = Path("src", "get_rtpcr_primer", "get_uniqueness.sh")
     subprocess.run([path_get_uniqueness])
-    candidate_pairs = add_uniqueness(candidate_pairs)
+    candidate_pairs = add_uniqueness(
+        candidate_pairs, miss_0_path, miss_1_path, miss_2_path
+    )
     return candidate_pairs

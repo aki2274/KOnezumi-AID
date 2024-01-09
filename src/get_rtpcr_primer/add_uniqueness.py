@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pathlib import Path
 
 
 def read_uniqueness(file_path) -> list[list]:
@@ -9,9 +10,9 @@ def read_uniqueness(file_path) -> list[list]:
 
 def add_uniqueness(
     candidate: list[dict],
-    miss_0_path: str = "data/uniq/0_miss_counts.txt",
-    miss_1_path: str = "data/uniq/1_miss_counts.txt",
-    miss_2_path: str = "data/uniq/2_miss_counts.txt",
+    miss_0_path: Path,
+    miss_1_path: Path,
+    miss_2_path: Path,
 ) -> list[dict]:
     miss_0 = read_uniqueness(miss_0_path)
     miss_1 = read_uniqueness(miss_1_path)
