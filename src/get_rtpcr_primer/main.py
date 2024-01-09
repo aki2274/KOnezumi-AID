@@ -27,6 +27,8 @@ class GeneData:
     exon_end_list: list[int]
 
 
+Path("data", "uniq").mkdir(parents=True, exist_ok=True)
+
 miss_0_path = Path("data", "uniq", "0_miss_counts.txt")
 miss_1_path = Path("data", "uniq", "1_miss_counts.txt")
 miss_2_path = Path("data", "uniq", "2_miss_counts.txt")
