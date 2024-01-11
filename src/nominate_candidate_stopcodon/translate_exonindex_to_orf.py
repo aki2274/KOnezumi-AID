@@ -79,7 +79,7 @@ def add_num_to_change_orf_index(
     exon_range_list: list[int],
     exon_index_list: list[int],
 ) -> int:
-    # egenome上でのcandidatestopcodonを含むexonの先頭までの距離を取得、exon分を2度足しているので引く
+    # genome上でのcandidatestopcodonを含むexonの先頭までの距離を取得、exon分を2度足しているので引く
     add_num_to_genome_index = [
         (ds.exon_start_list[i] - ds.txStart - exon_range_list[i][0])
         for i in exon_index_list
