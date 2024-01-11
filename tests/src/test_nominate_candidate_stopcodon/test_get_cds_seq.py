@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
 from dataclasses import dataclass
-from src.set_gene_dataclass import set_dataclass
+from create_gene_dataclass import set_dataclass
 from src.nominate_candidate_stopcodon.get_cds_seq import (
     get_exon_seq,
     get_startcodon_exon_num,
