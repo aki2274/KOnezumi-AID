@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 
 from src.get_rtpcr_primer.make_rtpcr_primer import (
-    export_candidate_primer,
+    export_candidate,
     get_candidate_primer_pairs,
 )
 from get_rtpcr_primer.rate_quality import (
@@ -63,7 +63,7 @@ def main(exon_seq: str, exon_range: tuple[int, int], ds: GeneData) -> list[dict]
             "right_primer_exon_num": 2,
         },....
     """
-    primer3_result = export_candidate_primer(exon_seq)
+    primer3_result = export_candidate(exon_seq)
     candidate_pairs = get_candidate_primer_pairs(exon_seq, primer3_result, exon_range)
     candidate_pairs = verify_crossing_exonjunction(candidate_pairs, exon_range)
     candidate_pairs = autocorrect_intron_len(candidate_pairs, ds)
