@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
 from create_gene_dataclass import create_dataclass
-from nominate_candidate_stopcodon.translate_exonindex_to_orf import (
+from nominate_candidate_stopcodon.translate_idex_in_exon_to_orf import (
     get_exon_range,
     get_candidate_stopcodon_index_incds_to_inexon,
     get_candidate_stopcodon_exon_num,
