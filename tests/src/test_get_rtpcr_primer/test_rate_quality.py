@@ -3,7 +3,7 @@ import pytest
 from dataclasses import dataclass
 from get_rtpcr_primer.rate_quality import (
     check_exon_junction,
-    rewrite_primer_pair_intron_len,
+    autocorrect_intron_len,
 )
 
 
@@ -225,5 +225,5 @@ def test_rewrite_primer_pair_intron_len():
             "right_primer_exon_num": 0,
         },
     ]
-    result = rewrite_primer_pair_intron_len(candidate_primer_info, set_data)
+    result = autocorrect_intron_len(candidate_primer_info, set_data)
     assert result == expected

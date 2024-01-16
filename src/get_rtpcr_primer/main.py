@@ -9,7 +9,7 @@ from src.get_rtpcr_primer.make_rtpcr_primer import (
 )
 from get_rtpcr_primer.rate_quality import (
     check_exon_junction,
-    rewrite_primer_pair_intron_len,
+    autocorrect_intron_len,
 )
 from src.get_rtpcr_primer.export_fasta import export_fasta
 from src.get_rtpcr_primer.add_uniqueness import add_uniqueness
@@ -66,7 +66,7 @@ def main(exon_seq: str, exon_range: tuple[int, int], ds: GeneData) -> list[dict]
     primer3_result = export_candidate_primer(exon_seq)
     candidate_pairs = get_candidate_primer_pairs(exon_seq, primer3_result, exon_range)
     candidate_pairs = check_exon_junction(candidate_pairs, exon_range)
-    candidate_pairs = rewrite_primer_pair_intron_len(candidate_pairs, ds)
+    candidate_pairs = autocorrect_intron_len(candidate_pairs, ds)
     export_fasta(candidate_pairs)
     path_get_uniqueness = Path("src", "get_rtpcr_primer", "get_uniqueness.sh")
     subprocess.run([path_get_uniqueness])
