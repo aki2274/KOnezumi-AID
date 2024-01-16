@@ -2,7 +2,7 @@ from __future__ import annotations
 import pytest
 from create_gene_dataclass import create_dataclass
 from nominate_candidate_stopcodon.translate_exonindex_to_orf import (
-    get_range_of_exon,
+    get_exon_range,
     get_candidate_stopcodon_index_incds_to_inexon,
     get_candidate_stopcodon_exon_num,
     add_num_to_change_orf_index,
@@ -55,7 +55,7 @@ expected = [[0, 15], [15, 40], [40, 75]], [[0, 3], [3, 11], [11, 25]]
 )
 def test_get_range_of_exon(test_name, input_genedata, orf_seq_dict, expected):
     assert (
-        get_range_of_exon(create_dataclass(test_name, input_genedata, orf_seq_dict))
+        get_exon_range(create_dataclass(test_name, input_genedata, orf_seq_dict))
         == expected
     )
 

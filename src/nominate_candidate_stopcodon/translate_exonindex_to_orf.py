@@ -21,7 +21,7 @@ class GeneData:
 # 　エクソンごとの範囲を取得、candidate stopcodon が何番目のエクソンか知る、
 
 
-def get_range_of_exon(ds: GeneData):
+def get_exon_range(ds: GeneData):
     # エクソンごとの範囲を取得
     exon_range_list = []
     num = 0
