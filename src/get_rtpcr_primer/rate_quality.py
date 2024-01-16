@@ -14,7 +14,7 @@ class GeneData:
     exon_end_list: list[int]
 
 
-def check_exon_junction(
+def verify_crossing_exonjunction(
     candidate_primer_info: list[dict],
     exon_range: list[int],
 ) -> list[dict]:

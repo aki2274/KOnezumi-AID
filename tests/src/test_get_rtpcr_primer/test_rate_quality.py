@@ -2,7 +2,7 @@ from __future__ import annotations
 import pytest
 from dataclasses import dataclass
 from get_rtpcr_primer.rate_quality import (
-    check_exon_junction,
+    verify_crossing_exonjunction,
     autocorrect_intron_len,
 )
 
@@ -59,7 +59,7 @@ def test_cross_check_exon_junction():
             "right_primer_exon_num": 2,
         },
     ]
-    assert check_exon_junction(True_primer_info, exon_range) == expected
+    assert verify_crossing_exonjunction(True_primer_info, exon_range) == expected
 
 
 def test_not_cross_check_exon_junction():
@@ -114,7 +114,7 @@ def test_not_cross_check_exon_junction():
             "right_primer_exon_num": 2,
         },
     ]
-    assert check_exon_junction(False_primer_info, exon_range) == expected
+    assert verify_crossing_exonjunction(False_primer_info, exon_range) == expected
 
 
 @dataclass
