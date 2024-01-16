@@ -14,7 +14,7 @@ class GeneData:
     exon_end_list: list[int]
 
 
-def set_dataclass(
+def create_dataclass(
     transcript_name: str, refflat_data: list[dict], gene_seq_data: dict
 ) -> GeneData:
     # make dataset from refFlat.txt(exported csv) data

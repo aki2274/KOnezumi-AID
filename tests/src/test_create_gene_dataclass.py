@@ -2,7 +2,7 @@ from __future__ import annotations
 import os
 import pytest
 from dataclasses import dataclass, asdict
-from create_gene_dataclass import set_dataclass
+from create_gene_dataclass import create_dataclass
 
 # Make test data
 # txStart とexonStart[0]は一致している必要がある
@@ -60,6 +60,6 @@ expected = [expected_return]
     zip(input_transcript_name, [input_genedata], input_seq, expected),
 )
 def test_setup_data(transcripts_name, gene_data, gene_seq_data, expected):
-    assert asdict(set_dataclass(transcripts_name, gene_data, gene_seq_data)) == asdict(
-        expected
-    )
+    assert asdict(
+        create_dataclass(transcripts_name, gene_data, gene_seq_data)
+    ) == asdict(expected)
