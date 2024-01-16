@@ -1,15 +1,18 @@
 from __future__ import annotations
 import pytest
-from src.nominate_candidate_stopcodon.get_guiderna_seq import find_ct_target_seq, find_ga_target_seq
+from nominate_candidate_stopcodon.transform_guideseq_to_index import (
+    get_index_of_ct_target_seq,
+    get_index_of_ga_target_seq,
+)
 
 
 #################################
-# find candidate gRNA sequences
+# Get start index of target base
 #################################
 
 # C-to-T conversion
 
-seq_candidates = [
+input_seq = [
     "NCAANNNNNNNNNNNNNNNNNGG",
     "NCAGNNNNNNNNNNNNNNNNNGG",
     "NCGANNNNNNNNNNNNNNNNNGG",
@@ -22,7 +25,7 @@ seq_candidates = [
     "NNCAGNNNNNNNNNNNNNNNNGGCGANNNNNNNNNNNNNNNNGG",  # multipme candidates
     "NNCAGCAANNNNNNNNNNNNNGGTGG",  # multipme candidates
 ]
-expected = [
+seq_candidates = [
     ["NCAANNNNNNNNNNNNNNNNNGG"],
     ["NCAGNNNNNNNNNNNNNNNNNGG"],
     ["NCGANNNNNNNNNNNNNNNNNGG"],
@@ -36,30 +39,37 @@ expected = [
     ["NNCAGCAANNNNNNNNNNNNNGG", "AGCAANNNNNNNNNNNNNGGTGG"],
 ]
 
-
-@pytest.mark.parametrize("seq, expected", zip(seq_candidates, expected))
-def test_get_CtoT_target(seq, expected):
-    assert find_ct_target_seq(seq) == expected
+expected = [[1], [1], [1], [2], [2], [2], [3], [3], [3], [2, 23], [2, 5]]
 
 
-seq_not_candidates = [
+@pytest.mark.parametrize(
+    "seq,candidates,expected", zip(input_seq, seq_candidates, expected)
+)
+def test_get_CtoT_target(seq, candidates, expected):
+    assert get_index_of_ct_target_seq(seq, candidates) == expected
+
+
+input_seq = [
     "NNNNNNNNNNNNNNNNNNNNNGG",
     "NNAGNNNNNNNNNNNNNNNNNGG",
     "NCTANNNNNNNNNNNNNNNNNGG",
     "NNNNCGANNNNNNNNNNNNNNGG",  # no CGA in target window (-17~-19 from PAM)
     "NNNNCGANNNNNNNNNNNNNNAG",  # no PAM
 ]
+seq_not_candidates = [[], [], [], [], []]
 expected = [[], [], [], [], []]
 
 
-@pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
-def test_get_CtoT_target_not_candidate(seq, expected):
-    assert find_ct_target_seq(seq) == expected
+@pytest.mark.parametrize(
+    "seq,candidates,expected", zip(input_seq, seq_not_candidates, expected)
+)
+def test_get_CtoT_target_not_candidate(seq, candidates, expected):
+    assert get_index_of_ct_target_seq(seq, candidates) == expected
 
 
 # G-to-A conversion
 
-seq_candidates = [
+input_seq = [
     "CCNNNNNNNNNNNNNNNTGGNNN",
     "CCNNNNNNNNNNNNNNNNTGGNN",
     "CCNNNNNNNNNNNNNNNNNTGGN",
@@ -67,7 +77,7 @@ seq_candidates = [
     "CCNNNNNNNNNNNNNNNNNNTGGCCANNNNNNNNNNNNNNNNNTGG",  # multipme candidates
     "CCNCCCNNNNNNNNNNNNNNTGGTGGNNNN",  # multipme candidates
 ]
-expected = [
+seq_candidates = [
     ["CCNNNNNNNNNNNNNNNTGGNNN"],
     ["CCNNNNNNNNNNNNNNNNTGGNN"],
     ["CCNNNNNNNNNNNNNNNNNTGGN"],
@@ -75,21 +85,27 @@ expected = [
     ["CCNNNNNNNNNNNNNNNNNNTGG", "CCANNNNNNNNNNNNNNNNNTGG"],
     ["CCNCCCNNNNNNNNNNNNNNTGG", "CCCNNNNNNNNNNNNNNTGGTGG", "CCNNNNNNNNNNNNNNTGGTGGN"],
 ]
+expected = [[17], [18], [19], [20], [20, 43], [20, 23]]
 
 
-@pytest.mark.parametrize("seq, expected", zip(seq_candidates, expected))
-def test_get_AtoG_target(seq, expected):
-    assert find_ga_target_seq(seq) == expected
+@pytest.mark.parametrize(
+    "seq,candidates,expected", zip(input_seq, seq_candidates, expected)
+)
+def test_get_AtoG_target(seq, candidates, expected):
+    assert get_index_of_ga_target_seq(seq, candidates) == expected
 
 
-seq_not_candidates = [
+input_seq = [
     "CCNNNNNNNNNNNNNNNTTTNNN",  # no TGG
     "CCNNNNNNNNNNNNNNTGGNNNN",  # no TGG in target window (+17~+19 from PAM)
     "CANNNNNNNNNNNNNNNTGGNNN",  # no PAM
 ]
+seq_not_candidates = [[], [], []]
 expected = [[], [], []]
 
 
-@pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
-def test_get_AtoG_target_not_candidate(seq, expected):
-    assert find_ga_target_seq(seq) == expected
+@pytest.mark.parametrize(
+    "seq,candidates,expected", zip(input_seq, seq_not_candidates, expected)
+)
+def test_get_AtoG_target_not_candidates(seq, candidates, expected):
+    assert get_index_of_ga_target_seq(seq, candidates) == expected

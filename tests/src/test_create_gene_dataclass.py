@@ -2,7 +2,7 @@ from __future__ import annotations
 import os
 import pytest
 from dataclasses import dataclass, asdict
-from src.set_gene_dataclass import set_dataclass
+from create_gene_dataclass import set_dataclass
 
 # Make test data
 # txStart とexonStart[0]は一致している必要がある

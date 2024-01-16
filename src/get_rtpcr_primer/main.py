@@ -7,7 +7,7 @@ from src.get_rtpcr_primer.make_rtpcr_primer import (
     export_candidate_primer,
     get_candidate_primer_pairs,
 )
-from src.get_rtpcr_primer.check_primer_quality import (
+from get_rtpcr_primer.rate_quality import (
     check_exon_junction,
     rewrite_primer_pair_intron_len,
 )

@@ -1,6 +1,8 @@
 from __future__ import annotations
 import pytest
-from src.nominate_candidate_stopcodon.find_candidate_stopcodon import get_candidate_stopcodon_index
+from nominate_candidate_stopcodon.search_candidate_index import (
+    get_candidate_stopcodon_index,
+)
 
 test_candidate_cds_seq = [
     "ATGCAANNN",
