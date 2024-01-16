@@ -3,7 +3,7 @@ import pytest
 from dataclasses import dataclass
 from create_gene_dataclass import create_dataclass
 from nominate_candidate_stopcodon.generate_cds_seq import (
-    get_exon_seq,
+    generate_exon_seq,
     get_startcodon_exon_num,
     get_stopcodon_exon_num,
     get_cdsseq,
@@ -64,7 +64,7 @@ expected_return = [
 )
 def test_get_exon_seq(test_name, input_genedata, orf_seq_dict, expected):
     assert (
-        get_exon_seq(create_dataclass(test_name, input_genedata, orf_seq_dict))
+        generate_exon_seq(create_dataclass(test_name, input_genedata, orf_seq_dict))
         == expected
     )
 
