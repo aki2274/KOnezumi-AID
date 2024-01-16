@@ -36,7 +36,7 @@ def get_exon_range(ds: GeneData):
 
 
 # cdsでのindexをエクソンのindexに変換
-def get_candidate_stopcodon_index_incds_to_inexon(
+def translate_incds_index_to_exon(
     ds: GeneData,
     candidate_stopcodon_cds_index_list: list[int],
     exon_range_list: list[int],
