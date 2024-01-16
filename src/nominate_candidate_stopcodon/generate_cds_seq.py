@@ -41,7 +41,7 @@ def get_stopcodon_exon_num(ds: GeneData) -> int:
     return exon_index
 
 
-def get_cdsseq(
+def generate_cdsseq(
     ds: GeneData,
     exon_seq: str,
     startcodon_exon_num: int,

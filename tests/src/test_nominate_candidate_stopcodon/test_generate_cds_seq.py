@@ -6,7 +6,7 @@ from nominate_candidate_stopcodon.generate_cds_seq import (
     generate_exon_seq,
     get_startcodon_exon_num,
     get_stopcodon_exon_num,
-    get_cdsseq,
+    generate_cdsseq,
 )
 
 #####
@@ -142,7 +142,7 @@ def test_get_cdsseq(
     test_name, input_genedata, orf_seq_dict, exon_seq, start_index, end_index, expected
 ):
     assert (
-        get_cdsseq(
+        generate_cdsseq(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             exon_seq,
             start_index,
