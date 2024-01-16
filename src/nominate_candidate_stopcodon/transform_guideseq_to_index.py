@@ -2,7 +2,7 @@ from __future__ import annotations
 import re
 
 
-def get_index_of_ct_target_seq(orf_seq: str, targets: list[str]) -> list[int]:
+def transform_ct_guideseq_to_index(orf_seq: str, targets: list[str]) -> list[int]:
     # Get the index of "C" in "CAA", "CAG", or "CGA" in candidate gRNA (the index on the ORF)
     positions = []
     for target in targets:
@@ -16,7 +16,7 @@ def get_index_of_ct_target_seq(orf_seq: str, targets: list[str]) -> list[int]:
     return positions
 
 
-def get_index_of_ga_target_seq(orf_seq: str, targets: list[str]) -> list[int]:
+def transform_ga_guideseq_to_index(orf_seq: str, targets: list[str]) -> list[int]:
     # Get the index of "T" in "TGG" in candidate gRNA (the index on the ORF)
     # To reduce the work of comparison with candidate stop codons (TGG), obtain the index of "T".
     positions = []
