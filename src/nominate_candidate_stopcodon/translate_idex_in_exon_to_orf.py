@@ -56,7 +56,7 @@ def translate_incds_index_to_exon(
     return result
 
 
-def get_candidate_stopcodon_exon_num(
+def get_exonnum_of_candidate(
     candidate_stopcodon_index_inexon: list[int], exon_range_list
 ):
     # 何番目のエクソンであるかのリストを作成

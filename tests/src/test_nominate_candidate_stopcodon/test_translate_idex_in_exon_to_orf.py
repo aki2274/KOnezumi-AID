@@ -4,7 +4,7 @@ from create_gene_dataclass import create_dataclass
 from nominate_candidate_stopcodon.translate_idex_in_exon_to_orf import (
     get_exon_range,
     translate_incds_index_to_exon,
-    get_candidate_stopcodon_exon_num,
+    get_exonnum_of_candidate,
     translate_idex_in_exon_to_orf,
 )
 
@@ -113,7 +113,7 @@ expected = [[1]]
     ),
 )
 def test_get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range, expected):
-    assert get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range) == expected
+    assert get_exonnum_of_candidate(candidate_stopcodon, exon_range) == expected
 
 
 exon_index = [[1]]
@@ -207,7 +207,7 @@ expected = [[]]
 def test_nocandidate_get_candidate_stopcodon_exon_num(
     candidate_stopcodon, exon_range, expected
 ):
-    assert get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range) == expected
+    assert get_exonnum_of_candidate(candidate_stopcodon, exon_range) == expected
 
 
 exon_index = [[]]
