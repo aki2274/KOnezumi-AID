@@ -5,7 +5,7 @@ import subprocess
 
 from src.get_rtpcr_primer.make_rtpcr_primer import (
     export_candidate,
-    get_candidate_primer_pairs,
+    generate_candidate_info,
 )
 from get_rtpcr_primer.rate_quality import (
     verify_crossing_exonjunction,
@@ -64,7 +64,7 @@ def main(exon_seq: str, exon_range: tuple[int, int], ds: GeneData) -> list[dict]
         },....
     """
     primer3_result = export_candidate(exon_seq)
-    candidate_pairs = get_candidate_primer_pairs(exon_seq, primer3_result, exon_range)
+    candidate_pairs = generate_candidate_info(exon_seq, primer3_result, exon_range)
     candidate_pairs = verify_crossing_exonjunction(candidate_pairs, exon_range)
     candidate_pairs = autocorrect_intron_len(candidate_pairs, ds)
     export_fasta(candidate_pairs)

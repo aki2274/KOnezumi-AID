@@ -37,7 +37,7 @@ def export_candidate(exon_seq: str) -> dict:
     return result
 
 
-def get_candidate_primer_pairs(
+def generate_candidate_info(
     exon_seq: str,
     primer_result: dict,
     exon_range: list[list[int, int]],

@@ -3,7 +3,7 @@ import pytest
 import pickle
 from src.get_rtpcr_primer.make_rtpcr_primer import (
     export_candidate,
-    get_candidate_primer_pairs,
+    generate_candidate_info,
 )
 
 
@@ -29,5 +29,5 @@ def test_get_candidate_primer_pairs():
     ]
     with open(r"tests/data/actb_primer_pair_info.pkl", mode="rb") as pklfile:
         expected = pickle.load(pklfile)
-    result = get_candidate_primer_pairs(exon_seq, primer_result, exon_range)
+    result = generate_candidate_info(exon_seq, primer_result, exon_range)
     assert result == expected
