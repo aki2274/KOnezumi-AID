@@ -5,7 +5,7 @@ from nominate_candidate_stopcodon.translate_exonindex_to_orf import (
     get_exon_range,
     get_candidate_stopcodon_index_incds_to_inexon,
     get_candidate_stopcodon_exon_num,
-    add_num_to_change_orf_index,
+    translate_idex_in_exon_to_orf,
 )
 
 input_genedata = [
@@ -142,7 +142,7 @@ def test_add_num_to_change_orf_index(
     expected,
 ):
     assert (
-        add_num_to_change_orf_index(
+        translate_idex_in_exon_to_orf(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_inexon,
             exon_range,
@@ -236,7 +236,7 @@ def test_nocandidate_add_num_to_change_orf_index(
     expected,
 ):
     assert (
-        add_num_to_change_orf_index(
+        translate_idex_in_exon_to_orf(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_inexon,
             exon_range,

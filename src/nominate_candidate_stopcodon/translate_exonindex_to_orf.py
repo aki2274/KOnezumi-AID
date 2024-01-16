@@ -73,7 +73,7 @@ def get_candidate_stopcodon_exon_num(
 
 
 # 足すべき数値を取得、足す
-def add_num_to_change_orf_index(
+def translate_idex_in_exon_to_orf(
     ds: GeneData,
     candidate_codon_index_inexon_list: list[int],
     exon_range_list: list[int],
