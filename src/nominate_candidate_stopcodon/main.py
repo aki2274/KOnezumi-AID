@@ -12,7 +12,7 @@ from src.nominate_candidate_stopcodon.generate_cds_seq import (
     get_startcodon_exon_num,
     generate_cdsseq,
 )
-from src.nominate_candidate_stopcodon.search_candidate_index import (
+from nominate_candidate_stopcodon.search_candidate_codon import (
     search_candidate_index,
 )
 from nominate_candidate_stopcodon.translate_index_in_exon_to_orf import (
