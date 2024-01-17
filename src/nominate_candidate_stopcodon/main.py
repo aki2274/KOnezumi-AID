@@ -1,0 +1,73 @@
+from __future__ import annotations
+from dataclasses import dataclass
+from src.nominate_candidate_stopcodon.find_guiderna_seq import (
+    find_ct_target_seq,
+    find_ga_target_seq,
+)
+from src.nominate_candidate_stopcodon.transform_guideseq_to_index import (
+    transform_ct_guideseq_to_index,
+    transform_ga_guideseq_to_index,
+)
+from src.nominate_candidate_stopcodon.generate_cds_seq import (
+    get_startcodon_exon_num,
+    generate_cdsseq,
+)
+from src.nominate_candidate_stopcodon.search_candidate_index import (
+    search_candidate_index,
+)
+from nominate_candidate_stopcodon.translate_index_in_exon_to_orf import (
+    translate_index_in_exon_to_orf,
+)
+
+
+@dataclass
+class GeneData:
+    orf_seq: str
+    txStart: int
+    txend: int
+    cdsStart: int
+    cdsEnd: int
+    exonCount: int
+    exon_start_list: list[int]
+    exon_end_list: list[int]
+
+
+def main(ds: GeneData) -> list[dict]:
+    """
+    Export candidate stopcodon index in genome.
+
+    Args:
+        ds(dataclass): a dataclass of one transcription.
+    Returns:
+        list[int]: the candidate stopcodon index in the transcription.
+
+    Example:
+        >>> ds = GeneData(...)
+        >>> main(ds)
+        [10, 20, 30, 40]
+    """
+    # 1. generate cds seq
+    cds_seq = generate_cdsseq(ds)
+    # 2. search candidate index
+    candidate_ptc_index = search_candidate_index(cds_seq)
+    # 3. get startcodon exon number
+    cdsStart_exon_index = get_startcodon_exon_num(ds)
+    # 4. translate candidate index in exon to index in genome
+    candidate_ptc_index_in_orf = translate_index_in_exon_to_orf(
+        ds, candidate_ptc_index, cdsStart_exon_index
+    )
+    # 5,find ct target seq
+    ct_target_seq = find_ct_target_seq(ds.orf_seq)
+    # 6. find ga target seq
+    ga_target_seq = find_ga_target_seq(ds.orf_seq)
+    # 7. transform ct guideseq to index
+    ct_guideseq_index = transform_ct_guideseq_to_index(ds.orf_seq, ct_target_seq)
+    # 8. transform ga guideseq to index
+    ga_guideseq_index = transform_ga_guideseq_to_index(ds.orf_seq, ga_target_seq)
+    # 9. compare candidate index and guideseq index,then export candidate if the same index
+    candidate_grna = [
+        index
+        for index in candidate_ptc_index_in_orf
+        if index in ct_guideseq_index + ga_guideseq_index
+    ]
+    return candidate_grna
