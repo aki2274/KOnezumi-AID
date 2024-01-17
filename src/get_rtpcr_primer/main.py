@@ -50,7 +50,7 @@ def main(exon_seq: str, exon_range: tuple[int, int], ds: GeneData) -> list[dict]
         >>> exon_seq = "ATGCAT...ATGCAT"
         >>> exon_range = [[1, 10], [10, 30], [30, 40], [40, 80]]
         >>> ds = GeneData(...)
-        >>> cstag.call(exon_seq, exon_range, ds)
+        >>> main(exon_seq, exon_range, ds)
         {
             "left_cross_junction": 0,
             "right_cross_junction": 0,
