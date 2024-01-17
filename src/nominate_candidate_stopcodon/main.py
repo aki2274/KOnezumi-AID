@@ -1,10 +1,10 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from src.nominate_candidate_stopcodon.find_guiderna_seq import (
+from nominate_candidate_stopcodon.find_candidate_seq import (
     find_ct_target_seq,
     find_ga_target_seq,
 )
-from src.nominate_candidate_stopcodon.transform_guideseq_to_index import (
+from nominate_candidate_stopcodon.transform_candidateseq_to_index import (
     transform_ct_guideseq_to_index,
     transform_ga_guideseq_to_index,
 )
@@ -65,9 +65,12 @@ def main(ds: GeneData) -> list[dict]:
     # 8. transform ga guideseq to index
     ga_guideseq_index = transform_ga_guideseq_to_index(ds.orf_seq, ga_target_seq)
     # 9. compare candidate index and guideseq index,then export candidate if the same index
-    candidate_grna = [
-        index
-        for index in candidate_ptc_index_in_orf
-        if index in ct_guideseq_index + ga_guideseq_index
+    ct_candidate_index = [
+        index for index in candidate_ptc_index_in_orf if index in ct_guideseq_index
     ]
+    ga_candidate_index = [
+        index for index in candidate_ptc_index_in_orf if index in ga_guideseq_index
+    ]
+    # 10. transform candidate index to candidate gRNA
+    candidate_grna = []
     return candidate_grna
