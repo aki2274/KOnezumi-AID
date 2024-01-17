@@ -38,7 +38,7 @@ def test_read_refFlat():
 
 def test_make_genedata_dataframe():
     path_refFlat = "tests/data/example_refFlat.txt"
-    test_dataframe = export_refflat_txt_to_pkl.make_genedata_dataframe(path_refFlat)
+    test_dataframe = export_refflat_txt_to_pkl.built_gene_dataframe(path_refFlat)
     expected_df = expected = [
         {
             "geneName": "Xkr4",
@@ -72,7 +72,7 @@ def test_make_genedata_dataframe():
 
 def test_export_genedata_pkl():
     path_refFlat = "tests/data/example_refFlat.txt"
-    test_dataframe = export_refflat_txt_to_pkl.make_genedata_dataframe(path_refFlat)
+    test_dataframe = export_refflat_txt_to_pkl.built_gene_dataframe(path_refFlat)
     export_refflat_txt_to_pkl.export_genedata_pkl(test_dataframe, "/tmp/test.pkl")
     with open("/tmp/test.pkl", mode="rb") as pklfile:
         test = pickle.load(pklfile)

@@ -13,7 +13,8 @@ class GeneData:
     exon_start_list: list[int]
     exon_end_list: list[int]
 
-def get_exon_seq(ds: GeneData) -> str:
+
+def generate_exon_seq(ds: GeneData) -> str:
     # make seq spliced by exons (NOT cds)
     exon_seq_list = []
     for s in range(len(ds.exon_start_list)):
@@ -40,7 +41,7 @@ def get_stopcodon_exon_num(ds: GeneData) -> int:
     return exon_index
 
 
-def get_cdsseq(
+def generate_cdsseq(
     ds: GeneData,
     exon_seq: str,
     startcodon_exon_num: int,

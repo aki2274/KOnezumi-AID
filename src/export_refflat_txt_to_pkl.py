@@ -14,7 +14,7 @@ def read_refFlat(path_refFlat: str) -> list[str]:
     return result
 
 
-def make_genedata_dataframe(path_refFlat: str) -> pd.DataFrame:
+def built_gene_dataframe(path_refFlat: str) -> pd.DataFrame:
     values_refflat = read_refFlat(path_refFlat)
     key_names = [
         "geneName",

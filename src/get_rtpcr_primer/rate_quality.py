@@ -14,7 +14,7 @@ class GeneData:
     exon_end_list: list[int]
 
 
-def check_exon_junction(
+def verify_crossing_exonjunction(
     candidate_primer_info: list[dict],
     exon_range: list[int],
 ) -> list[dict]:
@@ -41,7 +41,7 @@ def check_exon_junction(
     return return_info
 
 
-def rewrite_primer_pair_intron_len(
+def autocorrect_intron_len(
     candidate_primer_info: list[dict],
     ds: GeneData,
     # dsは、単一遺伝子のGeneDataクラスのインスタンス。転写産物名だけだと複数マッチしてる可能性ありなので修正いる？

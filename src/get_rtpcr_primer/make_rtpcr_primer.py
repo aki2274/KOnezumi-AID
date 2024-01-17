@@ -3,7 +3,7 @@ import primer3
 from src.get_reverse_complement import get_revcomp
 
 
-def export_candidate_primer(exon_seq: str) -> dict:
+def export_candidate(exon_seq: str) -> dict:
     # the result is a dict of primer3 output.
     result = primer3.bindings.design_primers(
         seq_args={
@@ -37,7 +37,7 @@ def export_candidate_primer(exon_seq: str) -> dict:
     return result
 
 
-def get_candidate_primer_pairs(
+def generate_candidate_info(
     exon_seq: str,
     primer_result: dict,
     exon_range: list[list[int, int]],

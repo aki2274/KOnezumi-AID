@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
 from nominate_candidate_stopcodon.search_candidate_index import (
-    get_candidate_stopcodon_index,
+    search_candidate_index,
 )
 
 test_candidate_cds_seq = [
@@ -21,7 +21,7 @@ expected = [[3], [3], [3], [3], [3, 12]]
     zip(test_candidate_cds_seq, expected),
 )
 def test_get_candidate_stopcodon_index(test_candidate_cds_seq, expected):
-    assert get_candidate_stopcodon_index(test_candidate_cds_seq) == expected
+    assert search_candidate_index(test_candidate_cds_seq) == expected
 
 
 test_not_candidate_cds_seq = [
@@ -39,4 +39,4 @@ expected = [[], [], []]
     zip(test_not_candidate_cds_seq, expected),
 )
 def test_get_not_candidate_stopcodon_index(test_not_candidate_cds_seq, expected):
-    assert get_candidate_stopcodon_index(test_not_candidate_cds_seq) == expected
+    assert search_candidate_index(test_not_candidate_cds_seq) == expected

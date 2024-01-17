@@ -1,11 +1,11 @@
 from __future__ import annotations
 import pytest
-from create_gene_dataclass import set_dataclass
-from nominate_candidate_stopcodon.translate_exonindex_to_orf import (
-    get_range_of_exon,
-    get_candidate_stopcodon_index_incds_to_inexon,
-    get_candidate_stopcodon_exon_num,
-    add_num_to_change_orf_index,
+from create_gene_dataclass import create_dataclass
+from nominate_candidate_stopcodon.translate_idex_in_exon_to_orf import (
+    get_exon_range,
+    translate_incds_index_to_exon,
+    get_exonnum_of_candidate,
+    translate_idex_in_exon_to_orf,
 )
 
 input_genedata = [
@@ -55,7 +55,7 @@ expected = [[0, 15], [15, 40], [40, 75]], [[0, 3], [3, 11], [11, 25]]
 )
 def test_get_range_of_exon(test_name, input_genedata, orf_seq_dict, expected):
     assert (
-        get_range_of_exon(set_dataclass(test_name, input_genedata, orf_seq_dict))
+        get_exon_range(create_dataclass(test_name, input_genedata, orf_seq_dict))
         == expected
     )
 
@@ -90,8 +90,8 @@ def test_get_candidate_stopcodon_index_incds_to_inexon(
     expected,
 ):
     assert (
-        get_candidate_stopcodon_index_incds_to_inexon(
-            set_dataclass(test_name, input_genedata, orf_seq_dict),
+        translate_incds_index_to_exon(
+            create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon,
             exon_range,
             exon_num,
@@ -113,7 +113,7 @@ expected = [[1]]
     ),
 )
 def test_get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range, expected):
-    assert get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range) == expected
+    assert get_exonnum_of_candidate(candidate_stopcodon, exon_range) == expected
 
 
 exon_index = [[1]]
@@ -142,8 +142,8 @@ def test_add_num_to_change_orf_index(
     expected,
 ):
     assert (
-        add_num_to_change_orf_index(
-            set_dataclass(test_name, input_genedata, orf_seq_dict),
+        translate_idex_in_exon_to_orf(
+            create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_inexon,
             exon_range,
             exon_index,
@@ -182,8 +182,8 @@ def test_nocandidate_get_candidate_stopcodon_index_incds_to_inexon(
     expected,
 ):
     assert (
-        get_candidate_stopcodon_index_incds_to_inexon(
-            set_dataclass(test_name, input_genedata, orf_seq_dict),
+        translate_incds_index_to_exon(
+            create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon,
             exon_range,
             exon_num,
@@ -207,7 +207,7 @@ expected = [[]]
 def test_nocandidate_get_candidate_stopcodon_exon_num(
     candidate_stopcodon, exon_range, expected
 ):
-    assert get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range) == expected
+    assert get_exonnum_of_candidate(candidate_stopcodon, exon_range) == expected
 
 
 exon_index = [[]]
@@ -236,8 +236,8 @@ def test_nocandidate_add_num_to_change_orf_index(
     expected,
 ):
     assert (
-        add_num_to_change_orf_index(
-            set_dataclass(test_name, input_genedata, orf_seq_dict),
+        translate_idex_in_exon_to_orf(
+            create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_inexon,
             exon_range,
             exon_index,

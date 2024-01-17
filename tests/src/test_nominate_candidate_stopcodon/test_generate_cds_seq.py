@@ -1,12 +1,12 @@
 from __future__ import annotations
 import pytest
 from dataclasses import dataclass
-from create_gene_dataclass import set_dataclass
+from create_gene_dataclass import create_dataclass
 from nominate_candidate_stopcodon.generate_cds_seq import (
-    get_exon_seq,
+    generate_exon_seq,
     get_startcodon_exon_num,
     get_stopcodon_exon_num,
-    get_cdsseq,
+    generate_cdsseq,
 )
 
 #####
@@ -64,7 +64,8 @@ expected_return = [
 )
 def test_get_exon_seq(test_name, input_genedata, orf_seq_dict, expected):
     assert (
-        get_exon_seq(set_dataclass(test_name, input_genedata, orf_seq_dict)) == expected
+        generate_exon_seq(create_dataclass(test_name, input_genedata, orf_seq_dict))
+        == expected
     )
 
 
@@ -83,7 +84,9 @@ expected_return = [0, 1]
 )
 def test_get_startcodon_exon_num(test_name, input_genedata, orf_seq_dict, expected):
     assert (
-        get_startcodon_exon_num(set_dataclass(test_name, input_genedata, orf_seq_dict))
+        get_startcodon_exon_num(
+            create_dataclass(test_name, input_genedata, orf_seq_dict)
+        )
         == expected
     )
 
@@ -103,7 +106,9 @@ expected_return = [2, 2]
 )
 def test_get_stopcodon_exon_num(test_name, input_genedata, orf_seq_dict, expected):
     assert (
-        get_stopcodon_exon_num(set_dataclass(test_name, input_genedata, orf_seq_dict))
+        get_stopcodon_exon_num(
+            create_dataclass(test_name, input_genedata, orf_seq_dict)
+        )
         == expected
     )
 
@@ -137,8 +142,8 @@ def test_get_cdsseq(
     test_name, input_genedata, orf_seq_dict, exon_seq, start_index, end_index, expected
 ):
     assert (
-        get_cdsseq(
-            set_dataclass(test_name, input_genedata, orf_seq_dict),
+        generate_cdsseq(
+            create_dataclass(test_name, input_genedata, orf_seq_dict),
             exon_seq,
             start_index,
             end_index,
