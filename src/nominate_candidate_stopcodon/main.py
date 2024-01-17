@@ -18,6 +18,10 @@ from nominate_candidate_stopcodon.search_candidate_codon import (
 from nominate_candidate_stopcodon.translate_index_in_exon_to_orf import (
     translate_index_in_exon_to_orf,
 )
+from src.nominate_candidate_stopcodon.make_grna_from_index import (
+    convert_ct_grna,
+    convert_ga_grna,
+)
 
 
 @dataclass
@@ -72,5 +76,7 @@ def main(ds: GeneData) -> list[dict]:
         index for index in candidate_ptc_index_in_orf if index in ga_guideseq_index
     ]
     # 10. transform candidate index to candidate gRNA
-    candidate_grna = []
-    return candidate_grna
+    ct_candidate_grna = convert_ct_grna(ds, ct_candidate_index)
+    ga_candidate_grna = convert_ga_grna(ds, ga_candidate_index)
+
+    return ct_candidate_grna, ga_candidate_grna
