@@ -1,11 +1,11 @@
 from __future__ import annotations
 import pytest
 from create_gene_dataclass import create_dataclass
-from nominate_candidate_stopcodon.translate_idex_in_exon_to_orf import (
+from nominate_candidate_stopcodon.translate_index_in_exon_to_orf import (
     get_exon_range,
     translate_incds_index_to_exon,
     get_exonnum_of_candidate,
-    translate_idex_in_exon_to_orf,
+    translate_index_in_exon_to_orf,
 )
 
 input_genedata = [
@@ -142,7 +142,7 @@ def test_add_num_to_change_orf_index(
     expected,
 ):
     assert (
-        translate_idex_in_exon_to_orf(
+        translate_index_in_exon_to_orf(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_inexon,
             exon_range,
@@ -236,7 +236,7 @@ def test_nocandidate_add_num_to_change_orf_index(
     expected,
 ):
     assert (
-        translate_idex_in_exon_to_orf(
+        translate_index_in_exon_to_orf(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_inexon,
             exon_range,

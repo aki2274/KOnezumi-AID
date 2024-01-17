@@ -73,7 +73,7 @@ def get_exonnum_of_candidate(
 
 
 # 足すべき数値を取得、足す
-def translate_idex_in_exon_to_orf(
+def translate_index_in_exon_to_orf(
     ds: GeneData,
     candidate_codon_index_inexon_list: list[int],
     exon_range_list: list[int],
