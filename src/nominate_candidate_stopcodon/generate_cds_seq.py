@@ -41,12 +41,10 @@ def get_stopcodon_exon_num(ds: GeneData) -> int:
     return exon_index
 
 
-def generate_cdsseq(
-    ds: GeneData,
-    exon_seq: str,
-    startcodon_exon_num: int,
-    endcodon_exon_num: int,
-) -> str:
+def generate_cdsseq(ds: GeneData) -> str:
+    exon_seq = generate_exon_seq(ds)
+    startcodon_exon_num = get_startcodon_exon_num(ds)
+    endcodon_exon_num = get_stopcodon_exon_num(ds)
     # return cds seq
     stopcodon_index = ds.exon_end_list[endcodon_exon_num] - ds.cdsEnd
     if endcodon_exon_num - ds.exonCount + 1 == 0:  # if stopcodon is in the last exon
