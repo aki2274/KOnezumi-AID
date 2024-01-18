@@ -38,17 +38,21 @@ class GeneData:
 
 def main(ds: GeneData) -> list[dict]:
     """
-    Export candidate stopcodon index in genome.
+    Export candidate gRNA.
 
     Args:
         ds(dataclass): a dataclass of one transcription.
+
     Returns:
-        list[int]: the candidate stopcodon index in the transcription.
+        list[dict]: the candidate gRNA.
 
     Example:
         >>> ds = GeneData(...)
         >>> main(ds)
-        [10, 20, 30, 40]
+        {
+            "ct_candidate_grna": ["NNNCAGNNNNNNNNNNNNNNPGG"],
+            "ga_candidate_grna": ["CCPNNNNNNNNNNNNNNNNNTGG"],
+        }
     """
     # 1. generate cds seq
     cds_seq = generate_cdsseq(ds)
