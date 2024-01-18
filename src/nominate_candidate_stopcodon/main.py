@@ -1,10 +1,10 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from nominate_candidate_stopcodon.find_candidate_seq import (
+from src.nominate_candidate_stopcodon.find_candidate_seq import (
     find_ct_target_seq,
     find_ga_target_seq,
 )
-from nominate_candidate_stopcodon.transform_candidateseq_to_index import (
+from src.nominate_candidate_stopcodon.transform_candidateseq_to_index import (
     transform_ct_guideseq_to_index,
     transform_ga_guideseq_to_index,
 )
@@ -12,10 +12,10 @@ from src.nominate_candidate_stopcodon.generate_cds_seq import (
     get_startcodon_exon_num,
     generate_cdsseq,
 )
-from nominate_candidate_stopcodon.search_candidate_codon import (
+from src.nominate_candidate_stopcodon.search_candidate_codon import (
     search_candidate_index,
 )
-from nominate_candidate_stopcodon.translate_index_in_exon_to_orf import (
+from src.nominate_candidate_stopcodon.translate_index_in_exon_to_orf import (
     translate_index_in_exon_to_orf,
 )
 from src.nominate_candidate_stopcodon.make_grna_from_index import (
