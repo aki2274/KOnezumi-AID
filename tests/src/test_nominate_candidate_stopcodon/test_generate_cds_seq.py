@@ -1,8 +1,8 @@
 from __future__ import annotations
 import pytest
 from dataclasses import dataclass
-from create_gene_dataclass import create_dataclass
-from nominate_candidate_stopcodon.generate_cds_seq import (
+from src.create_gene_dataclass import create_dataclass
+from src.nominate_candidate_stopcodon.generate_cds_seq import (
     generate_exon_seq,
     get_startcodon_exon_num,
     get_stopcodon_exon_num,
@@ -127,26 +127,18 @@ expected_return = [
 
 
 @pytest.mark.parametrize(
-    "test_name,input_genedata,orf_seq_dict,exon_seq,start_index,end_index,expected",
+    "test_name,input_genedata,orf_seq_dict,expected",
     zip(
         test_name,
         [input_genedata] * len(test_name),
         [orf_seq_dict] * len(test_name),
-        exon_seq,
-        startcodon_exonindex,
-        endcodon_exonindex,
         expected_return,
     ),
 )
-def test_get_cdsseq(
-    test_name, input_genedata, orf_seq_dict, exon_seq, start_index, end_index, expected
-):
+def test_get_cdsseq(test_name, input_genedata, orf_seq_dict, expected):
     assert (
         generate_cdsseq(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
-            exon_seq,
-            start_index,
-            end_index,
         )
         == expected
     )
