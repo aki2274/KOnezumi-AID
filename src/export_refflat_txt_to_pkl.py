@@ -3,9 +3,14 @@ import pandas as pd
 import pickle
 
 
-def read_refFlat(path_refFlat: str) -> list[str]:
+def read_refFlat(path_refFlat: str) -> list[list[str]]:
+    result = []
     with open(path_refFlat, "r") as file:
-        return [line.strip().split("\t") for line in file]
+        for line in file:
+            # Split the line and strip trailing commas from each element
+            line = [element.strip(",") for element in line.strip().split("\t")]
+            result.append(line)
+    return result
 
 
 def built_gene_dataframe(path_refFlat: str) -> pd.DataFrame:
