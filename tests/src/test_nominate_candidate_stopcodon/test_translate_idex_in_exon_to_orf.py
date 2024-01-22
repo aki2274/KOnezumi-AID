@@ -41,7 +41,7 @@ orf_seq_dict = {
     "t2::chr1:0-30": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN",
 }
 test_name = ["t1", "t2"]
-expected = [[0, 15], [15, 40], [40, 75]], [[0, 3], [3, 11], [11, 25]]
+expected = [[0, 14], [15, 39], [40, 74]], [[0, 2], [3, 10], [11, 24]]
 
 
 @pytest.mark.parametrize(
@@ -63,7 +63,7 @@ def test_get_range_of_exon(test_name, input_genedata, orf_seq_dict, expected):
 # there is the candidate stopcodon
 test_name = ["t1"]
 candidate_stopcodon_index_incds = [[6]]  # len(ATGNN2CAG)-3. length of C in cds seq
-exon_range = [[[0, 15], [15, 40], [40, 75]]]
+exon_range = [[[0, 14], [15, 39], [40, 74]]]
 exon_num = [0]
 expected = [[16]]  # len(NNNNNNNNNNATGNN2CAG)-3. length of C in exon seq
 
@@ -149,7 +149,7 @@ def test_add_num_to_change_orf_index(
 # there is no candidate stopcodon
 test_name = ["t2"]
 candidate_stopcodon_index_incds = [[]]
-exon_range = [[[0, 3], [3, 11], [11, 25]]]
+exon_range = [[[0, 2], [3, 10], [11, 24]]]
 exon_num = [1]
 expected = [[]]
 

@@ -19,10 +19,9 @@ def get_exon_range(ds: GeneData):
     exon_range_list = []
     num = 0
     for s in range(len(ds.exon_start_list)):
-        element_list = []
-        element_list.append(num)
         num += ds.exon_end_list[s] - ds.exon_start_list[s]
-        element_list.append(num)
-        exon_range_list.append(element_list)
+        exon_range_list.append(
+            [num - (ds.exon_end_list[s] - ds.exon_start_list[s]), num - 1]
+        )
 
     return exon_range_list
