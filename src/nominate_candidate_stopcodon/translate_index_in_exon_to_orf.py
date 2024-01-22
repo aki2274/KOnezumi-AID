@@ -30,7 +30,6 @@ def translate_incds_index_to_exon(
 ) -> list[int]:
     # get the exon range
     exon_range_list = get_exon_range(ds)
-    candidate_index_array = np.array(candidate_stopcodon_cds_index_list)
     # the distance from the start of orf to the exon which has startcodon
     dist_to_startcodon_exon = exon_range_list[cdsStart_exon_index][0]
     # the distance from the start of the exon(has startcodn) to the startcodon(cdsStart)
@@ -39,21 +38,23 @@ def translate_incds_index_to_exon(
         - int(ds.exon_start_list[cdsStart_exon_index])
         + dist_to_startcodon_exon
     )
-    candidate_codon_index_inexon = (candidate_index_array + dist_to_startcodon).tolist()
+    # calculate candidate codon index in exon
+    candidate_codon_index_inexon = [
+        index + dist_to_startcodon for index in candidate_stopcodon_cds_index_list
+    ]
     return candidate_codon_index_inexon
 
 
-def get_exonnum_of_candidate(candidate_codon_index_inexon: list[int], exon_range_list):
+def get_exonnum_of_candidate(
+    candidate_codon_index_inexon: list[int], exon_range_list: list[tuple[int, int]]
+) -> list[int]:
     # create a list of exon number of candidate codon is in
-    exon_index_list = []
-    for t in range(len(candidate_codon_index_inexon)):
-        for s in range(len(exon_range_list)):
-            if (
-                exon_range_list[s][0]
-                <= candidate_codon_index_inexon[t]
-                <= exon_range_list[s][1]
-            ):
-                exon_index_list.append(s)
+    exon_index_list = [
+        s
+        for t in candidate_codon_index_inexon
+        for s, (start, end) in enumerate(exon_range_list)
+        if start <= t <= end
+    ]
     return exon_index_list
 
 
