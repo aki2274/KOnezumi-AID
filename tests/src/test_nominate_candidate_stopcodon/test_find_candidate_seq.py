@@ -1,6 +1,6 @@
 from __future__ import annotations
 import pytest
-from nominate_candidate_stopcodon.find_candidate_seq import (
+from src.nominate_candidate_stopcodon.find_candidate_seq import (
     find_ct_target_seq,
     find_ga_target_seq,
 )
