@@ -16,12 +16,10 @@ class GeneData:
 
 def generate_exon_seq(ds: GeneData) -> str:
     # make seq spliced by exons (NOT cds)
-    exon_seq_list = []
-    for s in range(len(ds.exon_start_list)):
-        exon_start = ds.exon_start_list[s] - ds.txStart
-        exon_end = ds.exon_end_list[s] - ds.txStart
-        exon_seq = ds.orf_seq[exon_start:exon_end]
-        exon_seq_list.append(exon_seq)
+    exon_seq_list = [
+        ds.orf_seq[start - ds.txStart : end - ds.txStart]
+        for start, end in zip(ds.exon_start_list, ds.exon_end_list)
+    ]
     return "".join(exon_seq_list)
 
 
