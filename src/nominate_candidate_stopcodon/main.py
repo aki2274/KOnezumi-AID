@@ -1,5 +1,7 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from pathlib import Path
+import pickle
+from src.create_gene_dataclass import GeneData, create_dataclass
 from src.nominate_candidate_stopcodon.find_candidate_seq import (
     find_ct_target_seq,
     find_ga_target_seq,
@@ -23,37 +25,31 @@ from src.nominate_candidate_stopcodon.make_grna_from_index import (
     convert_ga_grna,
 )
 
-
-@dataclass
-class GeneData:
-    orf_seq: str
-    txStart: int
-    txend: int
-    cdsStart: int
-    cdsEnd: int
-    exonCount: int
-    exon_start_list: list[int]
-    exon_end_list: list[int]
+Path("data").mkdir(parents=True, exist_ok=True)
+refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
+seq_path = Path("data", "sorted_seq_dict.pkl")
 
 
-def main(ds: GeneData) -> list[dict]:
+def nominate_candidate_stopcodon(
+    transcript_name: str, refflat_path: Path, seq_path: Path
+) -> list[dict]:
     """
     Export candidate gRNA.
 
     Args:
-        ds(dataclass): a dataclass of one transcription.
-
+        transcript_name (str): transcript name.
     Returns:
         list[dict]: the candidate gRNA.
 
     Example:
-        >>> ds = GeneData(...)
-        >>> main(ds)
-        {
-            "ct_candidate_grna": ["NNNCAGNNNNNNNNNNNNNNPGG"],
-            "ga_candidate_grna": ["CCPNNNNNNNNNNNNNNNNNTGG"],
-        }
+        >>> transcript_name = "NM_001011874"
+        >>> main(transcript_name)
+        ['CCAGTATCAGCCCACTTGGTAGG', 'GACAACTATGTAAAGAGACTTGG'], ['CCACTTATTCTCAGATTTTGGGG', 'CCACTTCATTGATGCTACTGGTT']
     """
+    # 0. get gene data
+    refflat = pickle.load(open(refflat_path, "rb"))
+    seq_dict = pickle.load(open(seq_path, "rb"))
+    ds = create_dataclass(transcript_name, refflat, seq_dict)
     # 1. generate cds seq
     cds_seq = generate_cdsseq(ds)
     # 2. search candidate index
@@ -84,3 +80,6 @@ def main(ds: GeneData) -> list[dict]:
     ga_candidate_grna = convert_ga_grna(ds, ga_candidate_index)
 
     return ct_candidate_grna, ga_candidate_grna
+
+
+print(nominate_candidate_stopcodon("NM_009654", refflat_path, seq_path))
