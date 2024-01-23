@@ -1,19 +1,7 @@
 from __future__ import annotations
-from dataclasses import dataclass
 import numpy as np
 from src.get_range_of_exon import get_exon_range
-
-
-@dataclass
-class GeneData:
-    orf_seq: str
-    txStart: int
-    txend: int
-    cdsStart: int
-    cdsEnd: int
-    exonCount: int
-    exon_start_list: list[int]
-    exon_end_list: list[int]
+from src.create_gene_dataclass import GeneData
 
 
 #####

@@ -17,6 +17,7 @@ class GeneData:
 def create_dataclass(
     transcript_name: str, refflat_data: list[dict], gene_seq_data: dict
 ) -> GeneData:
+    # create dataclass from the transcript name.transcript name is unique on the refflat data.
     data_filtered_transcript = next(
         (
             gene_data

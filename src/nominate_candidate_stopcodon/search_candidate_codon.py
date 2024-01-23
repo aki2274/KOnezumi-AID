@@ -3,7 +3,7 @@ import re
 
 
 def search_candidate_index(cds_seq: str) -> list:
-    # search the position of candidate stopcodon (the index of C in CAA, CAG, CGA, or T in TGG)
+    # search the position of candidate PTC (the index of C in CAA, CAG, CGA, or T in TGG)
     matches = re.finditer(r"(?=(CAA)|(?=(CAG))|(?=(CGA))|(?=(TGG)))", cds_seq)
     candidate_codon_index_list = [
         match.start() for match in matches if (match.start() % 3) == 0

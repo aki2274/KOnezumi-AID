@@ -9,7 +9,6 @@ def read_fasta(path_fasta: str) -> dict[str, str]:
     fasta = {}
     identifier = None
     sequence = ""
-
     with open(path_fasta, "r") as file:
         for line in file:
             line = line.strip()
@@ -21,11 +20,11 @@ def read_fasta(path_fasta: str) -> dict[str, str]:
             else:
                 sequence += line
         fasta[identifier] = sequence
-
     return fasta
 
 
 def create_dict_keys(genedata: DataFrame) -> dict[str, str]:
+    # get query list, which is the key of the sequence dictionary
     name_list = genedata["name"].tolist()
     query_list = []
     for transcript_name in name_list:
@@ -41,6 +40,8 @@ def create_dict_keys(genedata: DataFrame) -> dict[str, str]:
 def create_sorted_seq_dict(
     gene_data: DataFrame, sort_gene_dataframe: DataFrame, gene_seq: dict[str, str]
 ) -> dict[str, str]:
+    # convert the sequence dictionary from fasta to the sorted sequence dictionary.
+    # reverse the sequence if the transcript is on the negative strand
     normal_query = create_dict_keys(gene_data)
     sorted_query = create_dict_keys(sort_gene_dataframe)
     name_list = gene_data["name"].tolist()

@@ -1,17 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
-
-
-@dataclass
-class GeneData:
-    orf_seq: str
-    txStart: int
-    txend: int
-    cdsStart: int
-    cdsEnd: int
-    exonCount: int
-    exon_start_list: list[int]
-    exon_end_list: list[int]
+from src.create_gene_dataclass import GeneData
 
 
 def generate_exon_seq(ds: GeneData) -> str:
@@ -24,7 +12,7 @@ def generate_exon_seq(ds: GeneData) -> str:
 
 
 def get_startcodon_exon_num(ds: GeneData) -> int:
-    # search the position of startcodon by exon number
+    # search the exon number of startcodon
     for s in range(len(ds.exon_start_list)):
         if ds.exon_start_list[s] <= ds.cdsStart <= ds.exon_end_list[s]:
             exon_index = s
@@ -32,7 +20,7 @@ def get_startcodon_exon_num(ds: GeneData) -> int:
 
 
 def get_stopcodon_exon_num(ds: GeneData) -> int:
-    # search the position of stopcodon by exon number
+    # search the exon number of stopcodon
     for s in range(len(ds.exon_start_list)):
         if ds.exon_start_list[s] <= ds.cdsEnd <= ds.exon_end_list[s]:
             exon_index = s
@@ -43,7 +31,7 @@ def generate_cdsseq(ds: GeneData) -> str:
     exon_seq = generate_exon_seq(ds)
     startcodon_exon_num = get_startcodon_exon_num(ds)
     endcodon_exon_num = get_stopcodon_exon_num(ds)
-    # return cds seq
+
     stopcodon_index = ds.exon_end_list[endcodon_exon_num] - ds.cdsEnd
     if endcodon_exon_num - ds.exonCount + 1 == 0:  # if stopcodon is in the last exon
         exon_seq_to_stopcodon = exon_seq[:-stopcodon_index]
@@ -55,7 +43,7 @@ def generate_cdsseq(ds: GeneData) -> str:
             )
         exon_seq_to_stopcodon = exon_seq[
             :-stopcodon_index
-        ]  # get seq from exon_seq to stopcodon
+        ]  # get seq from exon_seq start to stopcodon
 
     startcodon_index = ds.cdsStart - ds.exon_start_list[startcodon_exon_num]
     if startcodon_exon_num == 0:  # if startcodon is in the first exon

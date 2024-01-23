@@ -16,6 +16,25 @@ import pickle
 def export_pkl(
     refflat_path: Path, fasta_path: Path, out_refflat_path: Path, out_dict_path
 ) -> None:
+    """
+    Export the refflat file and the sequence dictionary as pickle files.
+
+    Args:
+        refflat_path (Path): path to the refflat file.
+        fasta_path (Path): path to the fasta file.
+        out_refflat_path (Path): path to the output refflat file.
+        out_dict_path (Path): path to the output sequence dictionary file.
+
+    Returns:
+        None
+    example:
+        >>> refflat_path = Path("data", "refFlat.txt")
+        >>> fasta_path = Path("data", "mm39.fa")
+        >>> out_refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
+        >>> out_dict_path = Path("data", "sorted_seq_dict.pkl")
+        >>> export_pkl(refflat_path, fasta_path, out_refflat_path, out_dict_path)
+    then, the sorted files are exported as pickle.
+    """
     gene_data = built_gene_dataframe(refflat_path)
     gene_data = remove_genename_duplicates(gene_data)
     sorted_gene_data = remove_genename_duplicates(sort_gene_dataframe(gene_data))

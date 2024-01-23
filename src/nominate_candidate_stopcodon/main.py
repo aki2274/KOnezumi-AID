@@ -25,10 +25,6 @@ from src.nominate_candidate_stopcodon.make_grna_from_index import (
     convert_ga_grna,
 )
 
-Path("data").mkdir(parents=True, exist_ok=True)
-refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
-seq_path = Path("data", "sorted_seq_dict.pkl")
-
 
 def nominate_candidate_stopcodon(
     transcript_name: str, refflat_path: Path, seq_path: Path
@@ -80,6 +76,3 @@ def nominate_candidate_stopcodon(
     ga_candidate_grna = convert_ga_grna(ds, ga_candidate_index)
 
     return ct_candidate_grna, ga_candidate_grna
-
-
-print(nominate_candidate_stopcodon("NM_009654", refflat_path, seq_path))
