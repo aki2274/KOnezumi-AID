@@ -5,6 +5,7 @@ from src.get_reverse_complement import get_revcomp
 
 def export_candidate(exon_seq: str) -> dict:
     # the result is a dict of primer3 output.
+    # those parameters are referred from TAKARA bio.
     result = primer3.bindings.design_primers(
         seq_args={
             "SEQUENCE_TEMPLATE": exon_seq,
