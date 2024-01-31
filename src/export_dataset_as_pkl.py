@@ -2,12 +2,12 @@ from __future__ import annotations
 from pathlib import Path
 import pickle
 import subprocess
-from src.convert_refflat_to_bed import convert_refFlat_to_bed
-from src.generate_seq_dict_from_fasta import (
+from convert_refflat_to_bed import convert_refFlat_to_bed
+from generate_seq_dict_from_fasta import (
     read_fasta,
     create_sorted_seq_dict,
 )
-from src.generate__sorted_genedata_from_refflat import (
+from generate__sorted_genedata_from_refflat import (
     built_gene_dataframe,
     sort_gene_dataframe,
     remove_genename_duplicates,
@@ -59,6 +59,6 @@ def export_pkl(
     seq_dict = create_sorted_seq_dict(gene_data, sorted_gene_data, gene_seq)
     with open(out_dict_path, "wb") as f:
         pickle.dump(seq_dict, f)
-    refflat_data = gene_data.to_dict(orient="records")
+    refflat_data = sorted_gene_data.to_dict(orient="records")
     with open(out_refflat_path, "wb") as f:
         pickle.dump(refflat_data, f)

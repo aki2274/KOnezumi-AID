@@ -1,6 +1,6 @@
 from __future__ import annotations
 import re
-from src.create_gene_dataclass import GeneData
+from ..create_gene_dataclass import GeneData
 
 
 def convert_ct_grna(ds: GeneData, indices: list[int]) -> list[str]:

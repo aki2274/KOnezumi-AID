@@ -1,6 +1,5 @@
 from __future__ import annotations
 import pandas as pd
-import pickle
 
 
 def read_refFlat(path_refFlat: str) -> list[list[str]]:
