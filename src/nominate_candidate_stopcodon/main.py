@@ -34,11 +34,15 @@ def nominate_candidate_stopcodon(
 
     Args:
         transcript_name (str): transcript name.
+        refflat_path (Path): created refflat pkl file.
+        seq_path (Path): created seq dict pkl file.
     Returns:
         list[dict]: the candidate gRNA.
 
     Example:
         >>> transcript_name = "NM_001011874"
+        >>> refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
+        >>> seq_path = Path("data", "sorted_seq_dict.pkl")
         >>> main(transcript_name)
         ['CCAGTATCAGCCCACTTGGTAGG', 'GACAACTATGTAAAGAGACTTGG'], ['CCACTTATTCTCAGATTTTGGGG', 'CCACTTCATTGATGCTACTGGTT']
     """
