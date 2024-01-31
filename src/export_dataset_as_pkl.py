@@ -40,13 +40,22 @@ def export_pkl(
     then, the sorted files are exported as pickle.
     """
     bed_output_path = Path("data", "refFlat.bed")
+    bed_fast_path = Path("data", "bed_refFlat.fa")
     convert_refFlat_to_bed(refflat_path, bed_output_path)
     translate_bed_path = Path("src", "translate_bed_from_refflat.sh")
-    subprocess.run(["bash", translate_bed_path, str(fasta_path), str(bed_output_path)])
+    subprocess.run(
+        [
+            "bash",
+            translate_bed_path,
+            str(fasta_path),
+            str(bed_output_path),
+            str(bed_fast_path),
+        ]
+    )
     gene_data = built_gene_dataframe(refflat_path)
     gene_data = remove_genename_duplicates(gene_data)
     sorted_gene_data = remove_genename_duplicates(sort_gene_dataframe(gene_data))
-    gene_seq = read_fasta(fasta_path)
+    gene_seq = read_fasta(bed_fast_path)
     seq_dict = create_sorted_seq_dict(gene_data, sorted_gene_data, gene_seq)
     with open(out_dict_path, "wb") as f:
         pickle.dump(seq_dict, f)
