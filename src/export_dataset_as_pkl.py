@@ -1,6 +1,8 @@
 from __future__ import annotations
-from pandas import DataFrame
 from pathlib import Path
+import pickle
+import subprocess
+from src.convert_refflat_to_bed import convert_refFlat_to_bed
 from src.generate_seq_dict_from_fasta import (
     read_fasta,
     create_sorted_seq_dict,
@@ -10,7 +12,9 @@ from src.generate__sorted_genedata_from_refflat import (
     sort_gene_dataframe,
     remove_genename_duplicates,
 )
-import pickle
+
+
+Path("data").mkdir(parents=True, exist_ok=True)
 
 
 def export_pkl(
@@ -20,8 +24,8 @@ def export_pkl(
     Export the refflat file and the sequence dictionary as pickle files.
 
     Args:
-        refflat_path (Path): path to the refflat file.
-        fasta_path (Path): path to the fasta file.
+        refflat_path (Path): path to the refflat.txt file.
+        fasta_path (Path): path to the mm39 fasta file.
         out_refflat_path (Path): path to the output refflat file.
         out_dict_path (Path): path to the output sequence dictionary file.
 
@@ -35,6 +39,10 @@ def export_pkl(
         >>> export_pkl(refflat_path, fasta_path, out_refflat_path, out_dict_path)
     then, the sorted files are exported as pickle.
     """
+    bed_output_path = Path("data", "refFlat.bed")
+    convert_refFlat_to_bed(refflat_path, bed_output_path)
+    translate_bed_path = Path("src", "translate_bed_from_refflat.sh")
+    subprocess.run(["bash", translate_bed_path, str(fasta_path), str(bed_output_path)])
     gene_data = built_gene_dataframe(refflat_path)
     gene_data = remove_genename_duplicates(gene_data)
     sorted_gene_data = remove_genename_duplicates(sort_gene_dataframe(gene_data))
