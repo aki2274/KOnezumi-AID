@@ -2,8 +2,8 @@ from __future__ import annotations
 from pathlib import Path
 import pickle
 import subprocess
-from convert_refflat_to_bed import convert_refFlat_to_bed
-from generate_seq_dict_from_fasta import (
+from src.convert_refflat_to_bed import convert_refFlat_to_bed
+from src.generate_seq_dict_from_fasta import (
     read_fasta,
     create_sorted_seq_dict,
 )

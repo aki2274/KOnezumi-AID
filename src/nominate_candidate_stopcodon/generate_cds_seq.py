@@ -1,5 +1,5 @@
 from __future__ import annotations
-from create_gene_dataclass import GeneData
+from src.create_gene_dataclass import GeneData
 
 
 def generate_exon_seq(ds: GeneData) -> str:

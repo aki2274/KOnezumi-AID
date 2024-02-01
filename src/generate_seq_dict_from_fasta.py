@@ -2,7 +2,6 @@ from __future__ import annotations
 from pandas import DataFrame
 from pathlib import Path
 from src.get_reverse_complement import get_revcomp
-import pickle
 
 
 def read_fasta(path_fasta: str) -> dict[str, str]:
@@ -45,11 +44,12 @@ def create_sorted_seq_dict(
     normal_query = create_dict_keys(gene_data)
     sorted_query = create_dict_keys(sort_gene_dataframe)
     name_list = gene_data["name"].tolist()
+    copy_dict = gene_seq.copy()
     for transcript_name, n_que in zip(name_list, normal_query):
         fil_data = gene_data[gene_data["name"] == transcript_name]
         if (fil_data["strand"] == "-").any():
-            gene_seq[n_que] = get_revcomp(gene_seq[n_que])
+            copy_dict[n_que] = get_revcomp(gene_seq[n_que])
     result = {}
     for n_que, s_que in zip(normal_query, sorted_query):
-        result[s_que] = gene_seq[n_que]
+        result[s_que] = copy_dict[n_que]
     return result
