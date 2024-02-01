@@ -18,13 +18,6 @@ from src.get_rtpcr_primer.export_fasta import export_fasta
 from src.get_rtpcr_primer.add_uniqueness import add_uniqueness
 
 
-Path("data", "uniq").mkdir(parents=True, exist_ok=True)
-
-miss_0_path = Path("data", "uniq", "0_miss_counts.txt")
-miss_1_path = Path("data", "uniq", "1_miss_counts.txt")
-miss_2_path = Path("data", "uniq", "2_miss_counts.txt")
-
-
 def export_primers(
     transcript_name: str,
     refflat_path: str,
@@ -50,6 +43,13 @@ def export_primers(
     refflat = pickle.load(open(refflat_path, "rb"))
     seq_dict = pickle.load(open(seq_path, "rb"))
     ds = create_dataclass(transcript_name, refflat, seq_dict)
+
+    Path("data", "uniq").mkdir(parents=True, exist_ok=True)
+
+    miss_0_path = Path("data", "uniq", "0_miss_counts.txt")
+    miss_1_path = Path("data", "uniq", "1_miss_counts.txt")
+    miss_2_path = Path("data", "uniq", "2_miss_counts.txt")
+
     # 1. get exon range
     exon_range = get_exon_range(ds)
     # 2. get exon seq

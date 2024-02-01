@@ -6,7 +6,7 @@ def verify_crossing_exonjunction(
     candidate_primer_info: list[dict],
     exon_range: list[int],
 ) -> list[dict]:
-    # primer_index_list is the index in exon. if return True, then the primer is in exon junction.
+    # primer_index_list means the indexes in exon. if return True, then the primer is in exon junction.
     return_info = candidate_primer_info.copy()
     for primer_data in return_info:
         left_primer_length = len(primer_data["left_primer"])
@@ -32,11 +32,8 @@ def verify_crossing_exonjunction(
 def autocorrect_intron_len(
     candidate_primer_info: list[dict],
     ds: GeneData,
-    # dsは、単一遺伝子のGeneDataクラスのインスタンス。転写産物名だけだと複数マッチしてる可能性ありなので修正いる？
 ) -> list[dict]:
-    # get intron length between primer pairs
-    intron_len_list = []
-    # the length is not considered the length of the exons in primer pairs.
+    # the length is not considered the length of the exons that primer pairs are in.
     for primer_data in candidate_primer_info:
         intron_len = (
             ds.exon_start_list[primer_data["right_primer_exon_num"]]
