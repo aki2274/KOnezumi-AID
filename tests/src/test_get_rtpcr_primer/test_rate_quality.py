@@ -1,6 +1,5 @@
 from __future__ import annotations
-import pytest
-from dataclasses import dataclass
+from src.create_gene_dataclass import GeneData
 from get_rtpcr_primer.rate_quality import (
     verify_crossing_exonjunction,
     autocorrect_intron_len,
@@ -115,18 +114,6 @@ def test_not_cross_check_exon_junction():
         },
     ]
     assert verify_crossing_exonjunction(False_primer_info, exon_range) == expected
-
-
-@dataclass
-class GeneData:
-    orf_seq: str
-    txStart: int
-    txend: int
-    cdsStart: int
-    cdsEnd: int
-    exonCount: int
-    exon_start_list: list[int]
-    exon_end_list: list[int]
 
 
 # the inputdata is considered that only ~_exon_num.
