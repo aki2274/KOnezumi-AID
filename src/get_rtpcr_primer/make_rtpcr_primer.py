@@ -40,7 +40,6 @@ def export_candidate(exon_seq: str) -> dict:
 
 def generate_candidate_info(
     exon_seq: str,
-    primer_result: dict,
     exon_range: list[list[int, int]],
 ) -> list[dict]:
     """
@@ -51,21 +50,25 @@ def generate_candidate_info(
     right_primer_start : the start position of right primer
     _primer_exon_num : the exon number of left primer
     """
+    primer_result = export_candidate(exon_seq)
     candidate_primer_info = [
         {
+            "left": left_primer_data["SEQUENCE"],
+            "right": right_primer_data["SEQUENCE"],
+            "left_tm": left_primer_data["TM"],
+            "right_tm": right_primer_data["TM"],
+            "left_end": exon_seq.find(left_primer_data["SEQUENCE"])
+            + len(left_primer_data["SEQUENCE"]),
+            "right_start": exon_seq.find(get_revcomp(right_primer_data["SEQUENCE"])),
+            "product_size": pair_data["PRODUCT_SIZE"],
             "left_cross_junction": False,
             "right_cross_junction": False,
             "intron_len": 0,
-            "left_primer": left_primer_data["SEQUENCE"],
-            "right_primer": right_primer_data["SEQUENCE"],
-            "left_primer_end": exon_seq.find(left_primer_data["SEQUENCE"])
-            + len(left_primer_data["SEQUENCE"]),
-            "right_primer_start": exon_seq.find(
-                get_revcomp(right_primer_data["SEQUENCE"])
-            ),
         }
-        for (left_primer_data, right_primer_data) in zip(
-            primer_result["PRIMER_LEFT"], primer_result["PRIMER_RIGHT"]
+        for (pair_data, left_primer_data, right_primer_data) in zip(
+            primer_result["PRIMER_PAIR"],
+            primer_result["PRIMER_LEFT"],
+            primer_result["PRIMER_RIGHT"],
         )
     ]
     for primer in candidate_primer_info:
@@ -74,14 +77,14 @@ def generate_candidate_info(
         for s in range(len(exon_range)):
             if (
                 exon_range[s][exon_start]
-                <= primer["left_primer_end"]
+                <= primer["left_end"]
                 <= exon_range[s][exon_end]
             ):
-                primer["left_primer_exon_num"] = s
+                primer["leftr_exon_num"] = s
             if (
                 exon_range[s][exon_start]
-                <= primer["right_primer_start"]
+                <= primer["right_start"]
                 <= exon_range[s][exon_end]
             ):
-                primer["right_primer_exon_num"] = s
+                primer["right_exon_num"] = s
     return candidate_primer_info
