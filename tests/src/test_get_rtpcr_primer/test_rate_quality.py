@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
 from dataclasses import dataclass
-from get_rtpcr_primer.rate_quality import (
+from src.get_rtpcr_primer.rate_quality import (
     verify_crossing_exonjunction,
     autocorrect_intron_len,
 )
