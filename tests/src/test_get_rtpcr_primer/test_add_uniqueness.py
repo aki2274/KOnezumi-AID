@@ -1,5 +1,4 @@
 from __future__ import annotations
-import pytest
 from src.get_rtpcr_primer.add_uniqueness import read_uniqueness, add_uniqueness
 
 

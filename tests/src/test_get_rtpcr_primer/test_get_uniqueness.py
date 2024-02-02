@@ -1,5 +1,4 @@
 from __future__ import annotations
-import pytest
 import subprocess
 
 
@@ -13,7 +12,9 @@ def read_sam(file_path: str):
 def test_get_uniqueness():
     test_shell = "bowtie tests/data/indexes/e_coli tests/data/reads/e_coli_1000.fq > /tmp/bowtie_test.sam"
 
-    process = subprocess.Popen(["bash", "-c", test_shell], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(
+        ["bash", "-c", test_shell], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
     _, stderr = process.communicate()
 
     # 終了コードが成功(0)でない場合は例外を発生させ、エラーメッセージを表示する

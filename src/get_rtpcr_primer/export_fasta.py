@@ -2,8 +2,16 @@ from __future__ import annotations
 
 
 def export_fasta(
-    data: list[dict], file_path: str = "data/reads/candidateprimer.fa"
+    data: list[dict], file_path: str = "data/uniq/candidateprimer.fa"
 ) -> None:
+    """
+    export candidate primer seqs to fasta file to exceute bowtie
+    example output file: index and seqs are equal.
+        >ATGCATGC
+        ATCGATCG
+        >AAAAAAAAAAA
+        AAAAAAAAAAA
+    """
     processed_names = set()
 
     with open(file_path, "w") as file:

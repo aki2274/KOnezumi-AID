@@ -14,13 +14,15 @@ def add_uniqueness(
     miss_1_path: Path,
     miss_2_path: Path,
 ) -> list[dict]:
+    # import primer uniqueness from files
     miss_0 = read_uniqueness(miss_0_path)
     miss_1 = read_uniqueness(miss_1_path)
     miss_2 = read_uniqueness(miss_2_path)
-
-    for primer in candidate:
-        left_primer = primer["left_primer"]
-        right_primer = primer["right_primer"]
+    # add uniqueness info to candidate
+    return_candidate = candidate.copy()
+    for primers in return_candidate:
+        left_primer = primers["left_primer"]
+        right_primer = primers["right_primer"]
 
         left_0_uniq = next((x[0] for x in miss_0 if x[1] == left_primer), 0)
         right_0_uniq = next((x[0] for x in miss_0 if x[1] == right_primer), 0)
@@ -29,11 +31,11 @@ def add_uniqueness(
         left_2_uniq = next((x[0] for x in miss_2 if x[1] == left_primer), 0)
         right_2_uniq = next((x[0] for x in miss_2 if x[1] == right_primer), 0)
 
-        primer["left_0_uniq"] = left_0_uniq
-        primer["right_0_uniq"] = right_0_uniq
-        primer["left_1_uniq"] = left_1_uniq
-        primer["right_1_uniq"] = right_1_uniq
-        primer["left_2_uniq"] = left_2_uniq
-        primer["right_2_uniq"] = right_2_uniq
+        primers["left_0_uniq"] = left_0_uniq
+        primers["right_0_uniq"] = right_0_uniq
+        primers["left_1_uniq"] = left_1_uniq
+        primers["right_1_uniq"] = right_1_uniq
+        primers["left_2_uniq"] = left_2_uniq
+        primers["right_2_uniq"] = right_2_uniq
 
-    return candidate
+    return return_candidate
