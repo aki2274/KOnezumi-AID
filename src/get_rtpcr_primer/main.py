@@ -1,6 +1,9 @@
 from __future__ import annotations
+import sys
 import pickle
 from pathlib import Path
+
+sys.path.append(str(Path(__file__).parent.parent.parent))
 import subprocess
 from src.create_gene_dataclass import GeneData, create_dataclass
 from src.get_range_of_exon import get_exon_range
@@ -10,7 +13,7 @@ from src.get_rtpcr_primer.make_rtpcr_primer import (
     export_candidate,
     generate_candidate_info,
 )
-from get_rtpcr_primer.rate_quality import (
+from src.get_rtpcr_primer.rate_quality import (
     verify_crossing_exonjunction,
     autocorrect_intron_len,
 )
