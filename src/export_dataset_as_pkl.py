@@ -1,5 +1,8 @@
 from __future__ import annotations
+import sys
 from pathlib import Path
+
+sys.path.append(str(Path(__file__).parent.parent))
 import pickle
 import subprocess
 from src.convert_refflat_to_bed import convert_refFlat_to_bed

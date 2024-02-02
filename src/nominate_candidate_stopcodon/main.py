@@ -1,5 +1,8 @@
 from __future__ import annotations
+import sys
 from pathlib import Path
+
+sys.path.append(str(Path(__file__).parent.parent.parent))
 import pickle
 from src.create_gene_dataclass import GeneData, create_dataclass
 from src.nominate_candidate_stopcodon.find_candidate_seq import (
