@@ -23,5 +23,4 @@ def find_ga_target_seq(orf_seq: str) -> list[str]:
         if any(match[i : i + 3] == "TGG" for i in range(17, 21))
     ]
     # Remove duplicates while preserving order
-    targets = list(dict.fromkeys(targets))
-    return targets
+    return list(dict.fromkeys(targets))

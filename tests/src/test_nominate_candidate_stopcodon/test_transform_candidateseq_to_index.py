@@ -1,6 +1,6 @@
 from __future__ import annotations
 import pytest
-from nominate_candidate_stopcodon.transform_guideseq_to_index import (
+from src.nominate_candidate_stopcodon.transform_candidateseq_to_index import (
     transform_ct_guideseq_to_index,
     transform_ga_guideseq_to_index,
 )

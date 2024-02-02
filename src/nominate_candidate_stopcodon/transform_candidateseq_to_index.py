@@ -18,7 +18,7 @@ def transform_ct_guideseq_to_index(orf_seq: str, targets: list[str]) -> list[int
 
 def transform_ga_guideseq_to_index(orf_seq: str, targets: list[str]) -> list[int]:
     # Get the index of "T" in "TGG" in candidate gRNA (the index on the ORF)
-    # To reduce the work of comparison with candidate stop codons (TGG), obtain the index of "T".
+    # To reduce the work of comparison with candidate PTC (TGG), obtain the index of "T".
     positions = []
     for target in targets:
         for match in re.finditer(target, orf_seq):

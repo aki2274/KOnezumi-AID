@@ -2,7 +2,7 @@ from __future__ import annotations
 
 
 def get_revcomp(orf_seq: str) -> str:
-    """Reverse complement a DNA sequence."""
+    """Reverse complement a sequence."""
     complement = {
         "A": "T",
         "C": "G",

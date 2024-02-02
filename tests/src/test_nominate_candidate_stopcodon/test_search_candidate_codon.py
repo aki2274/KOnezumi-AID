@@ -1,6 +1,6 @@
 from __future__ import annotations
 import pytest
-from nominate_candidate_stopcodon.search_candidate_index import (
+from src.nominate_candidate_stopcodon.search_candidate_codon import (
     search_candidate_index,
 )
 

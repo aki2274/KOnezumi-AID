@@ -25,8 +25,6 @@ def export_primers(
 ) -> list[dict]:
     """
     Export candidate rt-qPCR primers, based on exon seq.
-
-
         {
             "left_cross_junction": 0,
             "right_cross_junction": 0,
