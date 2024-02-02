@@ -8,14 +8,19 @@ build-backend = "poetry.masonry.api"
 name = "KOnezumi-AID"
 version = "0.1.0"
 description = "Project description"
-authors = ["Your Name <your@email.com>"]
+authors = ["Taki Taito <s2110307@u.tsukuba.ac.jp>"]
+readme = "README.md"
+license = "Proprietary"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Proprietary License",
+    "Operating System :: Linux/MacOS",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-
-[tool.poetry.dev-dependencies]
-# Add your development dependencies here
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+numpy = "^1.26.0"
+pandas = "^2.1.1"
+primer3-py = "^2.0.1"
