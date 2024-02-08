@@ -1,4 +1,3 @@
 #!/bin/bash
-
 # Execute bedtools getfasta command
-bedtools getfasta -fi $1 -bed $2 -name+ > $3
+bedtools getfasta -name+ -fi $1 -bed $2 -fo $3
