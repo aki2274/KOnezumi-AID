@@ -1,4 +1,4 @@
-from src.generate__sorted_genedata_from_refflat import (
+from src.generate_sorted_genedata_from_refflat import (
     read_refFlat,
     built_gene_dataframe,
     sort_gene_dataframe,

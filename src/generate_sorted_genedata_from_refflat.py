@@ -2,7 +2,7 @@ from __future__ import annotations
 import pandas as pd
 
 
-def read_refFlat(path_refFlat: str) -> list[list[str]]:
+def read_refflat(path_refFlat: str) -> list[list[str]]:
     # Read the refFlat file and return a list of lists.
     result = []
     with open(path_refFlat, "r") as file:
@@ -15,7 +15,7 @@ def read_refFlat(path_refFlat: str) -> list[list[str]]:
 
 def built_gene_dataframe(path_refFlat: str) -> pd.DataFrame:
     # label the columns according to the UCSC refFlat file
-    values_refflat = read_refFlat(path_refFlat)
+    values_refflat = read_refflat(path_refFlat)
     key_names = [
         "geneName",
         "name",
@@ -42,26 +42,16 @@ def sort_transcript_data(genedata: pd.DataFrame) -> pd.DataFrame:
     sorted_data["txEnd"] = int(sorted_data["txEnd"]) - int(sorted_data["txStart"])
     sorted_data["cdsStart"] = int(sorted_data["cdsStart"]) - int(sorted_data["txStart"])
     sorted_data["cdsEnd"] = int(sorted_data["cdsEnd"]) - int(sorted_data["txStart"])
-    sorted_data["exonEnds"] = [
-        int(element) - int(sorted_data["txStart"])
-        for element in sorted_data["exonEnds"]
-    ]
-    sorted_data["exonStarts"] = [
-        int(element) - int(sorted_data["txStart"])
-        for element in sorted_data["exonStarts"]
-    ]
+    sorted_data["exonEnds"] = [int(element) - int(sorted_data["txStart"]) for element in sorted_data["exonEnds"]]
+    sorted_data["exonStarts"] = [int(element) - int(sorted_data["txStart"]) for element in sorted_data["exonStarts"]]
     sorted_data["txStart"] = int(sorted_data["txStart"]) - int(sorted_data["txStart"])
     if sorted_data["strand"] == "-":
         # if the transcript is on the negative strand, reverse start and end.
         sorted_data["txStart"] = abs(sorted_data["txStart"] - sorted_data["txEnd"])
         sorted_data["cdsStart"] = abs(sorted_data["cdsStart"] - sorted_data["txEnd"])
         sorted_data["cdsEnd"] = abs(sorted_data["cdsEnd"] - sorted_data["txEnd"])
-        sorted_data["exonEnds"] = [
-            abs(element - sorted_data["txEnd"]) for element in sorted_data["exonEnds"]
-        ]
-        sorted_data["exonStarts"] = [
-            abs(element - sorted_data["txEnd"]) for element in sorted_data["exonStarts"]
-        ]
+        sorted_data["exonEnds"] = [abs(element - sorted_data["txEnd"]) for element in sorted_data["exonEnds"]]
+        sorted_data["exonStarts"] = [abs(element - sorted_data["txEnd"]) for element in sorted_data["exonStarts"]]
         sorted_data["txEnd"] = sorted_data["txEnd"] - sorted_data["txEnd"]
 
         txStart = sorted_data["txStart"]
