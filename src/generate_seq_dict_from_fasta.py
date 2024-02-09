@@ -1,6 +1,5 @@
 from __future__ import annotations
-from pandas import DataFrame
-from pathlib import Path
+import pandas as pd
 from src.get_reverse_complement import get_revcomp
 
 
@@ -22,12 +21,12 @@ def read_fasta(path_fasta: str) -> dict[str, str]:
     return fasta
 
 
-def create_dict_keys(genedata: DataFrame) -> dict[str, str]:
+def create_dict_keys(gene_data: pd.DataFrame) -> dict[str, str]:
     # get query list, which is the key of the sequence dictionary
-    name_list = genedata["name"].tolist()
+    name_list = gene_data["name"].tolist()
     query_list = []
     for transcript_name in name_list:
-        data_filtered_transcript = genedata[genedata["name"] == transcript_name]
+        data_filtered_transcript = gene_data[gene_data["name"] == transcript_name]
         chrom = str(data_filtered_transcript["chrom"].iloc[0])
         txStart = str(data_filtered_transcript["txStart"].iloc[0])
         txEnd = str(data_filtered_transcript["txEnd"].iloc[0])
@@ -37,7 +36,7 @@ def create_dict_keys(genedata: DataFrame) -> dict[str, str]:
 
 
 def create_sorted_seq_dict(
-    gene_data: DataFrame, sort_gene_dataframe: DataFrame, gene_seq: dict[str, str]
+    gene_data: pd.DataFrame, sort_gene_dataframe: pd.DataFrame, gene_seq: dict[str, str]
 ) -> dict[str, str]:
     # convert the sequence dictionary from fasta to the sorted sequence dictionary.
     # reverse the sequence if the transcript is on the negative strand
