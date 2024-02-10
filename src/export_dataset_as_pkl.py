@@ -1,8 +1,5 @@
 from __future__ import annotations
-import sys
 from pathlib import Path
-
-sys.path.append(str(Path(__file__).parent.parent))
 import pickle
 import subprocess
 from src.convert_refflat_to_bed import convert_refFlat_to_bed
@@ -20,7 +17,9 @@ from src.generate_sorted_genedata_from_refflat import (
 Path("data").mkdir(parents=True, exist_ok=True)
 
 
-def export_pkl(refflat_path: Path, fasta_path: Path, out_refflat_path: Path, out_dict_path) -> None:
+def export_pkl(
+    refflat_path: Path, fasta_path: Path, out_refflat_path: Path, out_dict_path
+) -> None:
     """
     Export the refflat file and the sequence dictionary as pickle files.
 

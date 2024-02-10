@@ -1,9 +1,6 @@
 from __future__ import annotations
-import sys
 import pickle
 from pathlib import Path
-
-sys.path.append(str(Path(__file__).parent.parent.parent))
 import subprocess
 from src.create_gene_dataclass import GeneData, create_dataclass
 from src.get_range_of_exon import get_exon_range
