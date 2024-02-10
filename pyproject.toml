@@ -10,7 +10,7 @@ version = "0.1.0"
 description = "Project description"
 authors = ["Taki Taito <s2110307@u.tsukuba.ac.jp>"]
 readme = "README.md"
-license = "Proprietary"
+license = "MIT"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Proprietary License",
