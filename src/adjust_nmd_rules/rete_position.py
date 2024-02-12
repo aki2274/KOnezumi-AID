@@ -24,25 +24,22 @@ def label_in_start_150bp(cand_grna: list[dict], ds: GeneData) -> list[dict]:
     return result
 
 
-"""
+
 # the case of 1 exon
 # Targeting exons whose sequences differ by more than half of the coding region
 def label_in_front_half(cand_grna: list[dict], ds: GeneData) -> list[dict]:
-    result = cand_grna.copy()
+    result = []
     cds = generate_cdsseq(ds)
-    for grna in result:
+    for grna in cand_grna:
         if "ct_seq" in grna:
-            if re.search(grna["ct_seq"], cds).start() + 3 > len(cds) / 2:
-                grna["back_half"] = True
-            else:
-                grna["back_half"] = False
+            ptc_index = re.search(grna["ct_seq"], cds)
+            if ptc_index is not None and ptc_index.start() + 3 < len(cds) / 2:
+                result.append(grna)            
         elif "ga_seq" in grna:
-            if re.search(grna["ga_seq"], cds).start() + 19 > len(cds) / 2:
-                grna["back_half"] = True
-            else:
-                grna["back_half"] = False
+            ptc_index = re.search(grna["ga_seq"], cds)
+            if ptc_index is not None and ptc_index.start() + 19 < len(cds) / 2:
+                result.append(grna)
     return result
-"""
 
 
 # the case of multi exon
