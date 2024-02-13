@@ -13,7 +13,7 @@ readme = "README.md"
 license = "MIT"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Proprietary License",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: Linux/MacOS",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
