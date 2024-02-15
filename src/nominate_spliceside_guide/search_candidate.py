@@ -15,7 +15,7 @@ def search_candidate(ds: GeneData) -> List[Dict[str, int]]:
             "exon_num": i + 2,
         }
         for i, s in enumerate(ds.exon_start_list[1:])
-        if "CC" in ds.orf_seq[s - 22 : s + 3][:4]
+        if "CC" in ds.orf_seq[s - 22 : s + 3][:4] and "AG" in ds.orf_seq[s - 2 : s]
     ]
 
     donor_candidates = [
@@ -29,7 +29,7 @@ def search_candidate(ds: GeneData) -> List[Dict[str, int]]:
             "exon_num": i + 1,
         }
         for i, e in enumerate(ds.exon_end_list[:-1])
-        if "CC" in ds.orf_seq[e - 21 : e + 4][:4]
+        if "CC" in ds.orf_seq[e - 21 : e + 4][:4] and "GT" in ds.orf_seq[e : e + 2]
     ]
 
     return acceptor_candidates, donor_candidates
