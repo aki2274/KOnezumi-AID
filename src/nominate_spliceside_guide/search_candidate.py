@@ -2,7 +2,9 @@ from __future__ import annotations
 from src.create_gene_dataclass import GeneData
 
 
-def search_candidate(ds: GeneData) -> tuple[list[dict[int, str], list[dict[int, str]]]]:
+def search_splice_candidate(
+    ds: GeneData,
+) -> tuple[list[dict[int, str], list[dict[int, str]]]]:
     acceptor_candidates = [
         {
             "seq": ds.orf_seq[s - 22 : s + 3][

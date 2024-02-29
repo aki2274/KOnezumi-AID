@@ -27,7 +27,7 @@ from src.nominate_candidate_stopcodon.make_grna_from_index import (
 
 
 def nominate_candidate_stopcodon(
-    transcript_name: str, refflat_path: Path, seq_path: Path
+    ds: GeneData,
 ) -> list[dict]:
     """
     Export candidate gRNA.
@@ -46,10 +46,6 @@ def nominate_candidate_stopcodon(
         >>> main(transcript_name)
         ['CCAGTATCAGCCCACTTGGTAGG', 'GACAACTATGTAAAGAGACTTGG'], ['CCACTTATTCTCAGATTTTGGGG', 'CCACTTCATTGATGCTACTGGTT']
     """
-    # 0. get gene data
-    refflat = pickle.load(open(refflat_path, "rb"))
-    seq_dict = pickle.load(open(seq_path, "rb"))
-    ds = create_dataclass(transcript_name, refflat, seq_dict)
     # 1. generate cds seq
     cds_seq = generate_cdsseq(ds)
     # 2. search candidate index

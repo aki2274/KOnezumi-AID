@@ -1,5 +1,5 @@
 import pytest
-from src.nominate_spliceside_guide.search_candidate import search_candidate
+from src.nominate_spliceside_guide.search_candidate import search_splice_candidate
 from src.create_gene_dataclass import GeneData
 
 
@@ -15,7 +15,7 @@ def test_no_candidate():
         [0, 30, 80],
         [25, 50, 100],
     )
-    result = search_candidate(data)
+    result = search_splice_candidate(data)
     print(result)
     excepted = ([], [])
     assert result == excepted
@@ -32,7 +32,7 @@ def test_has_candidate():
         [0, 30, 80],
         [25, 50, 100],
     )
-    result = search_candidate(data)
+    result = search_splice_candidate(data)
     print(result)
     excepted = (
         [{"seq": "CCNNNNNNNNNNNNNNNNNAGNN", "exon_num": 3}],

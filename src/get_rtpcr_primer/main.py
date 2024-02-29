@@ -18,11 +18,7 @@ from src.get_rtpcr_primer.export_fasta import export_fasta
 from src.get_rtpcr_primer.add_uniqueness import add_uniqueness
 
 
-def export_primers(
-    transcript_name: str,
-    refflat_path: str,
-    seq_path: str,
-) -> list[dict]:
+def export_primers(ds: GeneData) -> list[dict]:
     """
     Export candidate rt-qPCR primers, based on exon seq.
         {
@@ -37,11 +33,6 @@ def export_primers(
             "right_primer_exon_num": 2,
         },....
     """
-    # 0. get gene data
-    refflat = pickle.load(open(refflat_path, "rb"))
-    seq_dict = pickle.load(open(seq_path, "rb"))
-    ds = create_dataclass(transcript_name, refflat, seq_dict)
-
     Path("data", "uniq").mkdir(parents=True, exist_ok=True)
 
     miss_0_path = Path("data", "uniq", "0_miss_counts.txt")
