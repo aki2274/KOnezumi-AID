@@ -45,6 +45,25 @@ def label_in_front_half(cand_grna: list[dict], ds: GeneData) -> list[dict]:
 """
 
 
+def label_in_front_half(cand_grna: list[dict], ds: GeneData) -> list[dict]:
+    result = cand_grna.copy()
+    cds = generate_cdsseq(ds)
+    for grna in cand_grna:
+        if "ct_seq" in grna:
+            ptc_index = re.search(grna["ct_seq"], cds)
+            if ptc_index is not None and ptc_index.start() + 3 < len(cds) / 2:
+                grna["front_half"] = True
+            else:
+                grna["front_half"] = False
+        elif "ga_seq" in grna:
+            ptc_index = re.search(grna["ga_seq"], cds)
+            if ptc_index is not None and ptc_index.start() + 19 < len(cds) / 2:
+                grna["front_half"] = True
+            else:
+                grna["front_half"] = False
+    return result
+
+
 # the case of multi exon
 def eliminate_in_last_exon(cand_grna: list[str], ds: GeneData) -> list[str]:
     result = []
