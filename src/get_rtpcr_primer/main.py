@@ -10,7 +10,7 @@ from src.get_rtpcr_primer.make_rtpcr_primer import (
     export_candidate,
     generate_candidate_info,
 )
-from get_rtpcr_primer.rate_quality import (
+from src.get_rtpcr_primer.rate_quality import (
     verify_crossing_exonjunction,
     autocorrect_intron_len,
 )

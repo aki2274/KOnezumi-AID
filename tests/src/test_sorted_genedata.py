@@ -1,5 +1,5 @@
-from src.generate__sorted_genedata_from_refflat import (
-    read_refFlat,
+from src.generate_sorted_genedata_from_refflat import (
+    read_refflat,
     built_gene_dataframe,
     sort_gene_dataframe,
     remove_genename_duplicates,
@@ -11,7 +11,7 @@ import pandas as pd
 
 def test_read_refFlat():
     path_refFlat = Path("tests/data/example_refFlat.txt")
-    test = read_refFlat(path_refFlat)
+    test = read_refflat(path_refFlat)
     expected = [
         [
             "Xkr4",

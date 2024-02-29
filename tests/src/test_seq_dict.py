@@ -4,7 +4,7 @@ from src.generate_seq_dict_from_fasta import (
     create_dict_keys,
     create_sorted_seq_dict,
 )
-from src.generate__sorted_genedata_from_refflat import (
+from src.generate_sorted_genedata_from_refflat import (
     built_gene_dataframe,
     sort_gene_dataframe,
 )
