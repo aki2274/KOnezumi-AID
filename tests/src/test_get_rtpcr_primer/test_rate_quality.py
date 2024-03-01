@@ -18,7 +18,7 @@ def test_cross_check_exon_junction():
             "left_end": 29,
             "right_start": 60,
             "left_exon_num": 0,
-            "righ_exon_num": 2,
+            "right_exon_num": 2,
         },
         # right primer is in exon junction
         {
