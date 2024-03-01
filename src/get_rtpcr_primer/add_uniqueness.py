@@ -21,8 +21,8 @@ def add_uniqueness(
     # add uniqueness info to candidate
     return_candidate = candidate.copy()
     for primers in return_candidate:
-        left_primer = primers["left_primer"]
-        right_primer = primers["right_primer"]
+        left_primer = primers["left"]
+        right_primer = primers["right"]
 
         left_0_uniq = next((x[0] for x in miss_0 if x[1] == left_primer), 0)
         right_0_uniq = next((x[0] for x in miss_0 if x[1] == right_primer), 0)
