@@ -1,9 +1,5 @@
 from __future__ import annotations
-import sys
-
-sys.path.append("..")
 import pandas as pd
-import ast
 import pickle
 from pathlib import Path
 from src.create_gene_dataclass import GeneData
@@ -15,12 +11,11 @@ from src.get_rtpcr_primer.main import export_primers
 
 
 def show_table(
-    adj_gRNA: list[dict], acand: list[dict], dcand: list[dict], cprimer: list[dict]
+    adjusted_gRNA_df: pd.DataFrame,
+    acceptor_cand_df: pd.DataFrame,
+    donor_cand_df: pd.DataFrame,
+    candidate_primers_df: pd.DataFrame,
 ) -> None:
-    adjusted_gRNA_df = pd.DataFrame(adj_gRNA)
-    acceptor_cand_df = pd.DataFrame(acand)
-    donor_cand_df = pd.DataFrame(dcand)
-    candidate_primers_df = pd.DataFrame(cprimer)
     print("PTC gRNA")
     print(adjusted_gRNA_df.to_string())
     print("Acceptor gRNA")
@@ -56,42 +51,36 @@ def excecute_main(name: str) -> tuple[list[dict], list[dict], list[dict], list[d
     if name.startswith("NM_") or name.startswith("NR_"):
         ds = create_dataclass(name, refflat, seq_dict)
         stop_cand, acceptor_cand, donor_cand, candidate_primers = konezumi_main(ds)
-        show_table(stop_cand, acceptor_cand, donor_cand, candidate_primers)
+        stop_cand_df = pd.DataFrame(stop_cand)
+        acceptor_cand_df = pd.DataFrame(acceptor_cand)
+        donor_cand_df = pd.DataFrame(donor_cand)
+        candidate_primers_df = pd.DataFrame(candidate_primers)
+        show_table(stop_cand_df, acceptor_cand_df, donor_cand_df, candidate_primers_df)
         # return konezumi_main(ds)
-    """
+
     else:
-        transcript_names = [entry.name for entry in refflat if entry.geneName == name]
-        stop_temp = []
-        acceptor_temp = []
-        donor_temp = []
-        primer_temp = []
-        for gene_name in transcript_names:
-            ds = create_dataclass(gene_name, refflat, seq_dict)
+        transcript_names = [d["name"] for d in refflat if d["geneName"] == name]
+        gene_cand = {}
+        for transcript in transcript_names:
+            ds = create_dataclass(transcript, refflat, seq_dict)
             adjusted_gRNA, acceptor_cand, donor_cand, candidate_primers = konezumi_main(
                 ds
             )
-            stop_temp.append(
-                ast.literal_eval(adjusted_gRNA["ct_seq"].replace("'", '"'))
+            stop_cand_df = pd.DataFrame(adjusted_gRNA)
+            acceptor_cand_df = pd.DataFrame(acceptor_cand)
+            donor_cand_df = pd.DataFrame(donor_cand)
+            candidate_primers_df = pd.DataFrame(candidate_primers)
+            gene_cand[transcript] = {
+                "stop_cand": stop_cand_df,
+                "acceptor_cand": acceptor_cand_df,
+                "donor_cand": donor_cand_df,
+                "candidate_primers": candidate_primers_df,
+            }
+        for k, v in gene_cand.items():
+            print(k)
+            show_table(
+                v["stop_cand"],
+                v["acceptor_cand"],
+                v["donor_cand"],
+                v["candidate_primers"],
             )
-            stop_temp.append(
-                ast.literal_eval(adjusted_gRNA["ga_seq"].replace("'", '"'))
-            )
-            acceptor_temp.append(
-                ast.literal_eval(acceptor_cand["seq"].replace("'", '"'))
-            )
-            donor_temp.append(ast.literal_eval(donor_cand["seq"].replace("'", '"')))
-            primer_temp.append(
-                ast.literal_eval(candidate_primers["primer"].replace("'", '"'))
-            )
-        common_ct_stop = find_common_dicts_by_key("ct_seq", stop_temp)
-        common_ga_stop = find_common_dicts_by_key("ga_seq", stop_temp)
-        common_stop = common_ct_stop + common_ga_stop
-        common_acceptor = find_common_dicts_by_key("seq", acceptor_temp)
-        common_donor = find_common_dicts_by_key("seq", donor_temp)
-        common_primer = find_common_dicts_by_key("primer", primer_temp)
-        show_table(common_stop, common_acceptor, common_donor, common_primer)
-        # return common_stop, common_acceptor, common_donor, common_primer
-"""
-
-
-excecute_main("NM_001011874")
