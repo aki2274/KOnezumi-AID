@@ -46,7 +46,7 @@ def export_primers(ds: GeneData) -> list[dict]:
     # 3. get candidate primer
     primer3_result = export_candidate(exon_seq)
     # 4. get candidate primer info
-    candidate_pairs = generate_candidate_info(exon_seq, primer3_result, exon_range)
+    candidate_pairs = generate_candidate_info(exon_seq, exon_range)
     # 5. rate quality of candidate primer
     candidate_pairs = verify_crossing_exonjunction(candidate_pairs, exon_range)
 
