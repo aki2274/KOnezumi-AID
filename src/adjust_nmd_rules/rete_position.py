@@ -65,7 +65,7 @@ def label_in_50bp_from_LEJ(cand_grna: list[dict], ds: GeneData) -> list[dict]:
         if "ct_seq" in grna:
             if (
                 re.search(grna["ct_seq"], ds.orf_seq).start() + 1
-                <= ds.exon_end_list[-2] - 50
+                >= ds.exon_end_list[-2] - 50
             ):
                 grna["50bp_from_LEJ"] = True
             else:
@@ -73,7 +73,7 @@ def label_in_50bp_from_LEJ(cand_grna: list[dict], ds: GeneData) -> list[dict]:
         elif "ga_seq" in grna:
             if (
                 re.search(grna["ga_seq"], ds.orf_seq).start() + 16
-                <= ds.exon_end_list[-2] - 50
+                >= ds.exon_end_list[-2] - 50
             ):
                 grna["50bp_from_LEJ"] = True
             else:

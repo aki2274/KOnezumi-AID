@@ -31,10 +31,29 @@ def adjust_nmd_rules(
     if ds.exonCount == 1:
         # 3. label in front half
         gRNA_list = label_in_front_half(gRNA_list, ds)
-        return gRNA_list
+        # 3. combine ct_cand and ga_cand to create cand_seq
+        result = []
+        for d in gRNA_list:
+            temp_dict = {}
+            for k, v in d.items():
+                if k == "ct_seq" or k == "ga_seq":
+                    temp_dict["cand"] = v
+                else:
+                    temp_dict[k] = v
+        return result
     else:
         # 4. eliminate in last exon
         gRNA_list = eliminate_in_last_exon(gRNA_list, ds)
         # 5. label in 50bp from LEJ
         gRNA_list = label_in_50bp_from_LEJ(gRNA_list, ds)
-        return gRNA_list
+        # 6. combine ct_cand and ga_cand to create cand_seq
+        result = []
+        for d in gRNA_list:
+            temp_dict = {}
+            for k, v in d.items():
+                if k == "ct_seq" or k == "ga_seq":
+                    temp_dict["cand"] = v
+                else:
+                    temp_dict[k] = v
+            result.append(temp_dict)
+        return result
