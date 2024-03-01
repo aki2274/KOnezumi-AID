@@ -80,7 +80,7 @@ def generate_candidate_info(
                 <= primer["left_end"]
                 <= exon_range[s][exon_end]
             ):
-                primer["leftr_exon_num"] = s
+                primer["left_exon_num"] = s
             if (
                 exon_range[s][exon_start]
                 <= primer["right_start"]
