@@ -2,14 +2,10 @@ from __future__ import annotations
 import pickle
 from pathlib import Path
 import subprocess
-from src.create_gene_dataclass import GeneData, create_dataclass
+from src.create_gene_dataclass import GeneData
 from src.get_range_of_exon import get_exon_range
 from src.nominate_candidate_stopcodon.generate_cds_seq import generate_exon_seq
-
-from src.get_rtpcr_primer.make_rtpcr_primer import (
-    export_candidate,
-    generate_candidate_info,
-)
+from src.get_rtpcr_primer.make_rtpcr_primer import generate_candidate_info
 from src.get_rtpcr_primer.rate_quality import (
     verify_crossing_exonjunction,
     autocorrect_intron_len,
@@ -43,8 +39,6 @@ def export_primers(ds: GeneData) -> list[dict]:
     exon_range = get_exon_range(ds)
     # 2. get exon seq
     exon_seq = generate_exon_seq(ds)
-    # 3. get candidate primer
-    primer3_result = export_candidate(exon_seq)
     # 4. get candidate primer info
     candidate_pairs = generate_candidate_info(exon_seq, exon_range)
     # 5. rate quality of candidate primer
@@ -53,7 +47,10 @@ def export_primers(ds: GeneData) -> list[dict]:
     candidate_pairs = autocorrect_intron_len(candidate_pairs, ds)
     export_fasta(candidate_pairs)
     path_get_uniqueness = Path("src", "get_rtpcr_primer", "get_uniqueness.sh")
-    subprocess.run([path_get_uniqueness])
+    process = subprocess.Popen(
+        ["bash", path_get_uniqueness], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    _, stderr = process.communicate()
     candidate_pairs = add_uniqueness(
         candidate_pairs, miss_0_path, miss_1_path, miss_2_path
     )
