@@ -17,9 +17,7 @@ from src.generate_sorted_genedata_from_refflat import (
 Path("data").mkdir(parents=True, exist_ok=True)
 
 
-def export_pkl(
-    refflat_path: Path, fasta_path: Path, out_refflat_path: Path, out_dict_path
-) -> None:
+def export_pkl(refflat_path: Path, fasta_path: Path) -> None:
     """
     Export the refflat file and the sequence dictionary as pickle files.
 
@@ -39,6 +37,9 @@ def export_pkl(
         >>> export_pkl(refflat_path, fasta_path, out_refflat_path, out_dict_path)
     then, the sorted files are exported as pickle.
     """
+    out_refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
+    out_dict_path = Path("data", "sorted_seq_dict.pkl")
+
     bed_output_path = Path("data", "refFlat.bed")
     bed_fast_path = Path("data", "bed_refFlat.fa")
     convert_refFlat_to_bed(refflat_path, bed_output_path)
