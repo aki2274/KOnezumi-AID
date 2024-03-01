@@ -30,7 +30,6 @@ def export_primers(ds: GeneData) -> list[dict]:
         },....
     """
     Path("data", "uniq").mkdir(parents=True, exist_ok=True)
-
     miss_0_path = Path("data", "uniq", "0_miss_counts.txt")
     miss_1_path = Path("data", "uniq", "1_miss_counts.txt")
     miss_2_path = Path("data", "uniq", "2_miss_counts.txt")
@@ -47,10 +46,7 @@ def export_primers(ds: GeneData) -> list[dict]:
     candidate_pairs = autocorrect_intron_len(candidate_pairs, ds)
     export_fasta(candidate_pairs)
     path_get_uniqueness = Path("src", "get_rtpcr_primer", "get_uniqueness.sh")
-    process = subprocess.Popen(
-        ["bash", path_get_uniqueness], stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    _, stderr = process.communicate()
+    subprocess.run(["bash", path_get_uniqueness], check=True)
     candidate_pairs = add_uniqueness(
         candidate_pairs, miss_0_path, miss_1_path, miss_2_path
     )
