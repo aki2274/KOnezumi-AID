@@ -26,6 +26,7 @@ def label_in_start_150bp(cand_grna: list[dict], ds: GeneData) -> list[dict]:
 
 # the case of single exon
 def label_in_front_half(cand_grna: list[dict], ds: GeneData) -> list[dict]:
+    # check if the PTC is not in the front half of the CDS
     result = []
     cds = generate_cdsseq(ds)
     for grna in cand_grna:
