@@ -40,6 +40,7 @@ def adjust_nmd_rules(
                     temp_dict["cand"] = v
                 else:
                     temp_dict[k] = v
+            result.append(temp_dict)
         return result
     else:
         # 4. eliminate in last exon
