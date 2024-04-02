@@ -5,8 +5,8 @@ from src.create_gene_dataclass import GeneData
 
 def test_no_candidate():
     data = GeneData(
-        "NNNNGGNNNNNNNNNNNNNNNNNNNGTNNNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNN",
-        # PAM isn't CC, Donor isn't GT , Acceptor isn't AG
+        "NNNNGGCCNNNNNNNTTTTNNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNN",
+        # PAM isn't CC,there is TTTT in the sequence, Donor isn't GT , Acceptor isn't AG, and .
         0,
         100,
         0,
@@ -16,7 +16,6 @@ def test_no_candidate():
         [25, 50, 100],
     )
     result = search_candidate(data)
-    print(result)
     excepted = ([], [])
     assert result == excepted
 
@@ -33,7 +32,6 @@ def test_has_candidate():
         [25, 50, 100],
     )
     result = search_candidate(data)
-    print(result)
     excepted = (
         [{"seq": "CCNNNNNNNNNNNNNNNNNAGNN", "exon_num": 3}],
         [
