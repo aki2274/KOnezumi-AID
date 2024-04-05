@@ -42,7 +42,6 @@ def create_dataclass(
 
     query = f"{transcript_name}::{chrom}:{txStart}-{txEnd}"
     orf_seq = gene_seq_data.get(query)
-    orf_seq = orf_seq.upper() if orf_seq else None
     if orf_seq is None:
         raise ValueError("Query not found in gene sequence data")
 
