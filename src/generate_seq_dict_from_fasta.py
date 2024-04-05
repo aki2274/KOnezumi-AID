@@ -50,5 +50,5 @@ def create_sorted_seq_dict(
             copy_dict[n_que] = get_revcomp(gene_seq[n_que])
     result = {}
     for n_que, s_que in zip(normal_query, sorted_query):
-        result[s_que] = copy_dict[n_que]
+        result[s_que] = copy_dict[n_que].upper()
     return result
