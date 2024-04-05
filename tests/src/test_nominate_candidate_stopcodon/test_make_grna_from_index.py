@@ -46,31 +46,31 @@ def test_convert_ga_grna():
 
 def test_nocandidate_convert_ct_grna():
     ds = GeneData(
-        orf_seq="ATGNCAGNNNNNNNNNNNNNNNNPGGATCGANNNNCAGNNNNNNNNNNNNNNPGGCATATAA",
+        orf_seq="ATGNCAGNNNNNNNNNNNNNNNNPGGATCGANNNNCAGNNNNNNNNNNNNNNPGGCATATAANNNNCAGNNNNNNNTTTTNNNNNPGGNNN",
         txStart=0,
-        txend=80,
+        txend=91,
         cdsStart=0,
-        cdsEnd=80,
+        cdsEnd=91,
         exonCount=1,
         exon_start_list=[0],
-        exon_end_list=[80],
+        exon_end_list=[91],
     )
-    indices = []
+    indices = [66]
     expected_grna = []
     assert convert_ct_grna(ds, indices) == expected_grna
 
 
 def test_nocandidate_convert_ga_grna():
     ds = GeneData(
-        orf_seq="ATGCCPNNNNNNNNNNNNNNTGGNNNATCGAGCCPNNNNNNNNNNNNNNNNNTGGCATATAA",
+        orf_seq="ATGCCPNNNNNNNNNNNNNNTGGNNNATCGAGCCPNNNNNNNNNNNNNNNNNTGGCATATCCPNNNNNNNNNNNNNNTTTTGGAA",
         txStart=0,
-        txend=80,
+        txend=85,
         cdsStart=0,
-        cdsEnd=80,
+        cdsEnd=85,
         exonCount=1,
         exon_start_list=[0],
-        exon_end_list=[80],
+        exon_end_list=[85],
     )
-    indices = []
+    indices = [80]
     expected_grna = []
     assert convert_ga_grna(ds, indices) == expected_grna

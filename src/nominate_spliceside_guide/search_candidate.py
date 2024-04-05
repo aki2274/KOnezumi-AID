@@ -3,7 +3,7 @@ from src.create_gene_dataclass import GeneData
 
 
 def search_candidate(ds: GeneData) -> tuple[list[dict[int, str], list[dict[int, str]]]]:
-    acceptor_candidates = [
+    acceptor_cands = [
         {
             "seq": ds.orf_seq[s - 22 : s + 3][
                 ds.orf_seq[s - 22 : s + 3]
@@ -17,7 +17,7 @@ def search_candidate(ds: GeneData) -> tuple[list[dict[int, str], list[dict[int, 
         if "CC" in ds.orf_seq[s - 22 : s + 3][:4] and "AG" in ds.orf_seq[s - 2 : s]
     ]
 
-    donor_candidates = [
+    donor_cands = [
         {
             "seq": ds.orf_seq[e - 21 : e + 4][
                 ds.orf_seq[e - 21 : e + 4]
@@ -29,6 +29,13 @@ def search_candidate(ds: GeneData) -> tuple[list[dict[int, str], list[dict[int, 
         }
         for i, e in enumerate(ds.exon_end_list[:-1])
         if "CC" in ds.orf_seq[e - 21 : e + 4][:4] and "GT" in ds.orf_seq[e : e + 2]
+    ]
+
+    acceptor_candidates = [
+        candidate for candidate in acceptor_cands if "TTTT" not in candidate["seq"]
+    ]
+    donor_candidates = [
+        candidate for candidate in donor_cands if "TTTT" not in candidate["seq"]
     ]
 
     return acceptor_candidates, donor_candidates
