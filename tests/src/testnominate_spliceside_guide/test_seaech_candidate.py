@@ -1,5 +1,5 @@
 import pytest
-from src.nominate_spliceside_guide.search_candidate import search_splice_candidate
+from src.nominate_spliceside_guide.search_candidate import search_candidate
 from src.create_gene_dataclass import GeneData
 
 
