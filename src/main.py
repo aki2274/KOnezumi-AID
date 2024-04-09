@@ -46,7 +46,7 @@ def find_common_dicts_by_key(key, lists):
     return result
 
 
-def excecute_main(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
+def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
     seq_path = Path("data", "sorted_seq_dict.pkl")
     refflat = pickle.load(open(refflat_path, "rb"))
@@ -87,3 +87,13 @@ def excecute_main(name: str) -> tuple[list[dict], list[dict], list[dict], list[d
                 v["donor_cand"],
                 v["candidate_primers"],
             )
+
+
+def main():
+    if __name__ == "__main__":
+        if len(sys.argv) < 2:
+            print("Please provide a gene symbol or transcript name as an argument.")
+            sys.exit(1)
+
+        gene_name = sys.argv[1]
+        excecute(gene_name)
