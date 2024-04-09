@@ -87,6 +87,3 @@ def excecute_main(name: str) -> tuple[list[dict], list[dict], list[dict], list[d
                 v["donor_cand"],
                 v["candidate_primers"],
             )
-
-
-excecute_main("NM_001011874")
