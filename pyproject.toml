@@ -1,11 +1,9 @@
-# FILEPATH: /D:/KOnezumi-AID/pyproject.toml
-
 [build-system]
-requires = ["poetry>=1.1.0"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "KOnezumi-AID"
+name = "KOnezumiAID"
 version = "0.1.0"
 description = "Project description"
 authors = ["Taki Taito <s2110307@u.tsukuba.ac.jp>"]
@@ -25,3 +23,6 @@ python = "^3.9"
 numpy = "^1.26.0"
 pandas = "^2.1.1"
 primer3-py = "^2.0.1"
+
+[tool.poetry.scripts]
+KOnezumiAID = "src.main:main"
