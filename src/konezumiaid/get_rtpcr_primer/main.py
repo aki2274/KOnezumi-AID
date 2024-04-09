@@ -45,7 +45,9 @@ def export_primers(ds: GeneData) -> list[dict]:
 
     candidate_pairs = autocorrect_intron_len(candidate_pairs, ds)
     export_fasta(candidate_pairs)
-    path_get_uniqueness = Path("src", "get_rtpcr_primer", "get_uniqueness.sh")
+    path_get_uniqueness = Path(
+        "src", "konezumiaid", "get_rtpcr_primer", "get_uniqueness.sh"
+    )
     subprocess.run(["bash", path_get_uniqueness], check=True)
     candidate_pairs = add_uniqueness(
         candidate_pairs, miss_0_path, miss_1_path, miss_2_path
