@@ -1,10 +1,9 @@
-from src.generate_sorted_genedata_from_refflat import (
+from konezumiaid.generate_sorted_genedata_from_refflat import (
     read_refflat,
     built_gene_dataframe,
     sort_gene_dataframe,
     remove_genename_duplicates,
 )
-import pickle
 from pathlib import Path
 import pandas as pd
 

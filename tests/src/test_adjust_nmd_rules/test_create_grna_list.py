@@ -1,5 +1,5 @@
 from __future__ import annotations
-from src.adjust_nmd_rules.create_grna_lsit import create_list
+from konezumiaid.adjust_nmd_rules.create_grna_lsit import create_list
 
 
 def test_create_list():

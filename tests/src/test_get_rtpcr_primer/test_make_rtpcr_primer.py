@@ -1,6 +1,6 @@
 from __future__ import annotations
 import pickle
-from src.get_rtpcr_primer.make_rtpcr_primer import (
+from konezumiaid.get_rtpcr_primer.make_rtpcr_primer import (
     export_candidate,
     generate_candidate_info,
 )

@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
-from src.create_gene_dataclass import create_dataclass
-from src.nominate_candidate_stopcodon.translate_index_in_exon_to_orf import (
+from konezumiaid.create_gene_dataclass import create_dataclass
+from konezumiaid.nominate_candidate_stopcodon.translate_index_in_exon_to_orf import (
     get_exon_range,
     translate_incds_index_to_exon,
     get_exonnum_of_candidate,

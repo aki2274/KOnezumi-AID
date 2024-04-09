@@ -1,6 +1,6 @@
 from __future__ import annotations
-from src.create_gene_dataclass import GeneData
-from get_rtpcr_primer.rate_quality import (
+from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.get_rtpcr_primer.rate_quality import (
     verify_crossing_exonjunction,
     autocorrect_intron_len,
 )

@@ -1,6 +1,5 @@
-import pytest
-from src.nominate_spliceside_guide.search_candidate import search_candidate
-from src.create_gene_dataclass import GeneData
+from konezumiaid.nominate_spliceside_guide.search_candidate import search_candidate
+from konezumiaid.create_gene_dataclass import GeneData
 
 
 def test_no_candidate():
