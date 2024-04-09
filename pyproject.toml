@@ -25,4 +25,4 @@ pandas = "^2.1.1"
 primer3-py = "^2.0.1"
 
 [tool.poetry.scripts]
-KOnezumiAID = "src.main:main"
+KOnezumiAID = "konezumiaid.main:main"

@@ -1,6 +1,6 @@
 from __future__ import annotations
 import primer3
-from src.get_reverse_complement import get_revcomp
+from konezumiaid.get_reverse_complement import get_revcomp
 
 
 def export_candidate(exon_seq: str) -> dict:

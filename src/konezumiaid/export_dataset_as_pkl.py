@@ -2,12 +2,12 @@ from __future__ import annotations
 from pathlib import Path
 import pickle
 import subprocess
-from src.convert_refflat_to_bed import convert_refFlat_to_bed
-from src.generate_seq_dict_from_fasta import (
+from konezumiaid.convert_refflat_to_bed import convert_refFlat_to_bed
+from konezumiaid.generate_seq_dict_from_fasta import (
     read_fasta,
     create_sorted_seq_dict,
 )
-from src.generate_sorted_genedata_from_refflat import (
+from konezumiaid.generate_sorted_genedata_from_refflat import (
     built_gene_dataframe,
     sort_gene_dataframe,
     remove_genename_duplicates,

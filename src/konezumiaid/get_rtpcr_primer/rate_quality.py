@@ -1,5 +1,5 @@
 from __future__ import annotations
-from src.create_gene_dataclass import GeneData
+from konezumiaid.create_gene_dataclass import GeneData
 
 
 def verify_crossing_exonjunction(

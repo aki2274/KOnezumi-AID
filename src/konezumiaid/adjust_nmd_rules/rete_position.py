@@ -1,7 +1,7 @@
 from __future__ import annotations
 import re
-from src.create_gene_dataclass import GeneData
-from src.nominate_candidate_stopcodon.generate_cds_seq import generate_cdsseq
+from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.nominate_candidate_stopcodon.generate_cds_seq import generate_cdsseq
 
 #####
 # check grna position
