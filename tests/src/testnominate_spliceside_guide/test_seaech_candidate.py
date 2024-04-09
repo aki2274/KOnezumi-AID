@@ -15,6 +15,7 @@ def test_no_candidate():
         [0, 30, 80],
         [25, 50, 100],
     )
+
     result = search_candidate(data)
     excepted = ([], [])
     assert result == excepted
@@ -31,6 +32,7 @@ def test_has_candidate():
         [0, 30, 80],
         [25, 50, 100],
     )
+
     result = search_candidate(data)
     excepted = (
         [{"seq": "CCNNNNNNNNNNNNNNNNNAGNN", "exon_num": 3}],

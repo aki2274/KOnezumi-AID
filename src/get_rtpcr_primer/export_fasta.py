@@ -16,8 +16,8 @@ def export_fasta(
 
     with open(file_path, "w") as file:
         for item in data:
-            left_primer = item["left_primer"]
-            right_primer = item["right_primer"]
+            left_primer = item["left"]
+            right_primer = item["right"]
 
             left_primer_name = left_primer
             if left_primer_name not in processed_names:

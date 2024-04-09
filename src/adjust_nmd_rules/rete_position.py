@@ -24,43 +24,20 @@ def label_in_start_150bp(cand_grna: list[dict], ds: GeneData) -> list[dict]:
     return result
 
 
-"""
-# the case of 1 exon
-# Targeting exons whose sequences differ by more than half of the coding region
+# the case of single exon
 def label_in_front_half(cand_grna: list[dict], ds: GeneData) -> list[dict]:
-    result = cand_grna.copy()
-    cds = generate_cdsseq(ds)
-    for grna in result:
-        if "ct_seq" in grna:
-            if re.search(grna["ct_seq"], cds).start() + 3 > len(cds) / 2:
-                grna["back_half"] = True
-            else:
-                grna["back_half"] = False
-        elif "ga_seq" in grna:
-            if re.search(grna["ga_seq"], cds).start() + 19 > len(cds) / 2:
-                grna["back_half"] = True
-            else:
-                grna["back_half"] = False
-    return result
-"""
-
-
-def label_in_front_half(cand_grna: list[dict], ds: GeneData) -> list[dict]:
-    result = cand_grna.copy()
+    # check if the PTC is not in the front half of the CDS
+    result = []
     cds = generate_cdsseq(ds)
     for grna in cand_grna:
         if "ct_seq" in grna:
             ptc_index = re.search(grna["ct_seq"], cds)
             if ptc_index is not None and ptc_index.start() + 3 < len(cds) / 2:
-                grna["front_half"] = True
-            else:
-                grna["front_half"] = False
+                result.append(grna)
         elif "ga_seq" in grna:
             ptc_index = re.search(grna["ga_seq"], cds)
             if ptc_index is not None and ptc_index.start() + 19 < len(cds) / 2:
-                grna["front_half"] = True
-            else:
-                grna["front_half"] = False
+                result.append(grna)
     return result
 
 
@@ -89,7 +66,7 @@ def label_in_50bp_from_LEJ(cand_grna: list[dict], ds: GeneData) -> list[dict]:
         if "ct_seq" in grna:
             if (
                 re.search(grna["ct_seq"], ds.orf_seq).start() + 1
-                <= ds.exon_end_list[-2] - 50
+                >= ds.exon_end_list[-2] - 50
             ):
                 grna["50bp_from_LEJ"] = True
             else:
@@ -97,7 +74,7 @@ def label_in_50bp_from_LEJ(cand_grna: list[dict], ds: GeneData) -> list[dict]:
         elif "ga_seq" in grna:
             if (
                 re.search(grna["ga_seq"], ds.orf_seq).start() + 16
-                <= ds.exon_end_list[-2] - 50
+                >= ds.exon_end_list[-2] - 50
             ):
                 grna["50bp_from_LEJ"] = True
             else:

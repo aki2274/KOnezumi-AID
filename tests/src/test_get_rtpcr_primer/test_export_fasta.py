@@ -8,12 +8,12 @@ def test_exprt_fasta():
             "left_cross_junction": 0,
             "right_cross_junction": 0,
             "intron_len": 0,
-            "left_primer": "agcaaaagtgtgaagcgccc",
-            "right_primer": "atctcgatcaccacgggctg",
-            "left_primer_end": 29,
-            "right_primer_start": 60,
-            "left_primer_exon_num": 0,
-            "right_primer_exon_num": 2,
+            "left": "agcaaaagtgtgaagcgccc",
+            "right": "atctcgatcaccacgggctg",
+            "left_end": 29,
+            "right_start": 60,
+            "left_exon_num": 0,
+            "right_exon_num": 2,
         }
     ]
     export_fasta(data, "tests/data/reads/candidateprimer.fa")

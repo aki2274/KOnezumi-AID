@@ -98,8 +98,8 @@ def test_label_in_50bp_from_LEJ():
         [22, 45, 68, 91],
     )
     expected = [
-        {"ct_seq": "CTGCAGAACTCGGACAATTCGGG", "50bp_from_LEJ": True},
-        {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG", "50bp_from_LEJ": False},
-        {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT", "50bp_from_LEJ": False},
+        {"ct_seq": "CTGCAGAACTCGGACAATTCGGG", "50bp_from_LEJ": False},
+        {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG", "50bp_from_LEJ": True},
+        {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT", "50bp_from_LEJ": True},
     ]
     assert label_in_50bp_from_LEJ(cand_grna, ds) == expected
