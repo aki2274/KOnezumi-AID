@@ -1,7 +1,19 @@
-# Hello KOnezumi-AID
+# KOnezumi-AID
+`KOnezumi-AID` is the command-line tool to automate the design of multiplex KO mouse using Target-AID
+
+## Installation
+### Prerequisits
+- Python 3.9 or later
+- Unix-like environment (Linux, macOS, WSL, etc.)
+
+### Installation
+Clone the repository
+
+`$ git clone https://github.com/aki2274/KOnezumi-AID.git`
+
+Build 
 
 ## Input data set
-
 ### genomic sequence
 `mm39.fa.gz` from [UCSC](
 https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/
@@ -23,17 +35,14 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/refFlat.txt.g
     gzip -dc > data/refFlat.txt
 ```
 
+## Usage
+### KOnezumi-AID accepts a gene symbol or a transcript name.
+`KOnezumiAID ${gene symbol or transcript name}`
+### Examples
+- Search candidate by the gene symbol
 
-#### Use as pandas.DataFrame in this code
-DataFrame refFlat has 11 columns.
-- string  geneName;           "Name of gene as it appears in Genome Browser." 
-- string  name;               "Name of gene" 
-- string  chrom;              "Chromosome name" 
-- char[1] strand;             "+ or - for strand" 
-- uint    txStart;            "Transcription start position" 
-- uint    txEnd;              "Transcription end position" 
-- uint    cdsStart;           "Coding region start" 
-- uint    cdsEnd;             "Coding region end" 
-- uint    exonCount;          "Number of exons" 
-- uint[exonCount] exonStarts; "Exon start positions" 
-- uint[exonCount] exonEnds;   "Exon end positions" 
+`KOnezumiAID Xkr4`
+
+- Search candidate by the transcript name
+
+`KOnezumiAID NM_001011874`
