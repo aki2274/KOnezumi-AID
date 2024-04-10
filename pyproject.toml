@@ -25,4 +25,5 @@ pandas = "^2.1.1"
 primer3-py = "^2.0.1"
 
 [tool.poetry.scripts]
-KOnezumiAID = "konezumiaid.main:main"
+createdata = "konezumiaid.main:export"
+konezumiaid = "konezumiaid.main:main"
