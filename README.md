@@ -9,9 +9,17 @@
 ### Installation
 Clone the repository
 
-`$ git clone https://github.com/aki2274/KOnezumi-AID.git`
+`git clone https://github.com/aki2274/KOnezumi-AID.git`
 
-Build 
+Move to the directory and Build package with poetry
+
+`poetry build`
+
+Install KOnezumiAID!
+
+`pip install ${package_name}`
+
+
 
 ## Input data set
 ### genomic sequence
