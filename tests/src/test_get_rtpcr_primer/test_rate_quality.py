@@ -2,19 +2,19 @@ from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.get_rtpcr_primer.rate_quality import (
     verify_cross_junction,
-    autocorrect_intron_len,
+    add_intron_len,
 )
 
 
-def test_cross_check_exon_junction():
+def test_verify_cross_junction():
     True_info = [
         # left primer is in exon junction
         {
             "left_cross_junction": False,
             "right_cross_junction": False,
             "intron_len": 0,
-            "left": "agcaaaagtgtgaagcgccc",
-            "right": "atctcgatcaccacgggctg",
+            "left_seq": "agcaaaagtgtgaagcgccc",
+            "right_seq": "atctcgatcaccacgggctg",
             "left_end": 29,
             "right_start": 60,
             "left_exon_num": 0,
@@ -25,8 +25,8 @@ def test_cross_check_exon_junction():
             "left_cross_junction": False,
             "right_cross_junction": False,
             "intron_len": 0,
-            "left": "agcaaaagtgtgaagcgccc",
-            "right": "atctcgatcaccacgggctg",
+            "left_seq": "agcaaaagtgtgaagcgccc",
+            "right_seq": "atctcgatcaccacgggctg",
             "left_end": 45,
             "right_start": 49,
             "left_exon_num": 0,
@@ -39,8 +39,8 @@ def test_cross_check_exon_junction():
             "left_cross_junction": True,
             "right_cross_junction": False,
             "intron_len": 0,
-            "left": "agcaaaagtgtgaagcgccc",
-            "right": "atctcgatcaccacgggctg",
+            "left_seq": "agcaaaagtgtgaagcgccc",
+            "right_seq": "atctcgatcaccacgggctg",
             "left_end": 29,
             "right_start": 60,
             "left_exon_num": 0,
@@ -50,8 +50,8 @@ def test_cross_check_exon_junction():
             "left_cross_junction": False,
             "right_cross_junction": True,
             "intron_len": 0,
-            "left": "agcaaaagtgtgaagcgccc",
-            "right": "atctcgatcaccacgggctg",
+            "left_seq": "agcaaaagtgtgaagcgccc",
+            "right_seq": "atctcgatcaccacgggctg",
             "left_end": 45,
             "right_start": 49,
             "left_exon_num": 0,
@@ -61,14 +61,14 @@ def test_cross_check_exon_junction():
     assert verify_cross_junction(True_info, exon_range) == expected
 
 
-def test_not_cross_check_exon_junction():
+def test_not_corss_verify_cross_junction():
     False_info = [
         {
             "left_cross_junction": False,
             "right_cross_junction": False,
             "intron_len": 0,
-            "left": "agcaaaagtgtgaagcgccc",
-            "right": "atctcgatcaccacgggctg",
+            "left_seq": "agcaaaagtgtgaagcgccc",
+            "right_seq": "atctcgatcaccacgggctg",
             "left_end": 45,
             "right_start": 60,
             "left_exon_num": 0,
@@ -78,8 +78,8 @@ def test_not_cross_check_exon_junction():
             "left_cross_junction": False,
             "right_cross_junction": False,
             "intron_len": 1000,
-            "left": "agcaaaagtgtgaagcgccc",
-            "right": "atctcgatcaccacgggctg",
+            "left_seq": "agcaaaagtgtgaagcgccc",
+            "right_seq": "atctcgatcaccacgggctg",
             "left_end": 10,
             "right_start": 50,
             "left_exon_num": 0,
@@ -94,8 +94,8 @@ def test_not_cross_check_exon_junction():
             "left_cross_junction": False,
             "right_cross_junction": False,
             "intron_len": 0,
-            "left": "agcaaaagtgtgaagcgccc",
-            "right": "atctcgatcaccacgggctg",
+            "left_seq": "agcaaaagtgtgaagcgccc",
+            "right_seq": "atctcgatcaccacgggctg",
             "left_end": 45,
             "right_start": 60,
             "left_exon_num": 0,
@@ -105,8 +105,8 @@ def test_not_cross_check_exon_junction():
             "left_cross_junction": False,
             "right_cross_junction": False,
             "intron_len": 1000,
-            "left": "agcaaaagtgtgaagcgccc",
-            "right": "atctcgatcaccacgggctg",
+            "left_seq": "agcaaaagtgtgaagcgccc",
+            "right_seq": "atctcgatcaccacgggctg",
             "left_end": 10,
             "right_start": 50,
             "left_exon_num": 0,
@@ -117,7 +117,7 @@ def test_not_cross_check_exon_junction():
 
 
 # the inputdata is considered that only ~_exon_num.
-def test_rewrite_pair_intron_len():
+def test_add_intron_len():
     candidate_info = [
         {
             "left_cross_junction": False,
@@ -212,5 +212,5 @@ def test_rewrite_pair_intron_len():
             "right_exon_num": 0,
         },
     ]
-    result = autocorrect_intron_len(candidate_info, set_data)
+    result = add_intron_len(candidate_info, set_data)
     assert result == expected
