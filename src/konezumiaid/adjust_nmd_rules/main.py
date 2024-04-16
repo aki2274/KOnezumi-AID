@@ -1,7 +1,7 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
-from konezumiaid.adjust_nmd_rules.create_grna_lsit import create_list
 from konezumiaid.adjust_nmd_rules.rete_position import (
+    create_candidates_list,
     label_in_start_150bp,
     eliminate_in_front_half,
     eliminate_in_last_exon,
@@ -13,48 +13,48 @@ def adjust_nmd_rules(
     ds: GeneData, ct_cand: list[str], ga_cand: list[str]
 ) -> list[dict]:
     """
-    Adjust NMD rules.
+    Filter gRNA candidates based on NMD rules.
 
     Args:
-        ds (GeneData): GeneData class.
-        ct_cand (list[str]): candidate ct gRNA.
-        ga_cand (list[str]): candidate ga gRNA.
+        ds (GeneData): the DataClass named GeneData .
+        ct_cand (list[str]): candidate C to T conversion gRNA.
+        ga_cand (list[str]): candidate G to A conversion gRNA.
     Returns:
-        list[dict]: adjusted gRNA.
+        list[dict]: list of candidate gRMA that filtered NMD rules.
     """
     # 1. create gRNA list
-    gRNA_list = create_list(ct_cand, ga_cand)
+    gRNA_list = create_candidates_list(ct_cand, ga_cand)
 
     # 2. label in start 150bp
     gRNA_list = label_in_start_150bp(gRNA_list, ds)
     # check exon count
-    if ds.exonCount == 1:
+    if ds.exonCount == 1:# The case of single exon 
         # 3. label in front half
         gRNA_list = eliminate_in_front_half(gRNA_list, ds)
-        # 3. combine ct_cand and ga_cand to create cand_seq
-        result = []
+        # 4. combine ct_cand and ga_cand to create cand_seq
+        candidates = []
         for d in gRNA_list:
-            temp_dict = {}
+            tmp_dict = {}
             for k, v in d.items():
                 if k == "ct_seq" or k == "ga_seq":
-                    temp_dict["cand"] = v
+                    tmp_dict["candidate"] = v
                 else:
-                    temp_dict[k] = v
-            result.append(temp_dict)
-        return result
-    else:
-        # 4. eliminate in last exon
+                    tmp_dict[k] = v
+            candidates.append(tmp_dict)
+        return candidates
+    else: # The case of multi exon
+        # 3. eliminate in last exon
         gRNA_list = eliminate_in_last_exon(gRNA_list, ds)
-        # 5. label in 50bp from LEJ
+        # 4. label in 50bp from LEJ
         gRNA_list = label_in_50bp_from_LEJ(gRNA_list, ds)
-        # 6. combine ct_cand and ga_cand to create cand_seq
-        result = []
+        # 5. combine ct_cand and ga_cand to create cand_seq
+        candidates = []
         for d in gRNA_list:
-            temp_dict = {}
+            tmp_dict = {}
             for k, v in d.items():
                 if k == "ct_seq" or k == "ga_seq":
-                    temp_dict["cand"] = v
+                    tmp_dict["candidate"] = v
                 else:
-                    temp_dict[k] = v
-            result.append(temp_dict)
-        return result
+                    tmp_dict[k] = v
+            candidates.append(tmp_dict)
+        return candidates
