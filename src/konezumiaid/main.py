@@ -3,14 +3,13 @@ import pandas as pd
 import pickle
 import sys
 from pathlib import Path
-from src.create_gene_dataclass import GeneData
-from src.create_gene_dataclass import create_dataclass
-from src.nominate_candidate_stopcodon.main import nominate_candidate_stopcodon
-from src.nominate_spliceside_guide.search_candidate import search_candidate
-from src.adjust_nmd_rules.main import adjust_nmd_rules
-from src.get_rtpcr_primer.main import export_primers
-
-sys.path.append(str(Path(__file__)))
+from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.export_dataset_as_pkl import export_pkl
+from konezumiaid.create_gene_dataclass import create_dataclass
+from konezumiaid.nominate_candidate_stopcodon.main import nominate_candidate_stopcodon
+from konezumiaid.nominate_spliceside_guide.search_candidate import search_candidate
+from konezumiaid.adjust_nmd_rules.main import adjust_nmd_rules
+from konezumiaid.get_rtpcr_primer.main import export_primers
 
 
 def show_table(
@@ -29,7 +28,7 @@ def show_table(
     print(candidate_primers_df.to_string())
 
 
-def konezumi_main(
+def konezumiaid_main(
     ds: GeneData,
 ) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     ct_acand, ga_acand = nominate_candidate_stopcodon(ds)
@@ -53,21 +52,21 @@ def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]
     seq_dict = pickle.load(open(seq_path, "rb"))
     if name.startswith("NM_") or name.startswith("NR_"):
         ds = create_dataclass(name, refflat, seq_dict)
-        stop_cand, acceptor_cand, donor_cand, candidate_primers = konezumi_main(ds)
+        stop_cand, acceptor_cand, donor_cand, candidate_primers = konezumiaid_main(ds)
         stop_cand_df = pd.DataFrame(stop_cand)
         acceptor_cand_df = pd.DataFrame(acceptor_cand)
         donor_cand_df = pd.DataFrame(donor_cand)
         candidate_primers_df = pd.DataFrame(candidate_primers)
         show_table(stop_cand_df, acceptor_cand_df, donor_cand_df, candidate_primers_df)
-        # return konezumi_main(ds)
+        # return konezumiaid_main(ds)
 
     else:
         transcript_names = [d["name"] for d in refflat if d["geneName"] == name]
         gene_cand = {}
         for transcript in transcript_names:
             ds = create_dataclass(transcript, refflat, seq_dict)
-            adjusted_gRNA, acceptor_cand, donor_cand, candidate_primers = konezumi_main(
-                ds
+            adjusted_gRNA, acceptor_cand, donor_cand, candidate_primers = (
+                konezumiaid_main(ds)
             )
             stop_cand_df = pd.DataFrame(adjusted_gRNA)
             acceptor_cand_df = pd.DataFrame(acceptor_cand)
@@ -89,11 +88,18 @@ def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]
             )
 
 
-def main():
-    if __name__ == "__main__":
-        if len(sys.argv) < 2:
-            print("Please provide a gene symbol or transcript name as an argument.")
-            sys.exit(1)
+def export():
+    if len(sys.argv) != 3:
+        print("Please provide a refflat file path and a fasta file path as arguments.")
+        sys.exit(1)
+    refflat_path = Path(sys.argv[1])
+    fasta_path = Path(sys.argv[2])
+    export_pkl(refflat_path, fasta_path)
 
-        gene_name = sys.argv[1]
-        excecute(gene_name)
+
+def main():
+    if len(sys.argv) != 2:
+        print("Please provide a gene symbol or transcript name as an argument.")
+        sys.exit(1)
+    gene_name = sys.argv[1]
+    excecute(gene_name)

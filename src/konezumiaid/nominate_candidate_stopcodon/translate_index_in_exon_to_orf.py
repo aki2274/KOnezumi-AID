@@ -1,7 +1,7 @@
 from __future__ import annotations
 import numpy as np
-from src.get_range_of_exon import get_exon_range
-from src.create_gene_dataclass import GeneData
+from konezumiaid.get_range_of_exon import get_exon_range
+from konezumiaid.create_gene_dataclass import GeneData
 
 
 #####

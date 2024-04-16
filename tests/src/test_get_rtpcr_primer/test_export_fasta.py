@@ -1,5 +1,5 @@
 from __future__ import annotations
-from src.get_rtpcr_primer.export_fasta import export_fasta
+from konezumiaid.get_rtpcr_primer.export_fasta import export_fasta
 
 
 def test_exprt_fasta():

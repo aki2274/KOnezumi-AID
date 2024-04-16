@@ -2,16 +2,16 @@ from __future__ import annotations
 import pickle
 from pathlib import Path
 import subprocess
-from src.create_gene_dataclass import GeneData
-from src.get_range_of_exon import get_exon_range
-from src.nominate_candidate_stopcodon.generate_cds_seq import generate_exon_seq
-from src.get_rtpcr_primer.make_rtpcr_primer import generate_candidate_info
-from src.get_rtpcr_primer.rate_quality import (
+from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.get_range_of_exon import get_exon_range
+from konezumiaid.nominate_candidate_stopcodon.generate_cds_seq import generate_exon_seq
+from konezumiaid.get_rtpcr_primer.make_rtpcr_primer import generate_candidate_info
+from konezumiaid.get_rtpcr_primer.rate_quality import (
     verify_crossing_exonjunction,
     autocorrect_intron_len,
 )
-from src.get_rtpcr_primer.export_fasta import export_fasta
-from src.get_rtpcr_primer.add_uniqueness import add_uniqueness
+from konezumiaid.get_rtpcr_primer.export_fasta import export_fasta
+from konezumiaid.get_rtpcr_primer.add_uniqueness import add_uniqueness
 
 
 def export_primers(ds: GeneData) -> list[dict]:
@@ -45,7 +45,9 @@ def export_primers(ds: GeneData) -> list[dict]:
 
     candidate_pairs = autocorrect_intron_len(candidate_pairs, ds)
     export_fasta(candidate_pairs)
-    path_get_uniqueness = Path("src", "get_rtpcr_primer", "get_uniqueness.sh")
+    path_get_uniqueness = Path(
+        "src", "konezumiaid", "get_rtpcr_primer", "get_uniqueness.sh"
+    )
     subprocess.run(["bash", path_get_uniqueness], check=True)
     candidate_pairs = add_uniqueness(
         candidate_pairs, miss_0_path, miss_1_path, miss_2_path

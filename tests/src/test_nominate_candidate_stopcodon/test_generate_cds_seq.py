@@ -1,8 +1,7 @@
 from __future__ import annotations
 import pytest
-from dataclasses import dataclass
-from src.create_gene_dataclass import create_dataclass
-from src.nominate_candidate_stopcodon.generate_cds_seq import (
+from konezumiaid.create_gene_dataclass import create_dataclass
+from konezumiaid.nominate_candidate_stopcodon.generate_cds_seq import (
     generate_exon_seq,
     get_startcodon_exon_num,
     get_stopcodon_exon_num,

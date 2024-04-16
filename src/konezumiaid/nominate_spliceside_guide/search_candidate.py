@@ -1,6 +1,5 @@
 from __future__ import annotations
-from src.create_gene_dataclass import GeneData
-
+from konezumiaid.create_gene_dataclass import GeneData
 
 
 def search_candidate(ds: GeneData) -> tuple[list[dict[int, str], list[dict[int, str]]]]:

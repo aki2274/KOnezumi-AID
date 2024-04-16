@@ -1,5 +1,5 @@
 from __future__ import annotations
-from src.get_rtpcr_primer.add_uniqueness import read_uniqueness, add_uniqueness
+from konezumiaid.get_rtpcr_primer.add_uniqueness import read_uniqueness, add_uniqueness
 
 
 def test_read_uniqueness():

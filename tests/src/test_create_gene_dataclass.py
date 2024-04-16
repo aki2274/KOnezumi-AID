@@ -1,8 +1,7 @@
 from __future__ import annotations
-import os
 import pytest
 from dataclasses import dataclass, asdict
-from src.create_gene_dataclass import create_dataclass
+from konezumiaid.create_gene_dataclass import create_dataclass
 
 # Make test data
 # txStart とexonStart[0]は一致している必要がある

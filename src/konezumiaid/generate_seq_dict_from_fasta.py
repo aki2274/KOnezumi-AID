@@ -1,6 +1,6 @@
 from __future__ import annotations
 import pandas as pd
-from src.get_reverse_complement import get_revcomp
+from konezumiaid.get_reverse_complement import get_revcomp
 
 
 def read_fasta(path_fasta: str) -> dict[str, str]:

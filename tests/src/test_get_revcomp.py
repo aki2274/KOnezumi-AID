@@ -1,5 +1,5 @@
 import pytest
-from src.get_reverse_complement import get_revcomp
+from konezumiaid.get_reverse_complement import get_revcomp
 
 # small letter means low complexity region
 input_seq = [
