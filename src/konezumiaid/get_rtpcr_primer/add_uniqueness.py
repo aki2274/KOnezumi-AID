@@ -32,11 +32,11 @@ def add_uniqueness(
         left_2_mismatch = next((x[0] for x in miss_2 if x[1] == left_primer), 0)
         right_2_mismatch = next((x[0] for x in miss_2 if x[1] == right_primer), 0)
 
-        primer_pair["left_0_mismatch"] = left_0_mismatch
-        primer_pair["right_0_mismatch"] = right_0_mismatch
+        primer_pair["left_0_mismatch"] = left_0_mismatch    
         primer_pair["left_1_mismatch"] = left_1_mismatch
-        primer_pair["right_1_mismatch"] = right_1_mismatch
         primer_pair["left_2_mismatch"] = left_2_mismatch
+        primer_pair["right_0_mismatch"] = right_0_mismatch
+        primer_pair["right_1_mismatch"] = right_1_mismatch
         primer_pair["right_2_mismatch"] = right_2_mismatch
 
     return return_candidates
