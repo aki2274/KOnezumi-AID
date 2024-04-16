@@ -44,47 +44,47 @@ def generate_candidate_info(
 ) -> list[dict]:
     """
     Get dict of primer quality info and the primer pairs
-    _cross_junction : the primer cross the exon junction or not
+    *_cross_junction : the primer cross the exon junction or not
     intron_len : the length of intron between the two primers
     left_primer_end : the end position of left primer
     right_primer_start : the start position of right primer
-    _primer_exon_num : the exon number of left primer
+    *_primer_exon_num : the exon number of the primer
     """
-    primer_result = export_candidate(exon_seq)
+    primer3_return = export_candidate(exon_seq)
     candidate_primer_info = [
         {
-            "left": left_primer_data["SEQUENCE"],
-            "right": right_primer_data["SEQUENCE"],
-            "left_tm": left_primer_data["TM"],
-            "right_tm": right_primer_data["TM"],
-            "left_end": exon_seq.find(left_primer_data["SEQUENCE"])
-            + len(left_primer_data["SEQUENCE"]),
-            "right_start": exon_seq.find(get_revcomp(right_primer_data["SEQUENCE"])),
-            "product_size": pair_data["PRODUCT_SIZE"],
+            "left": primer_left["SEQUENCE"],
+            "right": primer_right["SEQUENCE"],
+            "left_tm": primer_left["TM"],
+            "right_tm": primer_right["TM"],
+            "left_end": exon_seq.find(primer_left["SEQUENCE"])
+            + len(primer_left["SEQUENCE"]),
+            "right_start": exon_seq.find(get_revcomp(primer_right["SEQUENCE"])),
+            "product_size": primer_pair["PRODUCT_SIZE"],
             "left_cross_junction": False,
             "right_cross_junction": False,
             "intron_len": 0,
         }
-        for (pair_data, left_primer_data, right_primer_data) in zip(
-            primer_result["PRIMER_PAIR"],
-            primer_result["PRIMER_LEFT"],
-            primer_result["PRIMER_RIGHT"],
+        for (primer_pair, primer_left, primer_right) in zip(
+            primer3_return["PRIMER_PAIR"],
+            primer3_return["PRIMER_LEFT"],
+            primer3_return["PRIMER_RIGHT"],
         )
     ]
     for primer in candidate_primer_info:
-        exon_start = 0
-        exon_end = 1
+        exon_start_index = 0
+        exon_end_index = 1
         for s in range(len(exon_range)):
             if (
-                exon_range[s][exon_start]
+                exon_range[s][exon_start_index]
                 <= primer["left_end"]
-                <= exon_range[s][exon_end]
+                <= exon_range[s][exon_end_index]
             ):
                 primer["left_exon_num"] = s
             if (
-                exon_range[s][exon_start]
+                exon_range[s][exon_start_index]
                 <= primer["right_start"]
-                <= exon_range[s][exon_end]
+                <= exon_range[s][exon_end_index]
             ):
                 primer["right_exon_num"] = s
     return candidate_primer_info
