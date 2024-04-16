@@ -8,15 +8,26 @@ from konezumiaid.nominate_candidate_stopcodon.generate_cds_seq import generate_c
 #####
 
 
+def create_candidates_list(ct_cand: list[str], ga_cand: list[str]) -> list[dict]:
+    candidates_list = []
+    for grna in ct_cand:
+        candidates_list.append({"ct_seq": grna})
+    for grna in ga_cand:
+        candidates_list.append({"ga_seq": grna})
+    return candidates_list
+
+
 def label_in_start_150bp(cand_grna: list[dict], ds: GeneData) -> list[dict]:
     result = cand_grna.copy()
     for grna in result:
         if "ct_seq" in grna:
+            #Add +1 because the position of PTC is +1~3 from the guide start.
             if re.search(grna["ct_seq"], ds.orf_seq).start() + 1 <= ds.cdsStart + 150:
                 grna["start_150"] = True
             else:
                 grna["start_150"] = False
         elif "ga_seq" in grna:
+            #Add +16 for the same reason as above.
             if re.search(grna["ga_seq"], ds.orf_seq).start() + 16 <= ds.cdsStart + 150:
                 grna["start_150"] = True
             else:
@@ -25,7 +36,7 @@ def label_in_start_150bp(cand_grna: list[dict], ds: GeneData) -> list[dict]:
 
 
 # the case of single exon
-def label_in_front_half(cand_grna: list[dict], ds: GeneData) -> list[dict]:
+def eliminate_in_front_half(cand_grna: list[dict], ds: GeneData) -> list[dict]:
     # check if the PTC is not in the front half of the CDS
     result = []
     cds = generate_cdsseq(ds)
@@ -68,15 +79,15 @@ def label_in_50bp_from_LEJ(cand_grna: list[dict], ds: GeneData) -> list[dict]:
                 re.search(grna["ct_seq"], ds.orf_seq).start() + 1
                 >= ds.exon_end_list[-2] - 50
             ):
-                grna["50bp_from_LEJ"] = True
+                grna["In_50bp_from_LEJ"] = True
             else:
-                grna["50bp_from_LEJ"] = False
+                grna["In_50bp_from_LEJ"] = False
         elif "ga_seq" in grna:
             if (
                 re.search(grna["ga_seq"], ds.orf_seq).start() + 16
                 >= ds.exon_end_list[-2] - 50
             ):
-                grna["50bp_from_LEJ"] = True
+                grna["In_50bp_from_LEJ"] = True
             else:
-                grna["50bp_from_LEJ"] = False
+                grna["In_50bp_from_LEJ"] = False
     return result
