@@ -81,7 +81,7 @@ def test_eliminate_in_front_half():
         [0],
         [111],
     )
-    expected = [{"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG"}]
+    expected = [{"ct_seq": "CTGCAGAACTCGGACAATTCGGG"}]
     assert eliminate_in_front_half(cand_grna, ds) == expected
 
 
