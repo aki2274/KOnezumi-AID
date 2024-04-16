@@ -3,7 +3,7 @@ from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.adjust_nmd_rules.create_grna_lsit import create_list
 from konezumiaid.adjust_nmd_rules.rete_position import (
     label_in_start_150bp,
-    label_in_front_half,
+    eliminate_in_front_half,
     eliminate_in_last_exon,
     label_in_50bp_from_LEJ,
 )
@@ -30,7 +30,7 @@ def adjust_nmd_rules(
     # check exon count
     if ds.exonCount == 1:
         # 3. label in front half
-        gRNA_list = label_in_front_half(gRNA_list, ds)
+        gRNA_list = eliminate_in_front_half(gRNA_list, ds)
         # 3. combine ct_cand and ga_cand to create cand_seq
         result = []
         for d in gRNA_list:
