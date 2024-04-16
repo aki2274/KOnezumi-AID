@@ -57,9 +57,9 @@ def test_label_in_start_150bp():
         [229],
     )
     expected = [
-        {"ct_seq": "CTGCAGAACTCGGACAATTCGGG", "start_150": True},
-        {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG", "start_150": True},
-        {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT", "start_150": False},
+        {"ct_seq": "CTGCAGAACTCGGACAATTCGGG", "in_start_150bp": True},
+        {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG", "in_start_150bp": True},
+        {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT", "in_start_150bp": False},
     ]
     assert label_in_start_150bp(cand_grna, ds) == expected
 
@@ -126,8 +126,8 @@ def test_label_in_50bp_from_LEJ():
         [22, 45, 68, 91],
     )
     expected = [
-        {"ct_seq": "CTGCAGAACTCGGACAATTCGGG", "In_50bp_from_LEJ": False},
-        {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG", "In_50bp_from_LEJ": True},
-        {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT", "In_50bp_from_LEJ": True},
+        {"ct_seq": "CTGCAGAACTCGGACAATTCGGG", "in_50bp_from_LEJ": False},
+        {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG", "in_50bp_from_LEJ": True},
+        {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT", "in_50bp_from_LEJ": True},
     ]
     assert label_in_50bp_from_LEJ(cand_grna, ds) == expected

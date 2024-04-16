@@ -23,15 +23,15 @@ def label_in_start_150bp(cand_grna: list[dict], ds: GeneData) -> list[dict]:
         if "ct_seq" in grna:
             #Add +1 because the position of PTC is +1~3 from the guide start.
             if re.search(grna["ct_seq"], ds.orf_seq).start() + 1 <= ds.cdsStart + 150:
-                grna["start_150"] = True
+                grna["in_start_150bp"] = True
             else:
-                grna["start_150"] = False
+                grna["in_start_150bp"] = False
         elif "ga_seq" in grna:
             #Add +16 for the same reason as above.
             if re.search(grna["ga_seq"], ds.orf_seq).start() + 16 <= ds.cdsStart + 150:
-                grna["start_150"] = True
+                grna["in_start_150bp"] = True
             else:
-                grna["start_150"] = False
+                grna["in_start_150bp"] = False
     return result
 
 
@@ -79,15 +79,15 @@ def label_in_50bp_from_LEJ(cand_grna: list[dict], ds: GeneData) -> list[dict]:
                 re.search(grna["ct_seq"], ds.orf_seq).start() + 1
                 >= ds.exon_end_list[-2] - 50
             ):
-                grna["In_50bp_from_LEJ"] = True
+                grna["in_50bp_from_LEJ"] = True
             else:
-                grna["In_50bp_from_LEJ"] = False
+                grna["in_50bp_from_LEJ"] = False
         elif "ga_seq" in grna:
             if (
                 re.search(grna["ga_seq"], ds.orf_seq).start() + 16
                 >= ds.exon_end_list[-2] - 50
             ):
-                grna["In_50bp_from_LEJ"] = True
+                grna["in_50bp_from_LEJ"] = True
             else:
-                grna["In_50bp_from_LEJ"] = False
+                grna["in_50bp_from_LEJ"] = False
     return result
