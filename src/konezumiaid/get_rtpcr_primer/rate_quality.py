@@ -3,12 +3,12 @@ from konezumiaid.create_gene_dataclass import GeneData
 
 
 def verify_cross_junction(
-    candidate_primers: list[dict],
+    primer3_result: list[dict],
     exon_range: list[int],
 ) -> list[dict]:
     # primer_index_list means the indexes in exon. if return True, then the primer is in exon junction.
-    result_list = candidate_primers.copy()
-    for primer_pair in result_list:
+    cross_valided = primer3_result.copy()
+    for primer_pair in cross_valided:
         left_length = len(primer_pair["left_seq"])
         right_length = len(primer_pair["right_seq"])
         # check if the primer is in any exon junction
@@ -26,16 +26,16 @@ def verify_cross_junction(
                 primer_pair["right_start"] + right_length,
             ):
                 primer_pair["right_cross_junction"] = True
-    return result_list
+    return cross_valided
 
 
-def autocorrect_intron_len(
+def add_intron_len(
     candidate_primers: list[dict],
     ds: GeneData,
 ) -> list[dict]:
     # the length is not considered the length of the exons that primer pairs are in.
-    result_list = candidate_primers.copy()
-    for primer_pair in result_list :
+    intron_len_added = candidate_primers.copy()
+    for primer_pair in intron_len_added :
         intron_len = (
             ds.exon_start_list[primer_pair["right_exon_num"]]
             - ds.exon_end_list[primer_pair["left_exon_num"]]
@@ -43,4 +43,4 @@ def autocorrect_intron_len(
         )
         if intron_len > 0:# if the intron length is negative, then the primer pair is in the same exon.
             primer_pair["intron_len"] = intron_len
-    return result_list 
+    return intron_len_added

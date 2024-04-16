@@ -51,7 +51,7 @@ def generate_candidate_info(
     *_primer_exon_num : the exon number of the primer
     """
     primer3_return = export_candidate(exon_seq)
-    candidate_primers = [
+    primer3_result = [
         {
             "left_seq": primer_left["SEQUENCE"],
             "right_seq": primer_right["SEQUENCE"],
@@ -71,7 +71,7 @@ def generate_candidate_info(
             primer3_return["PRIMER_RIGHT"],
         )
     ]
-    for primer in candidate_primers:
+    for primer in primer3_result:
         exon_start_index = 0
         exon_end_index = 1
         for s in range(len(exon_range)):
@@ -87,4 +87,4 @@ def generate_candidate_info(
                 <= exon_range[s][exon_end_index]
             ):
                 primer["right_exon_num"] = s
-    return candidate_primers
+    return primer3_result
