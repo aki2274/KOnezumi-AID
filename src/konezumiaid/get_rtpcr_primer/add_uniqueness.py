@@ -9,33 +9,34 @@ def read_uniqueness(file_path) -> list[list]:
 
 
 def add_uniqueness(
-    candidate: list[dict],
+    candidate_primers: list[dict],
     miss_0_path: Path,
     miss_1_path: Path,
     miss_2_path: Path,
 ) -> list[dict]:
     # import primer uniqueness from files
+    # data format: [[count of matched in the genome: int, primer_seq: str],...]
     miss_0 = read_uniqueness(miss_0_path)
     miss_1 = read_uniqueness(miss_1_path)
     miss_2 = read_uniqueness(miss_2_path)
     # add uniqueness info to candidate
-    return_candidate = candidate.copy()
-    for primers in return_candidate:
-        left_primer = primers["left"]
-        right_primer = primers["right"]
+    return_candidates = candidate_primers.copy()
+    for primer_pair in return_candidates:
+        left_primer = primer_pair["left_seq"]
+        right_primer = primer_pair["right_seq"]
 
-        left_0_uniq = next((x[0] for x in miss_0 if x[1] == left_primer), 0)
-        right_0_uniq = next((x[0] for x in miss_0 if x[1] == right_primer), 0)
-        left_1_uniq = next((x[0] for x in miss_1 if x[1] == left_primer), 0)
-        right_1_uniq = next((x[0] for x in miss_1 if x[1] == right_primer), 0)
-        left_2_uniq = next((x[0] for x in miss_2 if x[1] == left_primer), 0)
-        right_2_uniq = next((x[0] for x in miss_2 if x[1] == right_primer), 0)
+        left_0_mismatch = next((x[0] for x in miss_0 if x[1] == left_primer), 0)
+        right_0_mismatch = next((x[0] for x in miss_0 if x[1] == right_primer), 0)
+        left_1_mismatch = next((x[0] for x in miss_1 if x[1] == left_primer), 0)
+        right_1_mismatch = next((x[0] for x in miss_1 if x[1] == right_primer), 0)
+        left_2_mismatch = next((x[0] for x in miss_2 if x[1] == left_primer), 0)
+        right_2_mismatch = next((x[0] for x in miss_2 if x[1] == right_primer), 0)
 
-        primers["left_0_uniq"] = left_0_uniq
-        primers["right_0_uniq"] = right_0_uniq
-        primers["left_1_uniq"] = left_1_uniq
-        primers["right_1_uniq"] = right_1_uniq
-        primers["left_2_uniq"] = left_2_uniq
-        primers["right_2_uniq"] = right_2_uniq
+        primer_pair["left_0_mismatch"] = left_0_mismatch
+        primer_pair["right_0_mismatch"] = right_0_mismatch
+        primer_pair["left_1_mismatch"] = left_1_mismatch
+        primer_pair["right_1_mismatch"] = right_1_mismatch
+        primer_pair["left_2_mismatch"] = left_2_mismatch
+        primer_pair["right_2_mismatch"] = right_2_mismatch
 
-    return return_candidate
+    return return_candidates
