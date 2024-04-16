@@ -16,15 +16,15 @@ def test_read_uniqueness():
 
 def test_add_uniqueness():
     candidate = [
-        {"left": "ATGC", "right": "TCGA"},
-        {"left": "TTTT", "right": "AAAA"},
-        {"left": "CCCC", "right": "GGGG"},
+        {"left_seq": "ATGC", "right_seq": "TCGA"},
+        {"left_seq": "TTTT", "right_seq": "AAAA"},
+        {"left_seq": "CCCC", "right_seq": "GGGG"},
     ]
     
     expected = [
         {
-            "left": "ATGC",
-            "right": "TCGA",
+            "left_seq": "ATGC",
+            "right_seq": "TCGA",
             "left_0_mismatch": "23",
             "right_0_mismatch": "7",
             "left_1_mismatch": "23",
@@ -33,8 +33,8 @@ def test_add_uniqueness():
             "right_2_mismatch": "7",
         },
         {
-            "left": "TTTT",
-            "right": "AAAA",
+            "left_seq": "TTTT",
+            "right_seq": "AAAA",
             "left_0_mismatch": "7",
             "right_0_mismatch": "3",
             "left_1_mismatch": "7",
@@ -43,8 +43,8 @@ def test_add_uniqueness():
             "right_2_mismatch": "3",
         },
         {
-            "left": "CCCC",
-            "right": "GGGG",
+            "left_seq": "CCCC",
+            "right_seq": "GGGG",
             "left_0_mismatch": "12",
             "right_0_mismatch": 0,
             "left_1_mismatch": "12",
