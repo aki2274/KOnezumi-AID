@@ -88,7 +88,7 @@ seq_candidates = [
     ["CCNCCCNNNNNNNNNNNNNNTGG", "CCCNNNNNNNNNNNNNNTGGTGG", "CCNNNNNNNNNNNNNNTGGTGGN"],
     ["CCNNNNNNNNNNNNNNNTGGTGG"]
 ]
-expected = [[17], [18], [19], [20], [20, 43], [20, 23],[17, 20]]
+expected = [[17], [18], [19], [20], [20, 43], [20, 23],[20, 17]]
 
 
 @pytest.mark.parametrize(
