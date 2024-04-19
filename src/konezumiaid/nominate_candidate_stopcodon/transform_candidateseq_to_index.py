@@ -9,7 +9,7 @@ def transform_ct_guideseq_to_index(orf_seq: str, targets: list[str]) -> list[int
         # Add the index of the candidate gRNA start position in the ORF and the index of "C" form gRNA start position
         for match in re.finditer(target, orf_seq):
             position = (
-                re.search(r"(CAA|CAG|CGA)", match.group()).start() + match.start()
+                re.search(r"(CAA|CAG|CGA)", match.group()[1:]).start() + match.start()+1
             )
             positions.append(position)
     positions = list(dict.fromkeys(positions))
@@ -23,8 +23,13 @@ def transform_ga_guideseq_to_index(orf_seq: str, targets: list[str]) -> list[int
     for target in targets:
         for match in re.finditer(target, orf_seq):
             rev_match = match.group()[::-1]
-            add_num = re.search("GGT", rev_match).start()
             # Get the index of the candidate gRNA end position in the ORF and back to "T" in "TGG"
-            positions.append(match.start() + len(match.group()) - 3 - add_num)
+            if  rev_match[1:3]=="GGT":
+                add_num = re.search("GGT", rev_match[1:]).start() + 1           
+                positions.append(match.start() + len(match.group()) - 3 - add_num-1)
+            else:
+                add_num = re.search("GGT", rev_match).start()               
+                positions.append(match.start() + len(match.group()) - 3 - add_num)
     positions = list(dict.fromkeys(positions))
     return positions
+
