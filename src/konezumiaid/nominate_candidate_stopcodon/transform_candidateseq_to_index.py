@@ -24,7 +24,7 @@ def transform_ga_guideseq_to_index(orf_seq: str, targets: list[str]) -> list[int
         for match in re.finditer(target, orf_seq):
             rev_match = match.group()[::-1]
             # Get the index of the candidate gRNA end position in the ORF and back to "T" in "TGG"
-            if  rev_match[0:2]=="GGT" and rev_match[3:5]=="GGT":        
+            if  rev_match[0:3]=="GGT" and rev_match[3:6]=="GGT":        
                 positions.append(match.start() + len(match.group()) - 3 )
                 positions.append(match.start() + len(match.group()) - 3 - 3)
             else:
