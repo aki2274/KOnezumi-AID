@@ -18,8 +18,8 @@ def create_candidates_list_dict(ct_cand: list[str], ga_cand: list[str]) -> list[
 
 
 def label_in_start_150bp(cand_grna: list[dict], transcript_record: GeneData) -> list[dict]:
-    result = cand_grna.copy()
-    for grna in result:
+    candidate_ = cand_grna.copy()
+    for grna in candidate_:
         if "ct_seq" in grna:
             #Add +1 because the position of PTC is +1~3 from the guide start.
             if re.search(grna["ct_seq"], transcript_record.orf_seq).start() + 1 <= transcript_record.cdsStart + 150:
@@ -32,48 +32,48 @@ def label_in_start_150bp(cand_grna: list[dict], transcript_record: GeneData) -> 
                 grna["in_start_150bp"] = True
             else:
                 grna["in_start_150bp"] = False
-    return result
+    return candidate_
 
 
 # the case of single exon
 def eliminate_in_front_half(cand_grna: list[dict], ds: GeneData) -> list[dict]:
     # check if the PTC is not in the front half of the CDS
-    result = []
+    removed = []
     cds = generate_cdsseq(ds)
     for grna in cand_grna:
         if "ct_seq" in grna:
             ptc_index = re.search(grna["ct_seq"], cds)
             if ptc_index is not None and ptc_index.start() + 3 < len(cds) / 2:
-                result.append(grna)
+                removed.append(grna)
         elif "ga_seq" in grna:
             ptc_index = re.search(grna["ga_seq"], cds)
             if ptc_index is not None and ptc_index.start() + 19 < len(cds) / 2:
-                result.append(grna)
-    return result
+                removed.append(grna)
+    return removed
 
 
 # the case of multi exon
 def eliminate_in_last_exon(cand_grna: list[str], ds: GeneData) -> list[str]:
-    result = []
+    removed = []
     for grna in cand_grna:
         if "ct_seq" in grna:
             if (
                 re.search(grna["ct_seq"], ds.orf_seq).start() + 1
                 <= ds.exon_start_list[-1]
             ):
-                result.append(grna)
+                removed.append(grna)
         elif "ga_seq" in grna:
             if (
                 re.search(grna["ga_seq"], ds.orf_seq).start() + 16
                 <= ds.exon_start_list[-1]
             ):
-                result.append(grna)
-    return result
+                removed.append(grna)
+    return removed
 
 
 def label_in_50bp_from_LEJ(cand_grna: list[dict], ds: GeneData) -> list[dict]:
-    result = cand_grna.copy()
-    for grna in result:
+    candidate_ = cand_grna.copy()
+    for grna in candidate_:
         if "ct_seq" in grna:
             if (
                 re.search(grna["ct_seq"], ds.orf_seq).start() + 1
@@ -90,4 +90,4 @@ def label_in_50bp_from_LEJ(cand_grna: list[dict], ds: GeneData) -> list[dict]:
                 grna["in_50bp_from_LEJ"] = True
             else:
                 grna["in_50bp_from_LEJ"] = False
-    return result
+    return candidate_
