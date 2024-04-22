@@ -17,18 +17,18 @@ def create_candidates_list_dict(ct_cand: list[str], ga_cand: list[str]) -> list[
     return candidates_list
 
 
-def label_in_start_150bp(cand_grna: list[dict], ds: GeneData) -> list[dict]:
+def label_in_start_150bp(cand_grna: list[dict], transcript_record: GeneData) -> list[dict]:
     result = cand_grna.copy()
     for grna in result:
         if "ct_seq" in grna:
             #Add +1 because the position of PTC is +1~3 from the guide start.
-            if re.search(grna["ct_seq"], ds.orf_seq).start() + 1 <= ds.cdsStart + 150:
+            if re.search(grna["ct_seq"], transcript_record.orf_seq).start() + 1 <= transcript_record.cdsStart + 150:
                 grna["in_start_150bp"] = True
             else:
                 grna["in_start_150bp"] = False
         elif "ga_seq" in grna:
             #Add +16 for the same reason as above.
-            if re.search(grna["ga_seq"], ds.orf_seq).start() + 16 <= ds.cdsStart + 150:
+            if re.search(grna["ga_seq"], transcript_record.orf_seq).start() + 16 <= transcript_record.cdsStart + 150:
                 grna["in_start_150bp"] = True
             else:
                 grna["in_start_150bp"] = False
