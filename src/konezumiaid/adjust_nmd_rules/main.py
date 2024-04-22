@@ -16,7 +16,7 @@ def adjust_nmd_rules(
     Filter gRNA candidates based on NMD rules.
 
     Args:
-        ds (GeneData): the DataClass named GeneData .
+        transcript_record (GeneData): the DataClass named GeneData .
         ct_cand (list[str]): candidate C to T conversion gRNA.
         ga_cand (list[str]): candidate G to A conversion gRNA.
     Returns:
@@ -27,7 +27,7 @@ def adjust_nmd_rules(
 
     # 2. label in start 150bp
     gRNA_list = label_in_start_150bp(gRNA_list, transcript_record)
-    # check exon count
+   
     if transcript_record.exonCount == 1:# The case of single exon 
         # 3. label in front half
         gRNA_list = eliminate_in_front_half(gRNA_list, transcript_record)
