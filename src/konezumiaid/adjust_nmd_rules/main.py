@@ -1,7 +1,7 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.adjust_nmd_rules.rete_position import (
-    create_candidates_list,
+    create_candidates_list_dict,
     label_in_start_150bp,
     eliminate_in_front_half,
     eliminate_in_last_exon,
@@ -23,7 +23,7 @@ def adjust_nmd_rules(
         list[dict]: list of candidate gRMA that filtered NMD rules.
     """
     # 1. create gRNA list
-    gRNA_list = create_candidates_list(ct_cand, ga_cand)
+    gRNA_list = create_candidates_list_dict(ct_cand, ga_cand)
 
     # 2. label in start 150bp
     gRNA_list = label_in_start_150bp(gRNA_list, ds)

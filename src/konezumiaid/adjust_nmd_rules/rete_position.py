@@ -8,7 +8,7 @@ from konezumiaid.nominate_candidate_stopcodon.generate_cds_seq import generate_c
 #####
 
 
-def create_candidates_list(ct_cand: list[str], ga_cand: list[str]) -> list[dict]:
+def create_candidates_list_dict(ct_cand: list[str], ga_cand: list[str]) -> list[dict]:
     candidates_list = []
     for grna in ct_cand:
         candidates_list.append({"ct_seq": grna})

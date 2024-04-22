@@ -5,7 +5,7 @@ from konezumiaid.adjust_nmd_rules.rete_position import (
     eliminate_in_last_exon,
     label_in_start_150bp,
     label_in_50bp_from_LEJ,
-    create_candidates_list
+    create_candidates_list_dict
 )
 
 
@@ -38,7 +38,7 @@ def test_create_candidate_list():
         {"ga_seq": "CCCTTGTGTCCTTGGCTTGGGCC"},
     ]
 
-    assert create_candidates_list(ct_cand, ga_cand) == expected
+    assert create_candidates_list_dict(ct_cand, ga_cand) == expected
 
 def test_label_in_start_150bp():
     cand_grna = [
