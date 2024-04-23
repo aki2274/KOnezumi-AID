@@ -25,18 +25,11 @@ def add_uniqueness(
         left_primer = primer_pair["left_seq"]
         right_primer = primer_pair["right_seq"]
 
-        left_0_mismatch = next((x[0] for x in miss_0 if x[1] == left_primer), 0)
-        right_0_mismatch = next((x[0] for x in miss_0 if x[1] == right_primer), 0)
-        left_1_mismatch = next((x[0] for x in miss_1 if x[1] == left_primer), 0)
-        right_1_mismatch = next((x[0] for x in miss_1 if x[1] == right_primer), 0)
-        left_2_mismatch = next((x[0] for x in miss_2 if x[1] == left_primer), 0)
-        right_2_mismatch = next((x[0] for x in miss_2 if x[1] == right_primer), 0)
+        for allowed_miss, matched_count in [(0, miss_0), (1, miss_1), (2, miss_2)]:
+            left_mismatch = next((x[0] for x in matched_count if x[1] == left_primer), 0)
+            right_mismatch = next((x[0] for x in matched_count if x[1] == right_primer), 0)
 
-        primer_pair["left_0_mismatch"] = left_0_mismatch    
-        primer_pair["left_1_mismatch"] = left_1_mismatch
-        primer_pair["left_2_mismatch"] = left_2_mismatch
-        primer_pair["right_0_mismatch"] = right_0_mismatch
-        primer_pair["right_1_mismatch"] = right_1_mismatch
-        primer_pair["right_2_mismatch"] = right_2_mismatch
+            primer_pair[f"left_{allowed_miss}_mismatch"] = left_mismatch
+            primer_pair[f"right_{allowed_miss}_mismatch"] = right_mismatch
 
     return return_candidates
