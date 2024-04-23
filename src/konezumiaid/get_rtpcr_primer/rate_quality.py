@@ -14,13 +14,13 @@ def is_crossing_juncion(
         right_start = primer_pair["right_start"]
         
         is_crossing_left = any(
-            (exon_end - left_length < left_end <= exon_end)
+            (left_end - left_length < exon_end <= left_end)
             for _, exon_end in exon_range
         )
-        
+
         is_crossing_right = any(
-            (right_start <= exon_start + 1 < right_start + right_length)
-            for exon_start, _ in exon_range
+            (right_start < exon_end - 1 < right_start + right_length)
+            for _, exon_end in exon_range
         )
         
         primer_pair["left_cross_junction"] = is_crossing_left
