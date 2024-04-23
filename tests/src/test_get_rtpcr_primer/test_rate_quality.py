@@ -6,7 +6,7 @@ from konezumiaid.get_rtpcr_primer.rate_quality import (
 )
 
 
-def test_verify_cross_junction():
+def test_is_cross_junction():
     True_info = [
         # left primer is in exon junction
         {
@@ -80,7 +80,7 @@ def test_not_corss_verify_cross_junction():
             "intron_len": 1000,
             "left_seq": "agcaaaagtgtgaagcgccc",
             "right_seq": "atctcgatcaccacgggctg",
-            "left_end": 10,
+            "left_end": 30,
             "right_start": 50,
             "left_exon_num": 0,
             "right_exon_num": 2,
