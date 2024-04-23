@@ -107,7 +107,7 @@ def test_not_corss_verify_cross_junction():
             "intron_len": 1000,
             "left_seq": "agcaaaagtgtgaagcgccc",
             "right_seq": "atctcgatcaccacgggctg",
-            "left_end": 10,
+            "left_end": 30,
             "right_start": 50,
             "left_exon_num": 0,
             "right_exon_num": 2,
