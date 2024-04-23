@@ -1,6 +1,6 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
-from konezumiaid.adjust_nmd_rules.rete_position import (
+from konezumiaid.apply_nmd_rules.rete_position import (
     create_candidates_list_dict,
     label_in_start_150bp,
     eliminate_in_front_half,
@@ -9,7 +9,7 @@ from konezumiaid.adjust_nmd_rules.rete_position import (
 )
 
 
-def adjust_nmd_rules(
+def apply_nmd_rules(
     transcript_record: GeneData, ct_cand: list[str], ga_cand: list[str]
 ) -> list[dict]:
     """
