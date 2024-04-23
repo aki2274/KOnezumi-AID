@@ -30,31 +30,22 @@ def adjust_nmd_rules(
    
     if transcript_record.exonCount == 1:# The case of single exon 
         # 3. label in front half
-        gRNA_list = eliminate_in_front_half(gRNA_list, transcript_record)
-        # 4. combine ct_cand and ga_cand to create cand_seq
-        candidates = []
-        for d in gRNA_list:
-            tmp_dict = {}
-            for k, v in d.items():
-                if k == "ct_seq" or k == "ga_seq":
-                    tmp_dict["candidate"] = v
-                else:
-                    tmp_dict[k] = v
-            candidates.append(tmp_dict)
-        return candidates
+        gRNA_list = eliminate_in_front_half(gRNA_list, transcript_record)       
+        
     else: # The case of multi exon
         # 3. eliminate in last exon
         gRNA_list = eliminate_in_last_exon(gRNA_list, transcript_record)
         # 4. label in 50bp from LEJ
         gRNA_list = label_in_50bp_from_LEJ(gRNA_list, transcript_record)
-        # 5. combine ct_cand and ga_cand to create cand_seq
-        candidates = []
-        for d in gRNA_list:
-            tmp_dict = {}
-            for k, v in d.items():
-                if k == "ct_seq" or k == "ga_seq":
-                    tmp_dict["candidate"] = v
-                else:
-                    tmp_dict[k] = v
-            candidates.append(tmp_dict)
-        return candidates
+
+    # 4 or 5. combine ct_cand and ga_cand to create cand_seq
+    candidates = []
+    for d in gRNA_list:
+        tmp_dict = {}
+        for k, v in d.items():
+            if k == "ct_seq" or k == "ga_seq":
+                tmp_dict["candidate"] = v
+            else:
+                tmp_dict[k] = v
+        candidates.append(tmp_dict)
+    return candidates
