@@ -5,12 +5,32 @@ def export_fasta(
     candidate_primers: list[dict], output_path: Path
 ) -> None:
     """
-    export candidate primer seq to fasta file, for exceuting bowtie
-    example output file: index and seqs are equal.
-        >ATGCATGC
-        ATCGATCG
-        >AAAAAAAAAAA
-        AAAAAAAAAAA
+    Export candidate primer sequences to a FASTA file for executing bowtie.
+    
+
+    Args:
+        candidate_primers (list[dict]): A list of dictionaries containing candidate primer information.
+        output_path (Path): The path to the output FASTA file.
+
+    Returns:
+        None
+    
+    Note; The output file will contain the same name and sequence 
+
+    Example:
+        input:
+        [{"left_seq": "AAAA", "right_seq": "TACG"},{"left_seq": "AAAA", "right_seq": "CATG"}]
+
+        outputfile:
+        >AAAA
+        AAAA
+        >TACG
+        TACG
+        >GCTA
+        GCTA
+        
+      
+    
     """
     processed_names = set()
 
