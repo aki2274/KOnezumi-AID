@@ -1,46 +1,47 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
 
-
-def verify_cross_junction(
+def is_crossing_juncion(
     primer3_result: list[dict],
-    exon_range: list[int],
+    exon_range: list[tuple[int, int]],
 ) -> list[dict]:
-    # primer_index_list means the indexes in exon. if return True, then the primer is in exon junction.
-    cross_valided = primer3_result.copy()
-    for primer_pair in cross_valided:
+    validated_primers = primer3_result.copy()
+    
+    for primer_pair in validated_primers:
         left_length = len(primer_pair["left_seq"])
         right_length = len(primer_pair["right_seq"])
-        # check if the primer is in any exon junction
-        for exon_num in range(
-            len(exon_range) - 1
-        ):  # -1 because the last exon has no junction in the right side.
-            if (exon_range[exon_num][1]) in range(
-                primer_pair["left_end"] - +left_length,
-                primer_pair["left_end"],
-            ):
-                primer_pair["left_cross_junction"] = True
-
-            if (exon_range[exon_num][1] - 1) in range(
-                primer_pair["right_start"],
-                primer_pair["right_start"] + right_length,
-            ):
-                primer_pair["right_cross_junction"] = True
-    return cross_valided
+        left_end = primer_pair["left_end"]
+        right_start = primer_pair["right_start"]
+        
+        is_crossing_left = any(
+            (exon_end - left_length < left_end <= exon_end)
+            for _, exon_end in exon_range
+        )
+        
+        is_crossing_right = any(
+            (right_start <= exon_start + 1 < right_start + right_length)
+            for exon_start, _ in exon_range
+        )
+        
+        primer_pair["left_cross_junction"] = is_crossing_left
+        primer_pair["right_cross_junction"] = is_crossing_right
+        
+    return validated_primers
 
 
 def add_intron_len(
     candidate_primers: list[dict],
-    ds: GeneData,
+    transcript_record: GeneData,
 ) -> list[dict]:
-    # the length is not considered the length of the exons that primer pairs are in.
-    intron_len_added = candidate_primers.copy()
-    for primer_pair in intron_len_added :
+    # The additional length does not account for the size of the exons housing the primer pairs."
+    added_len = candidate_primers.copy()
+    for primer_pair in added_len :
         intron_len = (
-            ds.exon_start_list[primer_pair["right_exon_num"]]
-            - ds.exon_end_list[primer_pair["left_exon_num"]]
+            transcript_record.exon_start_list[primer_pair["right_exon_num"]]
+            - transcript_record.exon_end_list[primer_pair["left_exon_num"]]
             + 1
         )
-        if intron_len > 0:# if the intron length is negative, then the primer pair is in the same exon.
+        if intron_len > 0:
+            # If the intron length is negative, then the primer pair is in the same exon.
             primer_pair["intron_len"] = intron_len
-    return intron_len_added
+    return added_len
