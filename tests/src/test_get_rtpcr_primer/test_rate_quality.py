@@ -1,7 +1,7 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.get_rtpcr_primer.rate_quality import (
-    verify_cross_junction,
+    is_crossing_juncion,
     add_intron_len,
 )
 
@@ -58,7 +58,7 @@ def test_verify_cross_junction():
             "right_exon_num": 2,
         },
     ]
-    assert verify_cross_junction(True_info, exon_range) == expected
+    assert is_crossing_juncion(True_info, exon_range) == expected
 
 
 def test_not_corss_verify_cross_junction():
@@ -113,7 +113,7 @@ def test_not_corss_verify_cross_junction():
             "right_exon_num": 2,
         },
     ]
-    assert verify_cross_junction(False_info, exon_range) == expected
+    assert is_crossing_juncion(False_info, exon_range) == expected
 
 
 # the inputdata is considered that only ~_exon_num.

@@ -6,14 +6,14 @@ from konezumiaid.get_range_of_exon import get_exon_range
 from konezumiaid.nominate_candidate_stopcodon.generate_cds_seq import generate_exon_seq
 from konezumiaid.get_rtpcr_primer.make_rtpcr_primer import generate_candidate_info
 from konezumiaid.get_rtpcr_primer.rate_quality import (
-    verify_cross_junction,
+    is_crossing_juncion,
     add_intron_len,
 )
 from konezumiaid.get_rtpcr_primer.export_fasta import export_fasta
 from konezumiaid.get_rtpcr_primer.add_uniqueness import add_uniqueness
 
 
-def export_primers(ds: GeneData) -> list[dict]:
+def export_primers(transcript_record: GeneData) -> list[dict]:
     """
     Export candidate rt-qPCR primers, based on exon seq.
     Args:
@@ -48,15 +48,15 @@ def export_primers(ds: GeneData) -> list[dict]:
     miss_2_path = Path("data", "uniq", "2_miss_counts.txt")
 
     # 1. get exon range
-    exon_range = get_exon_range(ds)
+    exon_range = get_exon_range(transcript_record)
     # 2. get exon seq
-    exon_seq = generate_exon_seq(ds)
+    exon_seq = generate_exon_seq(transcript_record)
     # 4. get candidate primer info
     primer3_result = generate_candidate_info(exon_seq, exon_range)
     # 5. rate quality of candidate primer
-    cross_validated = verify_cross_junction(primer3_result, exon_range)
+    cross_validated = is_crossing_juncion(primer3_result, exon_range)
 
-    intron_len_added = add_intron_len(cross_validated, ds)
+    intron_len_added = add_intron_len(cross_validated, transcript_record)
     fasta_path = Path("data", "uniq", "candidateprimer.fa")
     export_fasta(intron_len_added, fasta_path)
     path_get_uniqueness = Path(
