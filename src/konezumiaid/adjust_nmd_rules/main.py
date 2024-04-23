@@ -13,14 +13,17 @@ def adjust_nmd_rules(
     transcript_record: GeneData, ct_cand: list[str], ga_cand: list[str]
 ) -> list[dict]:
     """
-    Filter gRNA candidates based on NMD rules.
+    Apply and select gRNA candidates according to NMD rules.
+
+    This function takes a GeneData object representing a transcript record, a list of candidate C to T conversion gRNA (ct_cand), and a list of candidate G to A conversion gRNA (ga_cand). It applies a series of rules to filter the gRNA candidates based on NMD (Nonsense-Mediated Decay) rules.
 
     Args:
-        transcript_record (GeneData): the DataClass named GeneData .
-        ct_cand (list[str]): candidate C to T conversion gRNA.
-        ga_cand (list[str]): candidate G to A conversion gRNA.
+        transcript_record (GeneData): A GeneData object representing the transcript record.
+        ct_cand (list[str]): A list of candidate C to T conversion gRNA.
+        ga_cand (list[str]): A list of candidate G to A conversion gRNA.
+
     Returns:
-        list[dict]: list of candidate gRMA that filtered NMD rules.
+        list[dict]: A list of candidate gRNA that have been filtered based on NMD rules.
     """
     # 1. create gRNA list
     gRNA_list = create_candidates_list_dict(ct_cand, ga_cand)
