@@ -32,7 +32,8 @@ def label_in_start_150bp(candidate: list[dict], transcript_record: GeneData) -> 
 
 # the case of single exon
 def eliminate_in_back_half(candidate: list[dict], transcript_record: GeneData) -> list[dict]:
-    # check if the PTC is not in the front half of the CDS
+    # If the transcript is single exon, the PTC should be in the front half of the CDS.
+    # so eliminate the candidates in the back half of the CDS.
     removed = []
     cds = generate_cdsseq(transcript_record)
     for grna in candidate:
