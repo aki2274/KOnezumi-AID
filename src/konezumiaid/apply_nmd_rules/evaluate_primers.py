@@ -3,11 +3,6 @@ import re
 from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.nominate_candidate_stopcodon.generate_cds_seq import generate_cdsseq
 
-#####
-# check grna position
-#####
-
-
 def create_candidates_list_dict(ct_cand: list[str], ga_cand: list[str]) -> list[dict]:
     candidates_list = []
     for grna in ct_cand:
@@ -36,7 +31,7 @@ def label_in_start_150bp(candidate: list[dict], transcript_record: GeneData) -> 
 
 
 # the case of single exon
-def eliminate_in_front_half(candidate: list[dict], transcript_record: GeneData) -> list[dict]:
+def eliminate_in_back_half(candidate: list[dict], transcript_record: GeneData) -> list[dict]:
     # check if the PTC is not in the front half of the CDS
     removed = []
     cds = generate_cdsseq(transcript_record)

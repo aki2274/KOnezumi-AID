@@ -1,7 +1,7 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.apply_nmd_rules.evaluate_primers import (
-    eliminate_in_front_half,
+    eliminate_in_back_half,
     eliminate_in_last_exon,
     label_in_start_150bp,
     label_in_50bp_from_LEJ,
@@ -82,7 +82,7 @@ def test_eliminate_in_front_half():
         [111],
     )
     expected = [{"ct_seq": "CTGCAGAACTCGGACAATTCGGG"}]
-    assert eliminate_in_front_half(cand_grna, ds) == expected
+    assert eliminate_in_back_half(cand_grna, ds) == expected
 
 
 

@@ -3,7 +3,7 @@ from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.apply_nmd_rules.evaluate_primers import (
     create_candidates_list_dict,
     label_in_start_150bp,
-    eliminate_in_front_half,
+    eliminate_in_back_half,
     eliminate_in_last_exon,
     label_in_50bp_from_LEJ,
 )
@@ -33,7 +33,7 @@ def apply_nmd_rules(
    
     if transcript_record.exonCount == 1:# The case of single exon 
         # 3. label in front half
-        gRNA_list = eliminate_in_front_half(gRNA_list, transcript_record)       
+        gRNA_list = eliminate_in_back_half(gRNA_list, transcript_record)       
         
     else: # The case of multi exon
         # 3. eliminate in last exon
