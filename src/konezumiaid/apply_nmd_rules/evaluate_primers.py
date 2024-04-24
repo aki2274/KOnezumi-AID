@@ -55,17 +55,18 @@ def eliminate_in_front_half(candidate: list[dict], transcript_record: GeneData) 
 # the case of multi exon
 def eliminate_in_last_exon(candidate: list[str], transcript_record: GeneData) -> list[str]:
     removed = []
+    last_exon_start = transcript_record.exon_start_list[-1]
     for grna in candidate:
         if "ct_seq" in grna:
             if (
                 re.search(grna["ct_seq"], transcript_record.orf_seq).start() + 1
-                <= transcript_record.exon_start_list[-1]
+                <= last_exon_start
             ):
                 removed.append(grna)
         elif "ga_seq" in grna:
             if (
                 re.search(grna["ga_seq"], transcript_record.orf_seq).start() + 16
-                <= transcript_record.exon_start_list[-1]
+                <= last_exon_start
             ):
                 removed.append(grna)
     return removed
@@ -73,11 +74,12 @@ def eliminate_in_last_exon(candidate: list[str], transcript_record: GeneData) ->
 
 def label_in_50bp_from_LEJ(candidate: list[dict], transcript_record: GeneData) -> list[dict]:
     candidate_ = candidate.copy()
+    last_2nd_exon_end = transcript_record.exon_end_list[-2]
     for grna in candidate_:
         if "ct_seq" in grna:
             if (
                 re.search(grna["ct_seq"], transcript_record.orf_seq).start() + 1
-                >= transcript_record.exon_end_list[-2] - 50
+                >= last_2nd_exon_end - 50
             ):
                 grna["in_50bp_from_LEJ"] = True
             else:
@@ -85,7 +87,7 @@ def label_in_50bp_from_LEJ(candidate: list[dict], transcript_record: GeneData) -
         elif "ga_seq" in grna:
             if (
                 re.search(grna["ga_seq"], transcript_record.orf_seq).start() + 16
-                >= transcript_record.exon_end_list[-2] - 50
+                >= last_2nd_exon_end - 50
             ):
                 grna["in_50bp_from_LEJ"] = True
             else:
