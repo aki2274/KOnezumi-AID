@@ -1,6 +1,6 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
-from konezumiaid.apply_nmd_rules.rete_position import (
+from konezumiaid.apply_nmd_rules.evaluate_primers import (
     create_candidates_list_dict,
     label_in_start_150bp,
     eliminate_in_front_half,
