@@ -1,6 +1,6 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
-from konezumiaid.apply_nmd_rules.evaluate_primers import (
+from konezumiaid.apply_nmd_rules.evaluate_grna import (
     eliminate_in_back_half,
     eliminate_in_last_exon,
     label_in_start_150bp,
