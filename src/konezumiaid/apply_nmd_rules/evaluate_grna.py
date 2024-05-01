@@ -67,7 +67,7 @@ def eliminate_in_last_exon(candidate: list[str], transcript_record: GeneData) ->
                 removed.append(grna)
     return removed
 
-
+# LEJ: Last Exon Junction. The junction between the last exon and the penultimate exon.
 def label_in_50bp_from_LEJ(candidate: list[dict], transcript_record: GeneData) -> list[dict]:
     candidate_ = candidate.copy()
     last_2nd_exon_end = transcript_record.exon_end_list[-2]
