@@ -61,7 +61,7 @@ def test_nocandidate_convert_ct_grna():
 
 def test_nocandidate_convert_ga_grna():
     ds = GeneData(
-        orf_seq="ATGCCPNNNNNNNNNNNNNNTGGNNNATCGAGCCPNNNNNNNNNNNNNNNNNTGGCATATCCPNNNNNNNNNNNNNNTTTTGGAA",
+        orf_seq="ATGCCPNNNNNNNNNNNNNNTGGNNNATCGAGCCPNNNNNNNNNNNNNNNNNTGGCATATCCPNNNNNNNNNNNNNNAAAAGGAA",
         txStart=0,
         txend=85,
         cdsStart=0,
