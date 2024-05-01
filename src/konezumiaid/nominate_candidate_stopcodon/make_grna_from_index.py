@@ -22,7 +22,7 @@ def convert_ct_grna(ds: GeneData, indices: list[int]) -> list[str]:
                 sgRNA = ds.orf_seq[
                     target + 1 - start_position : target + 24 - start_position
                 ]
-                if "TTTT" not in sgRNA:
+                if "TTTT" not in sgRNA[:20]:
                     ct_grna.append(sgRNA)
     return ct_grna
 
@@ -40,6 +40,6 @@ def convert_ga_grna(ds: GeneData, indices: list[int]) -> list[str]:
             add_num = match.start()
             if 0 <= int(add_num) <= 3:
                 sgRNA = ds.orf_seq[target - 20 + add_num : target + 3 + add_num]
-                if "TTTT" not in sgRNA:
+                if "AAAA" not in sgRNA[3:]:
                     ga_grna.append(sgRNA)
     return ga_grna

@@ -4,7 +4,7 @@ from konezumiaid.create_gene_dataclass import GeneData
 
 def test_no_candidate():
     data = GeneData(
-        "NNNNGGCCNNNNNNNTTTTNNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNN",
+        "NNNNGGCCNNNNNNNTTTTNNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNNN",
         # PAM isn't CC,there is TTTT in the sequence, Donor isn't GT , Acceptor isn't AG, and .
         0,
         100,
@@ -22,7 +22,7 @@ def test_no_candidate():
 
 def test_has_candidate():
     data = GeneData(
-        "NNNNCCNNNNNNNNNNNNNNNNNNNGTNNNCCNNNNNNNNNNNNNNNNNNGTNNNNNNNCCNNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNN",
+        "NNNNCCCNNNNNNNNNNNNNNNNNNGTNNNCCNNNNNNNNNNNNNNNNNNGTNNNNNNNCCNNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNN",
         0,
         100,
         0,
@@ -36,7 +36,8 @@ def test_has_candidate():
     excepted = (
         [{"seq": "CCNNNNNNNNNNNNNNNNNAGNN", "exon_num": 3}],
         [
-            {"seq": "CCNNNNNNNNNNNNNNNNNNNGT", "exon_num": 1},
+            {"seq": "CCCNNNNNNNNNNNNNNNNNNGT", "exon_num": 1},
+            {"seq": "CCNNNNNNNNNNNNNNNNNNGTN", "exon_num": 1},
             {"seq": "CCNNNNNNNNNNNNNNNNNNGTN", "exon_num": 2},
         ],
     )

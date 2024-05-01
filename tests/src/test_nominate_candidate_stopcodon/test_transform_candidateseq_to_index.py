@@ -24,6 +24,7 @@ input_seq = [
     "NNNCGANNNNNNNNNNNNNNNGG",
     "NNCAGNNNNNNNNNNNNNNNNGGCGANNNNNNNNNNNNNNNNGG",  # multipme candidates
     "NNCAGCAANNNNNNNNNNNNNGGTGG",  # multipme candidates
+    "NNCAGCAANNNNNNNNNNNNNGGGGG" # multipme candidates and G rich around PAM 
 ]
 seq_candidates = [
     ["NCAANNNNNNNNNNNNNNNNNGG"],
@@ -37,9 +38,10 @@ seq_candidates = [
     ["NNNCGANNNNNNNNNNNNNNNGG"],
     ["NNCAGNNNNNNNNNNNNNNNNGG", "GGCGANNNNNNNNNNNNNNNNGG"],
     ["NNCAGCAANNNNNNNNNNNNNGG", "AGCAANNNNNNNNNNNNNGGTGG"],
+    ["NNCAGCAANNNNNNNNNNNNNGG", "CAGCAANNNNNNNNNNNNNGGGG"],
 ]
 
-expected = [[1], [1], [1], [2], [2], [2], [3], [3], [3], [2, 23], [2, 5]]
+expected = [[1], [1], [1], [2], [2], [2], [3], [3], [3], [2, 23], [2, 5],[2, 5]]
 
 
 @pytest.mark.parametrize(
@@ -76,7 +78,7 @@ input_seq = [
     "CCNNNNNNNNNNNNNNNNNNTGG",
     "CCNNNNNNNNNNNNNNNNNNTGGCCANNNNNNNNNNNNNNNNNTGG",  # multipme candidates
     "CCNCCCNNNNNNNNNNNNNNTGGTGGNNNN",  # multipme candidates
-]
+    "CCNNNNNNNNNNNNNNNTGGTGGNN" ]# multipme candidates in the same candidate
 seq_candidates = [
     ["CCNNNNNNNNNNNNNNNTGGNNN"],
     ["CCNNNNNNNNNNNNNNNNTGGNN"],
@@ -84,8 +86,9 @@ seq_candidates = [
     ["CCNNNNNNNNNNNNNNNNNNTGG"],
     ["CCNNNNNNNNNNNNNNNNNNTGG", "CCANNNNNNNNNNNNNNNNNTGG"],
     ["CCNCCCNNNNNNNNNNNNNNTGG", "CCCNNNNNNNNNNNNNNTGGTGG", "CCNNNNNNNNNNNNNNTGGTGGN"],
+    ["CCNNNNNNNNNNNNNNNTGGTGG"]
 ]
-expected = [[17], [18], [19], [20], [20, 43], [20, 23]]
+expected = [[17], [18], [19], [20], [20, 43], [20, 23],[20, 17]]
 
 
 @pytest.mark.parametrize(
