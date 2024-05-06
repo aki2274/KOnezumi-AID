@@ -13,34 +13,36 @@ def generate_exon_seq(transcript_recod: GeneData) -> str:
     return "".join(exon_seq_list)
 
 
-def get_startcodon_exon_num(transcript_recod: GeneData) -> int:
-    # search the exon number of startcodon
-    for s in range(len(transcript_recod.exon_start_list)):
-        if (
-            transcript_recod.exon_start_list[s]
-            <= transcript_recod.cdsStart
-            <= transcript_recod.exon_end_list[s]
-        ):
-            exon_index = s
+def get_startcodon_exon_index(transcript_recod: GeneData) -> int:
+    """Search the exon index of startcodon"""
+    startcodon_position = transcript_recod.cdsStart
+    exon_index = None
+    for n, (start, end) in enumerate(
+        zip(transcript_recod.exon_start_list, transcript_recod.exon_end_list)
+    ):
+        if start <= startcodon_position <= end:
+            exon_index = n
+            break
     return exon_index
 
 
-def get_stopcodon_exon_num(transcript_recod: GeneData) -> int:
-    # search the exon number of stopcodon
-    for s in range(len(transcript_recod.exon_start_list)):
-        if (
-            transcript_recod.exon_start_list[s]
-            <= transcript_recod.cdsEnd
-            <= transcript_recod.exon_end_list[s]
-        ):
-            exon_index = s
+def get_stopcodon_exon_index(transcript_recod: GeneData) -> int:
+    """Search the exon index of stopcodon"""
+    stopcodon_position = transcript_recod.cdsEnd
+    exon_index = None
+    for n, (start, end) in enumerate(
+        zip(transcript_recod.exon_start_list, transcript_recod.exon_end_list)
+    ):
+        if start <= stopcodon_position <= end:
+            exon_index = n
+            break
     return exon_index
 
 
 def generate_cdsseq(transcript_recod: GeneData) -> str:
     exon_seq = generate_exon_seq(transcript_recod)
-    startcodon_exon_num = get_startcodon_exon_num(transcript_recod)
-    endcodon_exon_num = get_stopcodon_exon_num(transcript_recod)
+    startcodon_exon_num = get_startcodon_exon_index(transcript_recod)
+    endcodon_exon_num = get_stopcodon_exon_index(transcript_recod)
 
     stopcodon_index = (
         transcript_recod.exon_end_list[endcodon_exon_num] - transcript_recod.cdsEnd
