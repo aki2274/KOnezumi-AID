@@ -1,6 +1,6 @@
 from __future__ import annotations
 import pytest
-from konezumiaid.nominate_candidate_stopcodon.search_candidate_codon import (
+from konezumiaid.nominate_ptc_guide.search_candidate_codon import (
     search_candidate_index,
 )
 

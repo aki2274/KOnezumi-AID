@@ -1,6 +1,6 @@
 from __future__ import annotations
 import pytest
-from konezumiaid.nominate_candidate_stopcodon.transform_candidateseq_to_index import (
+from konezumiaid.nominate_ptc_guide.transform_candidateseq_to_index import (
     transform_ct_guideseq_to_index,
     transform_ga_guideseq_to_index,
 )
@@ -24,7 +24,7 @@ input_seq = [
     "NNNCGANNNNNNNNNNNNNNNGG",
     "NNCAGNNNNNNNNNNNNNNNNGGCGANNNNNNNNNNNNNNNNGG",  # multipme candidates
     "NNCAGCAANNNNNNNNNNNNNGGTGG",  # multipme candidates
-    "NNCAGCAANNNNNNNNNNNNNGGGGG" # multipme candidates and G rich around PAM 
+    "NNCAGCAANNNNNNNNNNNNNGGGGG",  # multipme candidates and G rich around PAM
 ]
 seq_candidates = [
     ["NCAANNNNNNNNNNNNNNNNNGG"],
@@ -41,7 +41,7 @@ seq_candidates = [
     ["NNCAGCAANNNNNNNNNNNNNGG", "CAGCAANNNNNNNNNNNNNGGGG"],
 ]
 
-expected = [[1], [1], [1], [2], [2], [2], [3], [3], [3], [2, 23], [2, 5],[2, 5]]
+expected = [[1], [1], [1], [2], [2], [2], [3], [3], [3], [2, 23], [2, 5], [2, 5]]
 
 
 @pytest.mark.parametrize(
@@ -78,7 +78,8 @@ input_seq = [
     "CCNNNNNNNNNNNNNNNNNNTGG",
     "CCNNNNNNNNNNNNNNNNNNTGGCCANNNNNNNNNNNNNNNNNTGG",  # multipme candidates
     "CCNCCCNNNNNNNNNNNNNNTGGTGGNNNN",  # multipme candidates
-    "CCNNNNNNNNNNNNNNNTGGTGGNN" ]# multipme candidates in the same candidate
+    "CCNNNNNNNNNNNNNNNTGGTGGNN",
+]  # multipme candidates in the same candidate
 seq_candidates = [
     ["CCNNNNNNNNNNNNNNNTGGNNN"],
     ["CCNNNNNNNNNNNNNNNNTGGNN"],
@@ -86,9 +87,9 @@ seq_candidates = [
     ["CCNNNNNNNNNNNNNNNNNNTGG"],
     ["CCNNNNNNNNNNNNNNNNNNTGG", "CCANNNNNNNNNNNNNNNNNTGG"],
     ["CCNCCCNNNNNNNNNNNNNNTGG", "CCCNNNNNNNNNNNNNNTGGTGG", "CCNNNNNNNNNNNNNNTGGTGGN"],
-    ["CCNNNNNNNNNNNNNNNTGGTGG"]
+    ["CCNNNNNNNNNNNNNNNTGGTGG"],
 ]
-expected = [[17], [18], [19], [20], [20, 43], [20, 23],[20, 17]]
+expected = [[17], [18], [19], [20], [20, 43], [20, 23], [20, 17]]
 
 
 @pytest.mark.parametrize(

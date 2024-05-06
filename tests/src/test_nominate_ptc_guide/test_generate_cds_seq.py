@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
 from konezumiaid.create_gene_dataclass import create_dataclass
-from konezumiaid.nominate_candidate_stopcodon.generate_cds_seq import (
+from konezumiaid.nominate_ptc_guide.generate_cds_seq import (
     generate_exon_seq,
     get_startcodon_exon_num,
     get_stopcodon_exon_num,

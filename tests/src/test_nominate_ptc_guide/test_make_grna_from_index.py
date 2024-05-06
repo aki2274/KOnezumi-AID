@@ -1,4 +1,4 @@
-from konezumiaid.nominate_candidate_stopcodon.make_grna_from_index import (
+from konezumiaid.nominate_ptc_guide.make_grna_from_index import (
     GeneData,
     convert_ct_grna,
     convert_ga_grna,
