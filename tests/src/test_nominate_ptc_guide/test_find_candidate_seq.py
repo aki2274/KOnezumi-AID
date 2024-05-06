@@ -1,8 +1,8 @@
 from __future__ import annotations
 import pytest
-from konezumiaid.nominate_ptc_guide.find_candidate_seq import (
-    find_ct_target_seq,
-    find_ga_target_seq,
+from src.konezumiaid.nominate_ptc_guide.find_candidate_seq import (
+    search_c_to_t_guide_seq,
+    search_g_to_a_guide_seq,
 )
 
 
@@ -42,7 +42,7 @@ expected = [
 
 @pytest.mark.parametrize("seq, expected", zip(seq_candidates, expected))
 def test_get_CtoT_target(seq, expected):
-    assert find_ct_target_seq(seq) == expected
+    assert search_c_to_t_guide_seq(seq) == expected
 
 
 seq_not_candidates = [
@@ -57,7 +57,7 @@ expected = [[], [], [], [], []]
 
 @pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
 def test_get_CtoT_target_not_candidate(seq, expected):
-    assert find_ct_target_seq(seq) == expected
+    assert search_c_to_t_guide_seq(seq) == expected
 
 
 # G-to-A conversion
@@ -82,7 +82,7 @@ expected = [
 
 @pytest.mark.parametrize("seq, expected", zip(seq_candidates, expected))
 def test_get_AtoG_target(seq, expected):
-    assert find_ga_target_seq(seq) == expected
+    assert search_g_to_a_guide_seq(seq) == expected
 
 
 seq_not_candidates = [
@@ -95,4 +95,4 @@ expected = [[], [], []]
 
 @pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
 def test_get_AtoG_target_not_candidate(seq, expected):
-    assert find_ga_target_seq(seq) == expected
+    assert search_g_to_a_guide_seq(seq) == expected
