@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.get_range_of_exon import get_exon_range
-from konezumiaid.nominate_candidate_stopcodon.generate_cds_seq import generate_exon_seq
+from konezumiaid.nominate_ptc_guide.generate_cds_seq import generate_exon_seq
 from konezumiaid.get_rtpcr_primer.make_rtpcr_primer import generate_candidate_info
 from konezumiaid.get_rtpcr_primer.rate_quality import (
     verify_crossing_exonjunction,
