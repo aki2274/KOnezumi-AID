@@ -1,4 +1,4 @@
-from konezumiaid.nominate_ptc_guide.make_grna_from_index import (
+from src.konezumiaid.nominate_ptc_guide.make_grna_from_index import (
     GeneData,
     convert_ct_grna,
     convert_ga_grna,
