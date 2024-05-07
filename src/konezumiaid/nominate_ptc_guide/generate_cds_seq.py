@@ -77,5 +77,5 @@ def generate_cdsseq(transcript_recod: GeneData) -> str:
             startcodon_distance_from_first_exonstart += (
                 transcript_recod.exon_end_list[s] - transcript_recod.exon_start_list[s]
             )
-        cds_seq = seq_to_stopcodon[startcodon_distance_from_exonstart:]
+        cds_seq = seq_to_stopcodon[startcodon_distance_from_first_exonstart:]
     return cds_seq
