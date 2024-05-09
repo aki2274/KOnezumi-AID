@@ -1,33 +1,34 @@
 from __future__ import annotations
-from pathlib import Path
-import pickle
-from konezumiaid.create_gene_dataclass import GeneData, create_dataclass
-from konezumiaid.nominate_candidate_stopcodon.find_candidate_seq import (
-    find_ct_target_seq,
-    find_ga_target_seq,
+from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.nominate_ptc_guide.find_candidate_seq import (
+    search_c_to_t_guide_seq,
+    search_g_to_a_guide_seq,
 )
-from konezumiaid.nominate_candidate_stopcodon.transform_candidateseq_to_index import (
-    transform_ct_guideseq_to_index,
-    transform_ga_guideseq_to_index,
+from konezumiaid.nominate_ptc_guide.transform_candidateseq_to_position import (
+    transform_c_to_t_guideseq_to_position,
+    transform_g_to_a_guideseq_to_position,
 )
-from konezumiaid.nominate_candidate_stopcodon.generate_cds_seq import (
-    get_startcodon_exon_num,
+from konezumiaid.nominate_ptc_guide.generate_cds_seq import (
+    get_startcodon_exon_index,
     generate_cdsseq,
 )
-from konezumiaid.nominate_candidate_stopcodon.search_candidate_codon import (
-    search_candidate_index,
+
+from konezumiaid.nominate_ptc_guide.search_candidate_codon import (
+    search_candidate_codon_position,
 )
-from konezumiaid.nominate_candidate_stopcodon.translate_index_in_exon_to_orf import (
-    translate_index_in_exon_to_orf,
+
+from konezumiaid.nominate_ptc_guide.translate_codon_position_to_inorf import (
+    translate_position_in_splicedexon_to_orf,
 )
-from konezumiaid.nominate_candidate_stopcodon.make_grna_from_index import (
-    convert_ct_grna,
-    convert_ga_grna,
+
+from konezumiaid.nominate_ptc_guide.make_grna_from_position import (
+    extract_c_to_t_grna_from_position,
+    extract_g_to_a_grna_from_position,
 )
 
 
 def nominate_candidate_stopcodon(
-    ds: GeneData,
+    transcript_recod: GeneData,
 ) -> list[dict]:
     """
     Export candidate gRNA.
@@ -47,23 +48,27 @@ def nominate_candidate_stopcodon(
         ['CCAGTATCAGCCCACTTGGTAGG', 'GACAACTATGTAAAGAGACTTGG'], ['CCACTTATTCTCAGATTTTGGGG', 'CCACTTCATTGATGCTACTGGTT']
     """
     # 1. generate cds seq
-    cds_seq = generate_cdsseq(ds)
+    cds_seq = generate_cdsseq(transcript_recod)
     # 2. search candidate index
-    candidate_ptc_index = search_candidate_index(cds_seq)
+    candidate_ptc_index = search_candidate_codon_position(cds_seq)
     # 3. get startcodon exon number
-    cdsStart_exon_index = get_startcodon_exon_num(ds)
+    cdsStart_exon_index = get_startcodon_exon_index(transcript_recod)
     # 4. translate candidate index in exon to index in genome
-    candidate_ptc_index_in_orf = translate_index_in_exon_to_orf(
-        ds, candidate_ptc_index, cdsStart_exon_index
+    candidate_ptc_index_in_orf = translate_position_in_splicedexon_to_orf(
+        transcript_recod, candidate_ptc_index, cdsStart_exon_index
     )
     # 5,find ct target seq
-    ct_target_seq = find_ct_target_seq(ds.orf_seq)
+    ct_target_seq = search_c_to_t_guide_seq(transcript_recod.orf_seq)
     # 6. find ga target seq
-    ga_target_seq = find_ga_target_seq(ds.orf_seq)
+    ga_target_seq = search_g_to_a_guide_seq(transcript_recod.orf_seq)
     # 7. transform ct guideseq to index
-    ct_guideseq_index = transform_ct_guideseq_to_index(ds.orf_seq, ct_target_seq)
+    ct_guideseq_index = transform_c_to_t_guideseq_to_position(
+        transcript_recod.orf_seq, ct_target_seq
+    )
     # 8. transform ga guideseq to index
-    ga_guideseq_index = transform_ga_guideseq_to_index(ds.orf_seq, ga_target_seq)
+    ga_guideseq_index = transform_g_to_a_guideseq_to_position(
+        transcript_recod.orf_seq, ga_target_seq
+    )
     # 9. compare candidate index and guideseq index,then export candidate if the same index
     ct_candidate_index = [
         index for index in candidate_ptc_index_in_orf if index in ct_guideseq_index
@@ -72,7 +77,11 @@ def nominate_candidate_stopcodon(
         index for index in candidate_ptc_index_in_orf if index in ga_guideseq_index
     ]
     # 10. transform candidate index to candidate gRNA
-    ct_candidate_grna = convert_ct_grna(ds, ct_candidate_index)
-    ga_candidate_grna = convert_ga_grna(ds, ga_candidate_index)
+    ct_candidate_grna = extract_c_to_t_grna_from_position(
+        transcript_recod, ct_candidate_index
+    )
+    ga_candidate_grna = extract_g_to_a_grna_from_position(
+        transcript_recod, ga_candidate_index
+    )
 
     return ct_candidate_grna, ga_candidate_grna
