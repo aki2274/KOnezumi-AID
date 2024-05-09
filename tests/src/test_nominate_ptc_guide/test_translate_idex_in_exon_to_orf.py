@@ -1,10 +1,10 @@
 from __future__ import annotations
 import pytest
-from konezumiaid.create_gene_dataclass import create_dataclass
-from konezumiaid.nominate_ptc_guide.translate_index_in_exon_to_orf import (
+from src.konezumiaid.create_gene_dataclass import create_dataclass
+from src.konezumiaid.nominate_ptc_guide.translate_codon_position_to_inorf import (
     get_exon_range,
-    translate_incds_index_to_exon,
-    get_exonnum_of_candidate,
+    translate_incds_index_to_inexon,
+    get_exonindex_in_cand_codon,
     translate_index_in_exon_to_orf,
 )
 
@@ -88,7 +88,7 @@ def test_get_candidate_stopcodon_index_incds_to_inexon(
     expected,
 ):
     assert (
-        translate_incds_index_to_exon(
+        translate_incds_index_to_inexon(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_incds,
             exon_num,
@@ -110,7 +110,7 @@ expected = [[1]]
     ),
 )
 def test_get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range, expected):
-    assert get_exonnum_of_candidate(candidate_stopcodon, exon_range) == expected
+    assert get_exonindex_in_cand_codon(candidate_stopcodon, exon_range) == expected
 
 
 exon_index = [[1]]
@@ -174,7 +174,7 @@ def test_nocandidate_get_candidate_stopcodon_index_incds_to_inexon(
     expected,
 ):
     assert (
-        translate_incds_index_to_exon(
+        translate_incds_index_to_inexon(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon,
             exon_num,
@@ -198,7 +198,7 @@ expected = [[]]
 def test_nocandidate_get_candidate_stopcodon_exon_num(
     candidate_stopcodon, exon_range, expected
 ):
-    assert get_exonnum_of_candidate(candidate_stopcodon, exon_range) == expected
+    assert get_exonindex_in_cand_codon(candidate_stopcodon, exon_range) == expected
 
 
 exon_index = [[]]
