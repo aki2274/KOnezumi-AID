@@ -1,7 +1,8 @@
-from src.konezumiaid.nominate_ptc_guide.make_grna_from_index import (
+
+from konezumiaid.nominate_ptc_guide.make_grna_from_position import (
     GeneData,
-    convert_ct_grna,
-    convert_ga_grna,
+    extract_c_to_t_grna_from_position,
+    extract_g_to_a_grna_from_position,
 )
 
 
@@ -21,7 +22,7 @@ def test_convert_ct_grna():
         "NCAGNNNNNNNNNNNNNNNNPGG",
         "NNNCAGNNNNNNNNNNNNNNPGG",
     ]
-    assert convert_ct_grna(ds, indices) == expected_grna
+    assert extract_c_to_t_grna_from_position(ds, indices) == expected_grna
 
 
 def test_convert_ga_grna():
@@ -40,7 +41,7 @@ def test_convert_ga_grna():
         "CCPNNNNNNNNNNNNNNTGGNNN",
         "CCPNNNNNNNNNNNNNNNNNTGG",
     ]
-    assert convert_ga_grna(ds, indices) == expected_grna
+    assert extract_g_to_a_grna_from_position(ds, indices) == expected_grna
 
 
 def test_nocandidate_convert_ct_grna():
@@ -56,7 +57,7 @@ def test_nocandidate_convert_ct_grna():
     )
     indices = [66]
     expected_grna = []
-    assert convert_ct_grna(ds, indices) == expected_grna
+    assert extract_c_to_t_grna_from_position(ds, indices) == expected_grna
 
 
 def test_nocandidate_convert_ga_grna():
@@ -72,4 +73,4 @@ def test_nocandidate_convert_ga_grna():
     )
     indices = [80]
     expected_grna = []
-    assert convert_ga_grna(ds, indices) == expected_grna
+    assert extract_g_to_a_grna_from_position(ds, indices) == expected_grna
