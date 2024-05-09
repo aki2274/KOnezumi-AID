@@ -49,7 +49,7 @@ def get_exonindex_in_cand_codon(
     return exon_indexes
 
 
-def translate_index_in_exon_to_orf(
+def translate_position_in_splicedexon_to_orf(
     transcript_record: GeneData,
     candidate_codon_position_in_cds: list[int],
     startcodon_exon_index: int,
