@@ -69,12 +69,13 @@ expected = [[16]]  # len(NNNNNNNNNNATGNN2CAG)-3. length of C in exon seq
 
 
 @pytest.mark.parametrize(
-    "test_name,input_genedata,orf_seq_dict,candidate_stopcodon_index_incds,exon_num,expected",
+    "test_name,input_genedata,orf_seq_dict,candidate_stopcodon_index_incds,exon_range,exon_num,expected",
     zip(
         test_name,
         [input_genedata] * len(test_name),
         [orf_seq_dict] * len(test_name),
         candidate_stopcodon_index_incds,
+        exon_range,
         exon_num,
         expected,
     ),
@@ -84,6 +85,7 @@ def test_get_candidate_stopcodon_index_incds_to_inexon(
     input_genedata,
     orf_seq_dict,
     candidate_stopcodon_index_incds,
+    exon_range,
     exon_num,
     expected,
 ):
@@ -92,6 +94,7 @@ def test_get_candidate_stopcodon_index_incds_to_inexon(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_incds,
             exon_num,
+            exon_range,
         )
         == expected
     )
@@ -161,7 +164,7 @@ expected = [[]]
         [input_genedata] * len(test_name),
         [orf_seq_dict] * len(test_name),
         candidate_stopcodon_index_incds,
-        exon_range
+        exon_range,
         exon_num,
         expected,
     ),
