@@ -1,8 +1,8 @@
 from __future__ import annotations
 import pytest
-from konezumiaid.nominate_ptc_guide.transform_candidateseq_to_index import (
-    transform_ct_guideseq_to_index,
-    transform_ga_guideseq_to_index,
+from src.konezumiaid.nominate_ptc_guide.transform_candidateseq_to_position import (
+    transform_c_to_t_guideseq_to_position,
+    transform_g_to_a_guideseq_to_position,
 )
 
 
@@ -48,7 +48,7 @@ expected = [[1], [1], [1], [2], [2], [2], [3], [3], [3], [2, 23], [2, 5], [2, 5]
     "seq,candidates,expected", zip(input_seq, seq_candidates, expected)
 )
 def test_get_CtoT_target(seq, candidates, expected):
-    assert transform_ct_guideseq_to_index(seq, candidates) == expected
+    assert transform_c_to_t_guideseq_to_position(seq, candidates) == expected
 
 
 input_seq = [
@@ -66,7 +66,7 @@ expected = [[], [], [], [], []]
     "seq,candidates,expected", zip(input_seq, seq_not_candidates, expected)
 )
 def test_get_CtoT_target_not_candidate(seq, candidates, expected):
-    assert transform_ct_guideseq_to_index(seq, candidates) == expected
+    assert transform_c_to_t_guideseq_to_position(seq, candidates) == expected
 
 
 # G-to-A conversion
@@ -96,7 +96,7 @@ expected = [[17], [18], [19], [20], [20, 43], [20, 23], [20, 17]]
     "seq,candidates,expected", zip(input_seq, seq_candidates, expected)
 )
 def test_get_AtoG_target(seq, candidates, expected):
-    assert transform_ga_guideseq_to_index(seq, candidates) == expected
+    assert transform_g_to_a_guideseq_to_position(seq, candidates) == expected
 
 
 input_seq = [
@@ -112,4 +112,4 @@ expected = [[], [], []]
     "seq,candidates,expected", zip(input_seq, seq_not_candidates, expected)
 )
 def test_get_AtoG_target_not_candidates(seq, candidates, expected):
-    assert transform_ga_guideseq_to_index(seq, candidates) == expected
+    assert transform_g_to_a_guideseq_to_position(seq, candidates) == expected
