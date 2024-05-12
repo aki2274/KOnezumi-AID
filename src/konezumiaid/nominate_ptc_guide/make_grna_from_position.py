@@ -9,7 +9,7 @@ def extract_c_to_t_grna_from_position(
     # Convert positions to grna sequence.
     ct_grna = []
     for editable_C_position in positions:
-        # pro_sgRNA is 25bp sequence. Because the editable "C" is in 3 positions, -17~-19bp from PAM.
+        # pro_sgRNA is 25bp sequence. Because the editable "C" is in 3 patterns. The posistions are -17~-19bp from PAM.
         pro_sgRNA = transcript_recod.orf_seq[
             editable_C_position - 1 : editable_C_position + 24
         ]
@@ -26,6 +26,8 @@ def extract_c_to_t_grna_from_position(
                     + 24
                     - correction_by_target_window
                 ]
+                # Check if the sgRNA has "TTTT" in the guide (first 20bp, excluding PAM).
+                # If it has "TTTT", U6 promoter will not work.
                 if "TTTT" not in sgRNA[:20]:
                     ct_grna.append(sgRNA)
     return ct_grna
@@ -52,6 +54,8 @@ def extract_g_to_a_grna_from_position(
                     + 3
                     + correction_by_target_window
                 ]
+                # Check if the sgRNA has "AAAA" in the guide (excluding PAM).
+                # If it has "AAAA", U6 promoter will not work.
                 if "AAAA" not in sgRNA[3:]:
                     ga_grna.append(sgRNA)
     return ga_grna
