@@ -14,7 +14,7 @@ def generate_exon_seq(transcript_recod: GeneData) -> str:
 
 
 def get_startcodon_exon_index(transcript_recod: GeneData) -> int:
-    """Search the exon index of startcodon"""
+    """Search the exon index of the exon has startcodon"""
     startcodon_position = transcript_recod.cdsStart
     exon_index = None
     for n, (start, end) in enumerate(
@@ -27,7 +27,7 @@ def get_startcodon_exon_index(transcript_recod: GeneData) -> int:
 
 
 def get_stopcodon_exon_index(transcript_recod: GeneData) -> int:
-    """Search the exon index of stopcodon"""
+    """Search the exon index of the exon has stopcodon"""
     stopcodon_position = transcript_recod.cdsEnd
     exon_index = None
     for n, (start, end) in enumerate(
@@ -40,7 +40,7 @@ def get_stopcodon_exon_index(transcript_recod: GeneData) -> int:
 
 
 def generate_cdsseq(transcript_recod: GeneData) -> str:
-    """Generate CDS sequence"""
+    """Generate CDS sequence(CDS sequence is the sequence from startcodon to stopcodon)"""
     exon_seq = generate_exon_seq(transcript_recod)
     startcodon_index = get_startcodon_exon_index(transcript_recod)
     stopcodon_index = get_stopcodon_exon_index(transcript_recod)
@@ -48,7 +48,10 @@ def generate_cdsseq(transcript_recod: GeneData) -> str:
     stopcodon_distance_from_exonend = (
         transcript_recod.exon_end_list[stopcodon_index] - transcript_recod.cdsEnd
     )
-    if stopcodon_distance_from_exonend == 0:  # the case of not having 3'UTR
+    if (
+        stopcodon_distance_from_exonend == 0
+        and stopcodon_index - transcript_recod.exonCount + 1 == 0
+    ):  # the case of not having 3'UTR
         seq_to_stopcodon = exon_seq
     else:  # the case of having 3'UTR
         if (
@@ -57,12 +60,13 @@ def generate_cdsseq(transcript_recod: GeneData) -> str:
             seq_to_stopcodon = exon_seq[:-stopcodon_distance_from_exonend]
         else:  # if stopcodon is not in the last exon. (add the len of exons after the exon that has stopcodon)
             for s in range(1, transcript_recod.exonCount - stopcodon_index):
+                # add the len of exons after the exon that has stopcodon
                 stopcodon_distance_from_last_exonend = stopcodon_distance_from_exonend
                 stopcodon_distance_from_last_exonend += (
                     transcript_recod.exon_end_list[stopcodon_index + s]
                     - transcript_recod.exon_start_list[stopcodon_index + s]
                 )
-            seq_to_stopcodon = exon_seq[:-stopcodon_distance_from_exonend]
+            seq_to_stopcodon = exon_seq[:-stopcodon_distance_from_last_exonend]
 
     startcodon_distance_from_exonstart = (
         transcript_recod.cdsStart - transcript_recod.exon_start_list[startcodon_index]
