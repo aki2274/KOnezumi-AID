@@ -1,5 +1,6 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.get_reverse_complement import get_revcomp
 from konezumiaid.apply_nmd_rules.evaluate_grna import (
     create_candidates_list_dict,
     label_in_start_150bp,
@@ -30,12 +31,12 @@ def apply_nmd_rules(
 
     # 2. label in start 150bp
     gRNA_list = label_in_start_150bp(gRNA_list, transcript_record)
-   
-    if transcript_record.exonCount == 1:# The case of single exon 
+
+    if transcript_record.exonCount == 1:  # The case of single exon
         # 3. label in front half
-        gRNA_list = eliminate_in_back_half(gRNA_list, transcript_record)       
-        
-    else: # The case of multi exon
+        gRNA_list = eliminate_in_back_half(gRNA_list, transcript_record)
+
+    else:  # The case of multi exon
         # 3. eliminate in last exon
         gRNA_list = eliminate_in_last_exon(gRNA_list, transcript_record)
         # 4. label in 50bp from LEJ
@@ -46,8 +47,10 @@ def apply_nmd_rules(
     for d in gRNA_list:
         tmp_dict = {}
         for k, v in d.items():
-            if k == "ct_seq" or k == "ga_seq":
+            if k == "ct_seq":
                 tmp_dict["candidate"] = v
+            elif k == "ga_seq":
+                tmp_dict["candidate"] = get_revcomp(v)
             else:
                 tmp_dict[k] = v
         candidates.append(tmp_dict)
