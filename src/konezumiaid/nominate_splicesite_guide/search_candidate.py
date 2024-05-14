@@ -60,8 +60,8 @@ def search_site_candidate(
         for cand in acceptor_cands
         if "AAAA" not in cand["seq"][3:]  # exclude PAM
         and (
-            transcript_record.exon_end_list[cand["exon_index"] - 2]
-            - transcript_record.exon_start_list[cand["exon_index"] - 2]
+            transcript_record.exon_end_list[cand["exon_index"] - 1]
+            - transcript_record.exon_start_list[cand["exon_index"] - 1]
         )
         % 3
         != 0
