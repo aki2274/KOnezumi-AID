@@ -9,8 +9,9 @@ def search_site_candidate(
         {
             "seq": transcript_record.orf_seq[start - 22 : start + 3][
                 cc_idx : cc_idx + 23
-            ],
-            "exon_index": i + 2,
+            ],  # get 25bp sequence ,then extract 23bp sequence(PAM + 20bp) from the 25bp sequence
+            "exon_index": i
+            + 2,  # exon index is i+2 because the first exon is not included in the list and the index starts from 0
         }
         for i, start in enumerate(
             transcript_record.exon_start_list[1:]
@@ -22,7 +23,7 @@ def search_site_candidate(
         and "AG"
         in transcript_record.orf_seq[
             start - 2 : start
-        ]  # Check if the acceptor site consensus is present
+        ]  # Check if the acceptor site consensus seq is present
         for cc_idx in [
             idx
             for idx in range(3)
@@ -32,12 +33,20 @@ def search_site_candidate(
 
     donor_cands = [
         {
-            "seq": transcript_record.orf_seq[end - 21 : end + 4][cc_idx : cc_idx + 23],
-            "exon_index": i + 1,
+            "seq": transcript_record.orf_seq[end - 21 : end + 4][
+                cc_idx : cc_idx + 23
+            ],  # get 25bp sequence ,then extract 23bp sequence(PAM + 20bp) from the 25bp sequence
+            "exon_index": i + 1,  # exon index is i+1 because the index starts from 0
         }
         for i, end in enumerate(transcript_record.exon_end_list[:-1])
-        if "CC" in transcript_record.orf_seq[end - 21 : end + 4][:4]
-        and "GT" in transcript_record.orf_seq[end : end + 2]
+        if "CC"
+        in transcript_record.orf_seq[end - 21 : end + 4][
+            :4
+        ]  # Check if the site is a candidate(wheather it has PAM site or not)
+        and "GT"
+        in transcript_record.orf_seq[
+            end : end + 2
+        ]  # Check if the donor site consensus seq is present
         for cc_idx in [
             idx
             for idx in range(3)
