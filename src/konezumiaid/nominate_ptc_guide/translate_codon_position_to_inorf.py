@@ -8,7 +8,7 @@ def translate_cds_position_to_exon(
     transcript_record: GeneData,
     candidate_codon_position_in_cds: list[int],
     startcodon_exon_index: int,
-    exon_range_list: list[tuple[int, int]],
+    exon_range_list: list[tuple[int, int]],  # list of tuple of exon start and end
 ) -> list[int]:
     # the distance from the exon start which has startcodon(on splicedexon)
     dist_to_exon_has_startcodon_splicedexon = exon_range_list[startcodon_exon_index][0]
@@ -44,27 +44,28 @@ def get_exonindex_in_cand_codon(
 
 def translate_position_in_splicedexon_to_orf(
     transcript_record: GeneData,
-    candidate_codon_position_in_cds: list[int],
+    candidate_codon_positions_in_cds: list[int],
     startcodon_exon_index: int,
-) -> int:
+) -> list[int]:
     # get the sum of intron length from the orf start to the exon which has candidate codon
     exon_range_list = get_exon_range(transcript_record)
-    candidate_codon_position_in_splicedexon = translate_cds_position_to_exon(
+    candidate_codon_positions_in_splicedexon = translate_cds_position_to_exon(
         transcript_record,
-        candidate_codon_position_in_cds,
+        candidate_codon_positions_in_cds,
         startcodon_exon_index,
         exon_range_list,
     )
     exon_indexes_in_ptc = get_exonindex_in_cand_codon(
-        candidate_codon_position_in_splicedexon, exon_range_list
+        candidate_codon_positions_in_splicedexon, exon_range_list
     )
 
     intron_len_to_exon_has_ptc = [
         (transcript_record.exon_start_list[i] - exon_range_list[i][0])
         for i in exon_indexes_in_ptc
     ]
-    # add intron length abd (exon length + the length from exon which has candidate codon to candidate) to get the index of candidate codon in genome
+    # add intron length (exon length + the length from exon which has candidate codon to it)
     candidate_ptc_codon_positions = np.array(
-        candidate_codon_position_in_splicedexon
+        candidate_codon_positions_in_splicedexon
     ) + np.array(intron_len_to_exon_has_ptc)
+
     return candidate_ptc_codon_positions.tolist()
