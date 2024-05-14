@@ -34,7 +34,7 @@ jobs:
           # ==========================================
           # Use Rosseta for macOS because the Bioconda channel does not yet support Apple Silicon
           # ==========================================
-          CONDA_SUBDIR=osx-64 conda create -y -n test-env python=${{ matrix.python-version }}
+          CONDA_SUBDIR=osx-64 conda create -y -n test-KOnezumi-AID python=${{ matrix.python-version }}
           conda activate test-KOnezumi-AID
           conda config --env --set subdir osx-64
 
