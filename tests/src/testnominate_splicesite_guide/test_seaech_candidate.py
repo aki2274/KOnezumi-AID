@@ -6,15 +6,16 @@ from src.konezumiaid.create_gene_dataclass import GeneData
 
 def test_no_candidate():
     data = GeneData(
-        "NNNNGGCCNNNNNNNAAAANNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNCCNNNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
-        # PAM isn't CC,there is TTTT(AAAA, because this gRNA is revers compliment), Donor isn't GT , Acceptor isn't AG, and the exon length is a multiple of 3
+        "NNNNGGCCNNNNNNNAAAANNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNCCNNNNNNNNNNNNNNNNNNAGNNNNNNNNCCNNNNNNNNNNNNNNNNGTNNNNNNNNNNNN",
+        # PAM isn't CC,there is TTTT(AAAA, because this gRNA is revers compliment), Donor isn't GT , Acceptor isn't AG,
+        # the exon length is a multiple of 3 and skipping exon has only 3'UTR
         0,
-        140,
+        150,
         0,
-        140,
+        130,
         4,
-        [0, 30, 80, 110],
-        [25, 50, 100, 140],
+        [0, 30, 80, 110, 146],
+        [25, 50, 100, 136, 149],
     )
 
     result = search_site_candidate(data)

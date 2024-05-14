@@ -54,7 +54,17 @@ def search_site_candidate(
         ]
     ]
 
-    # remove candidates that have "AAAA" in the sequence or the exon length is a multiple of 3
+    index_exon_has_3_utr = next(
+        (
+            i
+            for i, (start, end) in enumerate(
+                zip(transcript_record.exon_start_list, transcript_record.exon_end_list)
+            )
+            if start < transcript_record.cdsEnd <= end
+        )
+    )
+
+    # remove candidates that have "AAAA" or the exon length is a multiple of 3 or the exon has only 3'UTR
     acceptor_candidates = [
         cand
         for cand in acceptor_cands
@@ -65,6 +75,7 @@ def search_site_candidate(
         )
         % 3
         != 0
+        and cand["exon_index"] <= index_exon_has_3_utr
     ]
 
     donor_candidates = [
@@ -77,6 +88,7 @@ def search_site_candidate(
         )
         % 3
         != 0
+        and cand["exon_index"] < index_exon_has_3_utr
     ]
 
     return acceptor_candidates, donor_candidates
