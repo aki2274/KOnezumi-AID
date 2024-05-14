@@ -4,8 +4,8 @@ from konezumiaid.create_gene_dataclass import GeneData
 
 def test_no_candidate():
     data = GeneData(
-        "NNNNGGCCNNNNNNNTTTTNNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNNN",
-        # PAM isn't CC,there is TTTT in the sequence, Donor isn't GT , Acceptor isn't AG, and .
+        "NNNNGGCCNNNNNNNAAAANNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNNN",
+        # PAM isn't CC,there is TTTT(AAAA, because this gRNA is revers compliment) in the sequence, Donor isn't GT , Acceptor isn't AG, and .
         0,
         100,
         0,
