@@ -4,15 +4,8 @@ from konezumiaid.get_range_of_exon import get_exon_range
 from konezumiaid.create_gene_dataclass import GeneData
 
 
-#####
-# Change candidate stopcodon index in exon to index in genome
-#####
-# 　エクソンごとの範囲を取得、candidate stopcodon が何番目のエクソンか知る、
-
-
-# the candidate indexes in cds are convereted to indexes in exon
-def translate_incds_index_to_inexon(
-    transcript_recod: GeneData,
+def translate_cds_position_to_exon(
+    transcript_record: GeneData,
     candidate_codon_position_in_cds: list[int],
     startcodon_exon_index: int,
     exon_range_list: list[tuple[int, int]],
@@ -21,10 +14,10 @@ def translate_incds_index_to_inexon(
     dist_to_exon_has_startcodon_splicedexon = exon_range_list[startcodon_exon_index][0]
     # the distance from the exon start which has startcodon(on orf)
     dist_to_exon_has_startcodon_from_txstart = int(
-        transcript_recod.exon_start_list[startcodon_exon_index]
+        transcript_record.exon_start_list[startcodon_exon_index]
     )
     dist_5UTR = (
-        transcript_recod.cdsStart
+        transcript_record.cdsStart
         - dist_to_exon_has_startcodon_from_txstart
         + dist_to_exon_has_startcodon_splicedexon
     )
@@ -56,7 +49,7 @@ def translate_position_in_splicedexon_to_orf(
 ) -> int:
     # get the sum of intron length from the orf start to the exon which has candidate codon
     exon_range_list = get_exon_range(transcript_record)
-    candidate_codon_position_in_splicedexon = translate_incds_index_to_inexon(
+    candidate_codon_position_in_splicedexon = translate_cds_position_to_exon(
         transcript_record,
         candidate_codon_position_in_cds,
         startcodon_exon_index,
