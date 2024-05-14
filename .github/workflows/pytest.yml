@@ -31,8 +31,7 @@ jobs:
       - name: Setup conda environment on ubuntu-latest🐧
         if: runner.os == 'Linux'
         run: |
-          conda activate test-KOnezumi-AID
-          conda config --env --set subdir linux-64
+          conda create -y -n test-KOnezumi-AID python=${{ matrix.python-version }}
       
       - name: Setup conda environment on macos-latest🍎(Apple Silicon)
         if: runner.os == 'macOS'
