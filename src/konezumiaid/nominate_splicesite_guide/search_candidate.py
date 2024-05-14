@@ -12,9 +12,17 @@ def search_site_candidate(
             ],
             "exon_index": i + 2,
         }
-        for i, start in enumerate(transcript_record.exon_start_list[1:])
-        if "CC" in transcript_record.orf_seq[start - 22 : start + 3][:4]
-        and "AG" in transcript_record.orf_seq[start - 2 : start]
+        for i, start in enumerate(
+            transcript_record.exon_start_list[1:]
+        )  # eliminate the first exon
+        if "CC"
+        in transcript_record.orf_seq[start - 22 : start + 3][
+            :4
+        ]  # Check if the site is a candidate(wheather it has PAM site or not)
+        and "AG"
+        in transcript_record.orf_seq[
+            start - 2 : start
+        ]  # Check if the acceptor site consensus is present
         for cc_idx in [
             idx
             for idx in range(3)
@@ -38,10 +46,10 @@ def search_site_candidate(
     ]
 
     acceptor_candidates = [
-        candidate for candidate in acceptor_cands if "TTTT" not in candidate["seq"]
+        candidate for candidate in acceptor_cands if "AAAA" not in candidate["seq"][3:]
     ]
     donor_candidates = [
-        candidate for candidate in donor_cands if "TTTT" not in candidate["seq"]
+        candidate for candidate in donor_cands if "AAAA" not in candidate["seq"][3:]
     ]
 
     return acceptor_candidates, donor_candidates
