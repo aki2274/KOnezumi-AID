@@ -15,7 +15,7 @@ def test_no_candidate():
         130,
         4,
         [0, 30, 80, 110, 146],
-        [25, 50, 100, 136, 149],
+        [25, 50, 100, 137, 149],
     )
 
     result = search_site_candidate(data)
