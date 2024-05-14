@@ -9,6 +9,7 @@ def transform_c_to_t_guideseq_to_position(
     editable_c_positions = []
     for seq in guide_seq:
         for seq_position in re.finditer(seq, orf_seq):
+            # target gRNA is 20bp, but target window 17-19pb upstream from PAM. So use num "1"
             position = (
                 re.search(r"(CAA|CAG|CGA)", seq[1:]).start() + seq_position.start() + 1
             )
