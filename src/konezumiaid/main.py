@@ -7,7 +7,7 @@ from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.export_dataset_as_pkl import export_pkl
 from konezumiaid.create_gene_dataclass import create_dataclass
 from konezumiaid.nominate_candidate_stopcodon.main import nominate_candidate_stopcodon
-from konezumiaid.nominate_spliceside_guide.search_candidate import search_candidate
+from konezumiaid.nominate_splicesite_guide.search_candidate import search_site_candidate
 from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
 from konezumiaid.get_rtpcr_primer.main import export_primers
 
@@ -33,7 +33,7 @@ def konezumiaid_main(
 ) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     ct_acand, ga_acand = nominate_candidate_stopcodon(ds)
     adjusted_gRNA = apply_nmd_rules(ds, ct_acand, ga_acand)
-    acceptor_cand, donor_cand = search_candidate(ds)
+    acceptor_cand, donor_cand = search_site_candidate(ds)
     candidate_primers = export_primers(ds)
     return adjusted_gRNA, acceptor_cand, donor_cand, candidate_primers
 

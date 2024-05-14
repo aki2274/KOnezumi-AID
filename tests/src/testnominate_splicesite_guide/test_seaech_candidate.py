@@ -1,4 +1,4 @@
-from konezumiaid.nominate_spliceside_guide.search_candidate import search_candidate
+from konezumiaid.nominate_splicesite_guide.search_candidate import search_site_candidate
 from konezumiaid.create_gene_dataclass import GeneData
 
 
@@ -15,7 +15,7 @@ def test_no_candidate():
         [25, 50, 100],
     )
 
-    result = search_candidate(data)
+    result = search_site_candidate(data)
     excepted = ([], [])
     assert result == excepted
 
@@ -32,13 +32,13 @@ def test_has_candidate():
         [25, 50, 100],
     )
 
-    result = search_candidate(data)
+    result = search_site_candidate(data)
     excepted = (
-        [{"seq": "CCNNNNNNNNNNNNNNNNNAGNN", "exon_num": 3}],
+        [{"seq": "CCNNNNNNNNNNNNNNNNNAGNN", "exon_index": 3}],
         [
-            {"seq": "CCCNNNNNNNNNNNNNNNNNNGT", "exon_num": 1},
-            {"seq": "CCNNNNNNNNNNNNNNNNNNGTN", "exon_num": 1},
-            {"seq": "CCNNNNNNNNNNNNNNNNNNGTN", "exon_num": 2},
+            {"seq": "CCCNNNNNNNNNNNNNNNNNNGT", "exon_index": 1},
+            {"seq": "CCNNNNNNNNNNNNNNNNNNGTN", "exon_index": 1},
+            {"seq": "CCNNNNNNNNNNNNNNNNNNGTN", "exon_index": 2},
         ],
     )
     assert result == excepted
