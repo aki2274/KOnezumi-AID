@@ -75,7 +75,7 @@ def search_site_candidate(
         )
         % 3
         != 0
-        and cand["exon_index"] <= index_exon_has_3_utr
+        and (cand["exon_index"] - 1) <= index_exon_has_3_utr
     ]
 
     donor_candidates = [
@@ -88,7 +88,7 @@ def search_site_candidate(
         )
         % 3
         != 0
-        and cand["exon_index"] < index_exon_has_3_utr
+        and (cand["exon_index"] - 1) < index_exon_has_3_utr
     ]
 
     return acceptor_candidates, donor_candidates
