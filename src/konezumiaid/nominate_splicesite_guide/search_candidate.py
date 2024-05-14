@@ -1,5 +1,6 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.get_range_of_exon import get_exon_range
 
 
 def search_site_candidate(
@@ -54,11 +55,38 @@ def search_site_candidate(
         ]
     ]
 
+    exon_range = get_exon_range(transcript_record)
+
+    # remove candidates that have "AAAA" in the sequence or the exon length is a multiple of 3
     acceptor_candidates = [
         candidate for candidate in acceptor_cands if "AAAA" not in candidate["seq"][3:]
     ]
     donor_candidates = [
         candidate for candidate in donor_cands if "AAAA" not in candidate["seq"][3:]
+    ]
+
+    acceptor_candidates = [
+        cand
+        for cand in acceptor_cands
+        if "AAAA" not in cand["seq"][3:]  # exclude PAM
+        and (
+            exon_range[cand["exon_index"] - 2][1]
+            - exon_range[cand["exon_index"] - 2][0]
+        )
+        % 3
+        != 0
+    ]
+
+    donor_candidates = [
+        cand
+        for cand in donor_cands
+        if "AAAA" not in cand["seq"][3:]  # exclude PAM
+        and (
+            exon_range[cand["exon_index"] - 1][1]
+            - exon_range[cand["exon_index"] - 1][0]
+        )
+        % 3
+        != 0
     ]
 
     return acceptor_candidates, donor_candidates
