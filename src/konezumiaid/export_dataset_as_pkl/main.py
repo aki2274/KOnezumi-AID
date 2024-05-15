@@ -2,12 +2,14 @@ from __future__ import annotations
 from pathlib import Path
 import pickle
 import subprocess
-from konezumiaid.convert_refflat_to_bed6 import convert_refFlat_to_bed6
-from konezumiaid.generate_seq_dict_from_fasta import (
+from konezumiaid.export_dataset_as_pkl.convert_refflat_to_bed6 import (
+    convert_refFlat_to_bed6,
+)
+from konezumiaid.export_dataset_as_pkl.generate_seq_dict_from_fasta import (
     read_fasta,
     create_strand_plus_seq_dict,
 )
-from konezumiaid.generate_sorted_genedata_from_refflat import (
+from konezumiaid.export_dataset_as_pkl.generate_sorted_genedata_from_refflat import (
     built_gene_dataframe,
     clean_refflat,
     remove_transcript_duplicates,
@@ -44,7 +46,9 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
     convert_refFlat_to_bed6(refflat_path, bed6_path)
 
     transcripts_fast_path = Path("data", "bed_refFlat.fa")
-    bedtools_path = Path("src", "konezumiaid", "translate_bed_from_refflat.sh")
+    bedtools_path = Path(
+        "src", "konezumiaid", "export_dataset_as_pkl", "translate_bed_from_refflat.sh"
+    )
     subprocess.run(
         [
             "bash",
