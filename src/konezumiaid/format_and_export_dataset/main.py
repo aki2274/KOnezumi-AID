@@ -2,14 +2,14 @@ from __future__ import annotations
 from pathlib import Path
 import pickle
 import subprocess
-from konezumiaid.export_dataset_as_pkl.convert_refflat_to_bed6 import (
+from konezumiaid.format_and_export_dataset.convert_refflat_to_bed6 import (
     convert_refFlat_to_bed6,
 )
-from konezumiaid.export_dataset_as_pkl.generate_seq_dict_from_fasta import (
+from konezumiaid.format_and_export_dataset.generate_seq_dict_from_fasta import (
     read_fasta,
     create_strand_plus_seq_dict,
 )
-from konezumiaid.export_dataset_as_pkl.generate_sorted_genedata_from_refflat import (
+from konezumiaid.format_and_export_dataset.generate_sorted_genedata_from_refflat import (
     built_gene_dataframe,
     clean_refflat,
     remove_transcript_duplicates,
@@ -22,23 +22,16 @@ Path("data").mkdir(parents=True, exist_ok=True)
 
 def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
     """
-    Export the refflat file and the sequence dictionary as pickle files.
+    Format and export the dataset as pickle files.
+    The starting point of the transcript is set to 0. remove NR transcripts and duplicates.
+    Export the sorted refflat and sequence dictionary as pickle files.
 
     Args:
-        refflat_path (Path): path to the refflat.txt file.
-        fasta_path (Path): path to the mm39 fasta file.
-        out_refflat_path (Path): path to the output refflat file.
-        out_dict_path (Path): path to the output sequence dictionary file.
+        refflat_path (Path): Path to the refFlat txt file.
+        chromosome_fasta_path (Path): Path to the chromosome fasta file.(ex. mm39.fa)
 
     Returns:
         None
-    example:
-        >>> refflat_path = Path("data", "refFlat.txt")
-        >>> fasta_path = Path("data", "mm39.fa")
-        >>> out_refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
-        >>> out_dict_path = Path("data", "sorted_seq_dict.pkl")
-        >>> export_pkl(refflat_path, fasta_path, out_refflat_path, out_dict_path)
-    then, the sorted files are exported as pickle.
     """
     sorted_refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
     sorted_transcript_seq_dict_path = Path("data", "sorted_seq_dict.pkl")
