@@ -9,7 +9,7 @@ from konezumiaid.generate_seq_dict_from_fasta import (
 )
 from konezumiaid.generate_sorted_genedata_from_refflat import (
     built_gene_dataframe,
-    sort_gene_dataframe,
+    clean_refflat,
     remove_transcript_duplicates,
 )
 
@@ -54,9 +54,8 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
             str(transcripts_fast_path),
         ]
     )
-    df_refflat = built_gene_dataframe(refflat_path)
-    df_refflat = remove_transcript_duplicates(df_refflat)
-    df_refflat_sorted = remove_transcript_duplicates(sort_gene_dataframe(df_refflat))
+    df_refflat = remove_transcript_duplicates(built_gene_dataframe(refflat_path))
+    df_refflat_sorted = remove_transcript_duplicates(clean_refflat(df_refflat))
     transcript_seq_dict = read_fasta(transcripts_fast_path)
     transcript_seq_sorted_dict = create_strand_plus_seq_dict(
         df_refflat, df_refflat_sorted, transcript_seq_dict
