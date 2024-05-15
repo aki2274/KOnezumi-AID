@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-def get_revcomp(orf_seq: str) -> str:
+def get_revcomp(seq: str) -> str:
     """Reverse complement a sequence."""
     complement = {
         "A": "T",
@@ -15,4 +15,4 @@ def get_revcomp(orf_seq: str) -> str:
         "t": "a",
         "n": "n",
     }
-    return "".join(complement[nt] for nt in orf_seq[::-1])
+    return "".join(complement[nt] for nt in seq[::-1])
