@@ -20,16 +20,32 @@ jobs:
         shell: bash -l {0}
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
         with:
           miniconda-version: "latest"
           python-version: ${{ matrix.python-version }}
           activate-environment: test-env
           channels: bioconda, conda-forge, defaults, anaconda
+      
+      - name: Setup conda environment on ubuntu-latest🐧
+        if: runner.os == 'Linux'
+        run: |
+          conda create -y -n test-KOnezumi-AID python=${{ matrix.python-version }}
+      
+      - name: Setup conda environment on macos-latest🍎(Apple Silicon)
+        if: runner.os == 'macOS'
+        run: |
+          # ==========================================
+          # Use Rosseta for macOS because the Bioconda channel does not yet support Apple Silicon
+          # ==========================================
+          CONDA_SUBDIR=osx-64 conda create -y -n test-KOnezumi-AID python=${{ matrix.python-version }}
+          conda activate test-KOnezumi-AID
+          conda config --env --set subdir osx-64
 
       - name: Install dependencies
         run: |
+          conda activate test-KOnezumi-AID
           conda install -c bioconda bowtie -y
           python -m pip install --upgrade pip pytest numpy pandas primer3-py
 
@@ -37,4 +53,5 @@ jobs:
         env:
           PYTHONPATH: src
         run: |
+          conda activate test-KOnezumi-AID
           python -m pytest tests -p no:warnings -vv
