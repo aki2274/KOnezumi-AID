@@ -2,7 +2,7 @@ from konezumiaid.generate_sorted_genedata_from_refflat import (
     read_refflat,
     built_gene_dataframe,
     sort_gene_dataframe,
-    remove_genename_duplicates,
+    remove_transcript_duplicates,
 )
 from pathlib import Path
 import pandas as pd
@@ -207,7 +207,7 @@ def test_remove_genedata_duplicates():
         },
     ]
     inpt_dataframe = pd.DataFrame(test)
-    result_dataframe = remove_genename_duplicates(inpt_dataframe)
+    result_dataframe = remove_transcript_duplicates(inpt_dataframe)
     excepted = [
         {
             "geneName": "Rp1",
