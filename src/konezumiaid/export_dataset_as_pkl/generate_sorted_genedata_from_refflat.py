@@ -15,10 +15,16 @@ def remove_transcript_duplicates(
     df_refflat: pd.DataFrame,
 ) -> pd.DataFrame:
     # remove the duplicates of transcript names
-    duplicates_df = df_refflat[df_refflat.duplicated("name", keep=False)]
     unique_df = df_refflat.drop_duplicates("name", keep=False)
+    # remove the gene symbols, if the any of the transcript names are duplicated
+    duplicates_df = df_refflat[df_refflat.duplicated("name", keep=False)]
     export_df = unique_df[~unique_df["geneName"].isin(duplicates_df["geneName"])]
     return export_df
+
+
+def remove_NR_transcripts(df_refflat: pd.DataFrame) -> pd.DataFrame:
+    # remove the transcripts that are not in the RefSeq database
+    return df_refflat[~df_refflat["name"].str.contains("NR_")]
 
 
 def built_gene_dataframe(refflat_path: str) -> pd.DataFrame:
@@ -125,6 +131,7 @@ def clean_by_strand(refflat_object: pd.DataFrame) -> pd.DataFrame:
 
 
 def clean_refflat(df_refflat: pd.DataFrame) -> pd.DataFrame:
+    df_refflat_sorted = df_refflat.copy()
     df_refflat_sorted = df_refflat.apply(clea_by_txStart, axis=1)
     df_refflat_sorted = df_refflat_sorted.apply(clean_by_strand, axis=1)
     return df_refflat_sorted
