@@ -2,7 +2,7 @@ from __future__ import annotations
 from pathlib import Path
 import pickle
 import subprocess
-from konezumiaid.convert_refflat_to_bed import convert_refFlat_to_bed
+from konezumiaid.convert_refflat_to_bed6 import convert_refFlat_to_bed6
 from konezumiaid.generate_seq_dict_from_fasta import (
     read_fasta,
     create_sorted_seq_dict,
@@ -42,7 +42,7 @@ def export_pkl(refflat_path: Path, fasta_path: Path) -> None:
 
     bed_output_path = Path("data", "refFlat.bed")
     bed_fast_path = Path("data", "bed_refFlat.fa")
-    convert_refFlat_to_bed(refflat_path, bed_output_path)
+    convert_refFlat_to_bed6(refflat_path, bed_output_path)
     translate_bed_path = Path("src", "konezumiaid", "translate_bed_from_refflat.sh")
     subprocess.run(
         [
