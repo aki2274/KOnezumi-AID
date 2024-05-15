@@ -5,19 +5,19 @@ import subprocess
 from konezumiaid.convert_refflat_to_bed6 import convert_refFlat_to_bed6
 from konezumiaid.generate_seq_dict_from_fasta import (
     read_fasta,
-    create_sorted_seq_dict,
+    create_strand_plus_seq_dict,
 )
 from konezumiaid.generate_sorted_genedata_from_refflat import (
     built_gene_dataframe,
     sort_gene_dataframe,
-    remove_genename_duplicates,
+    remove_transcript_duplicates,
 )
 
 
 Path("data").mkdir(parents=True, exist_ok=True)
 
 
-def export_pkl(refflat_path: Path, fasta_path: Path) -> None:
+def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
     """
     Export the refflat file and the sequence dictionary as pickle files.
 
@@ -37,29 +37,32 @@ def export_pkl(refflat_path: Path, fasta_path: Path) -> None:
         >>> export_pkl(refflat_path, fasta_path, out_refflat_path, out_dict_path)
     then, the sorted files are exported as pickle.
     """
-    out_refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
-    out_dict_path = Path("data", "sorted_seq_dict.pkl")
+    sorted_refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
+    sorted_transcript_seq_dict_path = Path("data", "sorted_seq_dict.pkl")
 
-    bed_output_path = Path("data", "refFlat.bed")
-    bed_fast_path = Path("data", "bed_refFlat.fa")
-    convert_refFlat_to_bed6(refflat_path, bed_output_path)
-    translate_bed_path = Path("src", "konezumiaid", "translate_bed_from_refflat.sh")
+    bed6_path = Path("data", "refFlat.bed")
+    convert_refFlat_to_bed6(refflat_path, bed6_path)
+
+    transcripts_fast_path = Path("data", "bed_refFlat.fa")
+    bedtools_path = Path("src", "konezumiaid", "translate_bed_from_refflat.sh")
     subprocess.run(
         [
             "bash",
-            translate_bed_path,
-            str(fasta_path),
-            str(bed_output_path),
-            str(bed_fast_path),
+            bedtools_path,
+            str(chromosome_fasta_path),
+            str(bed6_path),
+            str(transcripts_fast_path),
         ]
     )
-    gene_data = built_gene_dataframe(refflat_path)
-    gene_data = remove_genename_duplicates(gene_data)
-    sorted_gene_data = remove_genename_duplicates(sort_gene_dataframe(gene_data))
-    gene_seq = read_fasta(bed_fast_path)
-    seq_dict = create_sorted_seq_dict(gene_data, sorted_gene_data, gene_seq)
-    with open(out_dict_path, "wb") as f:
-        pickle.dump(seq_dict, f)
-    refflat_data = sorted_gene_data.to_dict(orient="records")
-    with open(out_refflat_path, "wb") as f:
-        pickle.dump(refflat_data, f)
+    df_refflat = built_gene_dataframe(refflat_path)
+    df_refflat = remove_transcript_duplicates(df_refflat)
+    df_refflat_sorted = remove_transcript_duplicates(sort_gene_dataframe(df_refflat))
+    transcript_seq_dict = read_fasta(transcripts_fast_path)
+    transcript_seq_sorted_dict = create_strand_plus_seq_dict(
+        df_refflat, df_refflat_sorted, transcript_seq_dict
+    )
+    with open(sorted_transcript_seq_dict_path, "wb") as f:
+        pickle.dump(transcript_seq_sorted_dict, f)
+    sorted_refflat = df_refflat_sorted.to_dict(orient="records")
+    with open(sorted_refflat_path, "wb") as f:
+        pickle.dump(sorted_refflat, f)
