@@ -41,23 +41,33 @@ def built_gene_dataframe(refflat_path: str) -> pd.DataFrame:
     return pd.DataFrame(refflat_dict)
 
 
+def convert_str_int_in_df(df_refflat: pd.DataFrame) -> pd.DataFrame:
+    df_refflat["txStart"] = df_refflat["txStart"].astype(int)
+    df_refflat["txEnd"] = df_refflat["txEnd"].astype(int)
+    df_refflat["cdsStart"] = df_refflat["cdsStart"].astype(int)
+    df_refflat["cdsEnd"] = df_refflat["cdsEnd"].astype(int)
+    df_refflat["exonCount"] = df_refflat["exonCount"].astype(int)
+    return df_refflat
+
+
 def clea_by_txStart(df_refflat: pd.DataFrame) -> pd.DataFrame:
     """txStart is the start of the transcript.So set the start of the transcript to 0."""
 
     df_refflat["exonStarts"] = df_refflat["exonStarts"].split(",")
     df_refflat["exonEnds"] = df_refflat["exonEnds"].split(",")
 
-    df_refflat["txEnd"] = int(df_refflat["txEnd"]) - int(df_refflat["txStart"])
-    df_refflat["cdsStart"] = int(df_refflat["cdsStart"]) - int(df_refflat["txStart"])
-    df_refflat["cdsEnd"] = int(df_refflat["cdsEnd"]) - int(df_refflat["txStart"])
+    df_refflat = convert_str_int_in_df(df_refflat)
+
+    df_refflat["txEnd"] = df_refflat["txEnd"] - df_refflat["txStart"]
+    df_refflat["cdsStart"] = df_refflat["cdsStart"] - df_refflat["txStart"]
+    df_refflat["cdsEnd"] = df_refflat["cdsEnd"] - df_refflat["txStart"]
     df_refflat["exonEnds"] = [
-        int(element) - int(df_refflat["txStart"]) for element in df_refflat["exonEnds"]
+        int(element) - df_refflat["txStart"] for element in df_refflat["exonEnds"]
     ]
     df_refflat["exonStarts"] = [
-        int(element) - int(df_refflat["txStart"])
-        for element in df_refflat["exonStarts"]
+        int(element) - df_refflat["txStart"] for element in df_refflat["exonStarts"]
     ]
-    df_refflat["txStart"] = int(df_refflat["txStart"]) - int(df_refflat["txStart"])
+    df_refflat["txStart"] = 0
     df_refflat["exonStarts"] = ",".join(map(str, sorted(df_refflat["exonStarts"])))
     df_refflat["exonEnds"] = ",".join(map(str, sorted(df_refflat["exonEnds"])))
     return df_refflat
@@ -74,12 +84,14 @@ def clean_by_strand(df_refflat: pd.DataFrame) -> pd.DataFrame:
         df_refflat["cdsStart"] = abs(df_refflat["cdsStart"] - df_refflat["txEnd"])
         df_refflat["cdsEnd"] = abs(df_refflat["cdsEnd"] - df_refflat["txEnd"])
         df_refflat["exonEnds"] = [
-            abs(element - df_refflat["txEnd"]) for element in df_refflat["exonEnds"]
+            abs(int(element) - df_refflat["txEnd"])
+            for element in df_refflat["exonEnds"]
         ]
         df_refflat["exonStarts"] = [
-            abs(element - df_refflat["txEnd"]) for element in df_refflat["exonStarts"]
+            abs(int(element) - df_refflat["txEnd"])
+            for element in df_refflat["exonStarts"]
         ]
-        df_refflat["txEnd"] = df_refflat["txEnd"] - df_refflat["txEnd"]
+        df_refflat["txEnd"] = 0
 
         txStart = df_refflat["txStart"]
         txEnd = df_refflat["txEnd"]
