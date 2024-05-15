@@ -59,7 +59,9 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
         ]
     )
     df_refflat = remove_transcript_duplicates(built_gene_dataframe(refflat_path))
-    df_refflat_sorted = remove_transcript_duplicates(clean_refflat(df_refflat))
+    df_refflat_sorted = df_refflat.copy()
+    df_refflat_sorted = remove_transcript_duplicates(clean_refflat(df_refflat_sorted))
+
     transcript_seq_dict = read_fasta(transcripts_fast_path)
     transcript_seq_sorted_dict = create_strand_plus_seq_dict(
         df_refflat, df_refflat_sorted, transcript_seq_dict
