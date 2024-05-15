@@ -41,55 +41,65 @@ def built_gene_dataframe(refflat_path: str) -> pd.DataFrame:
     return pd.DataFrame(refflat_dict)
 
 
-def sort_transcript_data(genedata: pd.DataFrame) -> pd.DataFrame:
-    # sort the transcript data according to the txStart
-    sorted_data = genedata.copy()
-    sorted_data["exonStarts"] = sorted_data["exonStarts"].split(",")
-    sorted_data["exonEnds"] = sorted_data["exonEnds"].split(",")
+def clea_by_txStart(df_refflat: pd.DataFrame) -> pd.DataFrame:
+    """txStart is the start of the transcript.So set the start of the transcript to 0."""
 
-    sorted_data["txEnd"] = int(sorted_data["txEnd"]) - int(sorted_data["txStart"])
-    sorted_data["cdsStart"] = int(sorted_data["cdsStart"]) - int(sorted_data["txStart"])
-    sorted_data["cdsEnd"] = int(sorted_data["cdsEnd"]) - int(sorted_data["txStart"])
-    sorted_data["exonEnds"] = [
-        int(element) - int(sorted_data["txStart"])
-        for element in sorted_data["exonEnds"]
+    df_refflat["exonStarts"] = df_refflat["exonStarts"].split(",")
+    df_refflat["exonEnds"] = df_refflat["exonEnds"].split(",")
+
+    df_refflat["txEnd"] = int(df_refflat["txEnd"]) - int(df_refflat["txStart"])
+    df_refflat["cdsStart"] = int(df_refflat["cdsStart"]) - int(df_refflat["txStart"])
+    df_refflat["cdsEnd"] = int(df_refflat["cdsEnd"]) - int(df_refflat["txStart"])
+    df_refflat["exonEnds"] = [
+        int(element) - int(df_refflat["txStart"]) for element in df_refflat["exonEnds"]
     ]
-    sorted_data["exonStarts"] = [
-        int(element) - int(sorted_data["txStart"])
-        for element in sorted_data["exonStarts"]
+    df_refflat["exonStarts"] = [
+        int(element) - int(df_refflat["txStart"])
+        for element in df_refflat["exonStarts"]
     ]
-    sorted_data["txStart"] = int(sorted_data["txStart"]) - int(sorted_data["txStart"])
-    if sorted_data["strand"] == "-":
-        # if the transcript is on the negative strand, reverse start and end.
-        sorted_data["txStart"] = abs(sorted_data["txStart"] - sorted_data["txEnd"])
-        sorted_data["cdsStart"] = abs(sorted_data["cdsStart"] - sorted_data["txEnd"])
-        sorted_data["cdsEnd"] = abs(sorted_data["cdsEnd"] - sorted_data["txEnd"])
-        sorted_data["exonEnds"] = [
-            abs(element - sorted_data["txEnd"]) for element in sorted_data["exonEnds"]
-        ]
-        sorted_data["exonStarts"] = [
-            abs(element - sorted_data["txEnd"]) for element in sorted_data["exonStarts"]
-        ]
-        sorted_data["txEnd"] = sorted_data["txEnd"] - sorted_data["txEnd"]
+    df_refflat["txStart"] = int(df_refflat["txStart"]) - int(df_refflat["txStart"])
+    df_refflat["exonStarts"] = ",".join(map(str, sorted(df_refflat["exonStarts"])))
+    df_refflat["exonEnds"] = ",".join(map(str, sorted(df_refflat["exonEnds"])))
+    return df_refflat
 
-        txStart = sorted_data["txStart"]
-        txEnd = sorted_data["txEnd"]
-        cdsStart = sorted_data["cdsStart"]
-        cdsEnd = sorted_data["cdsEnd"]
-        exonStarts = sorted_data["exonStarts"]
-        exonEnds = sorted_data["exonEnds"]
 
-        sorted_data["txStart"] = txEnd
-        sorted_data["txEnd"] = txStart
-        sorted_data["cdsStart"] = cdsEnd
-        sorted_data["cdsEnd"] = cdsStart
-        sorted_data["exonStarts"] = exonEnds
-        sorted_data["exonEnds"] = exonStarts
-    sorted_data["exonStarts"] = ",".join(map(str, sorted(sorted_data["exonStarts"])))
-    sorted_data["exonEnds"] = ",".join(map(str, sorted(sorted_data["exonEnds"])))
-    return sorted_data
+def clean_by_strand(df_refflat: pd.DataFrame) -> pd.DataFrame:
+    """If the strand is "-", reverse the start and end of the transcript."""
+
+    df_refflat["exonStarts"] = df_refflat["exonStarts"].split(",")
+    df_refflat["exonEnds"] = df_refflat["exonEnds"].split(",")
+
+    if df_refflat["strand"] == "-":
+        df_refflat["txStart"] = abs(df_refflat["txStart"] - df_refflat["txEnd"])
+        df_refflat["cdsStart"] = abs(df_refflat["cdsStart"] - df_refflat["txEnd"])
+        df_refflat["cdsEnd"] = abs(df_refflat["cdsEnd"] - df_refflat["txEnd"])
+        df_refflat["exonEnds"] = [
+            abs(element - df_refflat["txEnd"]) for element in df_refflat["exonEnds"]
+        ]
+        df_refflat["exonStarts"] = [
+            abs(element - df_refflat["txEnd"]) for element in df_refflat["exonStarts"]
+        ]
+        df_refflat["txEnd"] = df_refflat["txEnd"] - df_refflat["txEnd"]
+
+        txStart = df_refflat["txStart"]
+        txEnd = df_refflat["txEnd"]
+        cdsStart = df_refflat["cdsStart"]
+        cdsEnd = df_refflat["cdsEnd"]
+        exonStarts = df_refflat["exonStarts"]
+        exonEnds = df_refflat["exonEnds"]
+
+        df_refflat["txStart"] = txEnd
+        df_refflat["txEnd"] = txStart
+        df_refflat["cdsStart"] = cdsEnd
+        df_refflat["cdsEnd"] = cdsStart
+        df_refflat["exonStarts"] = exonEnds
+        df_refflat["exonEnds"] = exonStarts
+    df_refflat["exonStarts"] = ",".join(map(str, sorted(df_refflat["exonStarts"])))
+    df_refflat["exonEnds"] = ",".join(map(str, sorted(df_refflat["exonEnds"])))
+    return df_refflat
 
 
 def sort_gene_dataframe(df_refflat: pd.DataFrame) -> pd.DataFrame:
-    df_refflat_sorted = df_refflat.apply(sort_transcript_data, axis=1)
+    df_refflat_sorted = df_refflat.apply(clea_by_txStart, axis=1)
+    df_refflat_sorted = df_refflat_sorted.apply(clean_by_strand, axis=1)
     return df_refflat_sorted
