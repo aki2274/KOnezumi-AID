@@ -5,6 +5,11 @@ from konezumiaid.create_gene_dataclass import GeneData
 def search_site_candidate(
     transcript_record: GeneData,
 ) -> tuple[list[dict[int, str], list[dict[int, str]]]]:
+    """
+    Search gRNA candidate for targeting the splice site. The candidate must have PAM site and the consensus sequence of the splice site.
+    Exclude candidates that have "AAAA" or the exon length is a multiple of 3 or the exon has 3'UTR.
+    ( If the target site is acceptor site, It is permissible to set the target exon as having a 3'UTR. )
+    """
     acceptor_cands = [
         {
             "seq": transcript_record.orf_seq[start - 22 : start + 3][
@@ -75,7 +80,8 @@ def search_site_candidate(
         )
         % 3
         != 0
-        and (cand["exon_index"] - 1) <= index_exon_has_3_utr
+        and (cand["exon_index"] - 1)
+        <= index_exon_has_3_utr  # It is permissible to set the target exon as having a 3'UTR.
     ]
 
     donor_candidates = [
@@ -88,7 +94,7 @@ def search_site_candidate(
         )
         % 3
         != 0
-        and (cand["exon_index"] - 1) < index_exon_has_3_utr
+        and (cand["exon_index"] - 1) < index_exon_has_3_utr  # It is NOT acceptable.
     ]
 
     return acceptor_candidates, donor_candidates
