@@ -1,11 +1,11 @@
-from konezumiaid.generate_sorted_genedata_from_refflat import (
+from pathlib import Path
+import pandas as pd
+from src.konezumiaid.generate_sorted_genedata_from_refflat import (
     read_refflat,
     built_gene_dataframe,
     sort_gene_dataframe,
     remove_transcript_duplicates,
 )
-from pathlib import Path
-import pandas as pd
 
 
 def test_read_refFlat():
