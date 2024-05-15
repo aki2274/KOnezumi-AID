@@ -5,7 +5,7 @@ from konezumiaid.generate_seq_dict_from_fasta import (
 )
 from konezumiaid.generate_sorted_genedata_from_refflat import (
     built_gene_dataframe,
-    sort_gene_dataframe,
+    clean_refflat,
 )
 from tempfile import NamedTemporaryFile
 from pathlib import Path
