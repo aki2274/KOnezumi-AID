@@ -1,7 +1,7 @@
 from konezumiaid.generate_seq_dict_from_fasta import (
     read_fasta,
     create_dict_keys,
-    create_sorted_seq_dict,
+    create_strand_plus_seq_dict,
 )
 from konezumiaid.generate_sorted_genedata_from_refflat import (
     built_gene_dataframe,
@@ -102,7 +102,7 @@ def test_create_sorted_seq_dict():
         "NM_001355712::chr1:0-100": "TTGGCC",
     }
     assert (
-        create_sorted_seq_dict(
+        create_strand_plus_seq_dict(
             pd.DataFrame(gene_data), pd.DataFrame(sort_gene_data), seq_dict
         )
         == expected

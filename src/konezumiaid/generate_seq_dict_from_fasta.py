@@ -5,41 +5,41 @@ from konezumiaid.get_reverse_complement import get_revcomp
 
 def read_fasta(path_fasta: str) -> dict[str, str]:
     fasta = {}
-    identifier = None
+    transcript_key = None
     sequence = ""
     with open(path_fasta, "r") as file:
         for line in file:
             line = line.strip()
             if line.startswith(">"):
-                if identifier is not None:
-                    fasta[identifier] = sequence
-                identifier = line.lstrip(">")
+                if transcript_key is not None:
+                    fasta[transcript_key] = sequence
+                transcript_key = line.lstrip(">")
                 sequence = ""
             else:
                 sequence += line
-        fasta[identifier] = sequence
+        fasta[transcript_key] = sequence
     return fasta
 
 
-def create_dict_keys(gene_data: pd.DataFrame) -> dict[str, str]:
-    # get query list, which is the key of the sequence dictionary
-    name_list = gene_data["name"].tolist()
-    query_list = []
-    for transcript_name in name_list:
-        data_filtered_transcript = gene_data[gene_data["name"] == transcript_name]
-        chrom = str(data_filtered_transcript["chrom"].iloc[0])
-        txStart = str(data_filtered_transcript["txStart"].iloc[0])
-        txEnd = str(data_filtered_transcript["txEnd"].iloc[0])
+def create_dict_keys(df_refflat: pd.DataFrame) -> dict[str, str]:
+    """Create a unique key for each transcript for the sequence dictionary."""
+    transcript_names = df_refflat["name"].tolist()
+    keys = []
+    for transcript_name in transcript_names:
+        df_transcript = df_refflat[df_refflat["name"] == transcript_name]
+        chrom = str(df_transcript["chrom"].iloc[0])
+        txStart = str(df_transcript["txStart"].iloc[0])
+        txEnd = str(df_transcript["txEnd"].iloc[0])
         query = f"{transcript_name}::{chrom}:{txStart}-{txEnd}"
-        query_list.append(query)
-    return query_list
+        keys.append(query)
+    return keys
 
 
-def create_sorted_seq_dict(
+def create_strand_plus_seq_dict(
     gene_data: pd.DataFrame, sort_gene_dataframe: pd.DataFrame, gene_seq: dict[str, str]
 ) -> dict[str, str]:
-    # convert the sequence dictionary from fasta to the sorted sequence dictionary.
-    # reverse the sequence if the transcript is on the negative strand
+    """convert the sequence dictionary from fasta to the sequence dictionary.
+    reverse the sequence if the transcript is negative strand."""
     normal_query = create_dict_keys(gene_data)
     sorted_query = create_dict_keys(sort_gene_dataframe)
     name_list = gene_data["name"].tolist()
