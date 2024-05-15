@@ -1,6 +1,6 @@
 from pathlib import Path
 import pandas as pd
-from src.konezumiaid.export_dataset_as_pkl.generate_sorted_genedata_from_refflat import (
+from src.konezumiaid.format_and_export_dataset.generate_sorted_genedata_from_refflat import (
     read_refflat,
     built_gene_dataframe,
     clean_refflat,
