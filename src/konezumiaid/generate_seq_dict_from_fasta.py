@@ -36,19 +36,25 @@ def create_dict_keys(df_refflat: pd.DataFrame) -> dict[str, str]:
 
 
 def create_strand_plus_seq_dict(
-    gene_data: pd.DataFrame, sort_gene_dataframe: pd.DataFrame, gene_seq: dict[str, str]
+    df_refflat: pd.DataFrame,
+    df_refflat_sorted: pd.DataFrame,
+    transcript_seq_dict: dict[str, str],
 ) -> dict[str, str]:
     """convert the sequence dictionary from fasta to the sequence dictionary.
-    reverse the sequence if the transcript is negative strand."""
-    normal_query = create_dict_keys(gene_data)
-    sorted_query = create_dict_keys(sort_gene_dataframe)
-    name_list = gene_data["name"].tolist()
-    copy_dict = gene_seq.copy()
-    for transcript_name, n_que in zip(name_list, normal_query):
-        fil_data = gene_data[gene_data["name"] == transcript_name]
-        if (fil_data["strand"] == "-").any():
-            copy_dict[n_que] = get_revcomp(gene_seq[n_que])
-    result = {}
-    for n_que, s_que in zip(normal_query, sorted_query):
-        result[s_que] = copy_dict[n_que].upper()
-    return result
+    Reverse the sequence and change key if the transcript is negative strand."""
+    transcripts_fasta_keys = create_dict_keys(df_refflat)
+    sorted_keys = create_dict_keys(df_refflat_sorted)
+    name_list = df_refflat["name"].tolist()
+    result_dict = {}
+
+    for transcript_name, fasta_key, sorted_key in zip(
+        name_list, transcripts_fasta_keys, sorted_keys
+    ):
+        strand = df_refflat.loc[df_refflat["name"] == transcript_name, "strand"].iloc[0]
+        if strand == "-":
+            converted_seq = get_revcomp(transcript_seq_dict[fasta_key])
+        else:
+            converted_seq = transcript_seq_dict[fasta_key]
+
+        result_dict[sorted_key] = converted_seq.upper()
+    return result_dict
