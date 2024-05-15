@@ -15,37 +15,35 @@ class GeneData:
 
 
 def create_dataclass(
-    transcript_name: str, refflat_data: list[dict], gene_seq_data: dict
+    transcript_name: str, refflat: list[dict], transcript_seq_dict: dict
 ) -> GeneData:
-    # create dataclass from the transcript name.transcript name is unique on the refflat data.
-    data_filtered_transcript = next(
+    # Create dataclass from the transcript name.
+    transcript_filtered = next(
         (
-            gene_data
-            for gene_data in refflat_data
-            if gene_data["name"] == transcript_name
+            transcript_data
+            for transcript_data in refflat
+            if transcript_data["name"] == transcript_name
         ),
         None,
     )
-    if data_filtered_transcript is None:
-        raise ValueError("Transcript name not found in refflat data")
+    if transcript_filtered is None:
+        raise ValueError("Transcript name doesn't exist in the refflat")
 
-    chrom = str(data_filtered_transcript["chrom"])
-    txStart = int(data_filtered_transcript["txStart"])
-    txEnd = int(data_filtered_transcript["txEnd"])
-    cdsStart = int(data_filtered_transcript["cdsStart"])
-    cdsEnd = int(data_filtered_transcript["cdsEnd"])
-    exonCount = int(data_filtered_transcript["exonCount"])
-    exon_start_list = [
-        int(x) for x in data_filtered_transcript["exonStarts"].split(",")
-    ]
-    exon_end_list = [int(x) for x in data_filtered_transcript["exonEnds"].split(",")]
+    chrom = str(transcript_filtered["chrom"])
+    txStart = int(transcript_filtered["txStart"])
+    txEnd = int(transcript_filtered["txEnd"])
+    cdsStart = int(transcript_filtered["cdsStart"])
+    cdsEnd = int(transcript_filtered["cdsEnd"])
+    exonCount = int(transcript_filtered["exonCount"])
+    exon_start_list = [int(x) for x in transcript_filtered["exonStarts"].split(",")]
+    exon_end_list = [int(x) for x in transcript_filtered["exonEnds"].split(",")]
 
-    query = f"{transcript_name}::{chrom}:{txStart}-{txEnd}"
-    orf_seq = gene_seq_data.get(query)
+    key = f"{transcript_name}::{chrom}:{txStart}-{txEnd}"
+    orf_seq = transcript_seq_dict.get(key)
     if orf_seq is None:
-        raise ValueError("Query not found in gene sequence data")
+        raise ValueError("Transcript sequence doesn't exist in the transcript_seq_dict")
 
-    set_data = GeneData(
+    transcript_record = GeneData(
         orf_seq,
         txStart,
         txEnd,
@@ -55,4 +53,4 @@ def create_dataclass(
         exon_start_list,
         exon_end_list,
     )
-    return set_data
+    return transcript_record
