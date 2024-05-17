@@ -11,7 +11,7 @@ readme = "README.md"
 license = "MIT"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Proprietary License",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS",
     "Intended Audience :: Science/Research",
@@ -20,10 +20,10 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-numpy = "^1.26.0"
-pandas = "^2.1.1"
+numpy = "1.26.0"  
+pandas = "1.3.5"
 primer3-py = "^2.0.1"
 
 [tool.poetry.scripts]
-createdata = "konezumiaid.main:export"
 konezumiaid = "konezumiaid.main:main"
+konezumiaid-createdata = "konezumiaid.format_and_export_dataset.main:exprt_pkl"
