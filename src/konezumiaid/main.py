@@ -4,7 +4,7 @@ import pickle
 import sys
 from pathlib import Path
 from konezumiaid.create_gene_dataclass import GeneData
-from konezumiaid.export_dataset_as_pkl import export_pkl
+from konezumiaid.export_dataset_as_pkl.main import export_pkl
 from konezumiaid.create_gene_dataclass import create_dataclass
 from konezumiaid.nominate_candidate_stopcodon.main import nominate_candidate_stopcodon
 from konezumiaid.nominate_splicesite_guide.search_candidate import search_site_candidate
