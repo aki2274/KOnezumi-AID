@@ -1,11 +1,11 @@
-from konezumiaid.generate_sorted_genedata_from_refflat import (
-    read_refflat,
-    built_gene_dataframe,
-    sort_gene_dataframe,
-    remove_genename_duplicates,
-)
 from pathlib import Path
 import pandas as pd
+from src.konezumiaid.format_and_export_dataset.generate_sorted_genedata_from_refflat import (
+    read_refflat,
+    built_gene_dataframe,
+    clean_refflat,
+    remove_transcript_duplicates,
+)
 
 
 def test_read_refFlat():
@@ -119,7 +119,7 @@ def test_sort_gene_dataframe():
         },
     ]
     inpt_dataframe = pd.DataFrame(test)
-    result_dataframe = sort_gene_dataframe(inpt_dataframe)
+    result_dataframe = clean_refflat(inpt_dataframe)
     excepted = [
         {
             "geneName": "Xkr4",
@@ -207,7 +207,7 @@ def test_remove_genedata_duplicates():
         },
     ]
     inpt_dataframe = pd.DataFrame(test)
-    result_dataframe = remove_genename_duplicates(inpt_dataframe)
+    result_dataframe = remove_transcript_duplicates(inpt_dataframe)
     excepted = [
         {
             "geneName": "Rp1",
