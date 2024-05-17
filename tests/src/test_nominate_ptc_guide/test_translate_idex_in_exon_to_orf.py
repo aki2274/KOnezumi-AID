@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
 from src.konezumiaid.create_gene_dataclass import create_dataclass
-from src.konezumiaid.get_range_of_exon import get_exon_range
+from src.konezumiaid.get_exon_range import get_exon_range
 from src.konezumiaid.nominate_ptc_guide.translate_codon_position_to_inorf import (
     translate_cds_position_to_exon,
     get_exonindex_in_cand_codon,
