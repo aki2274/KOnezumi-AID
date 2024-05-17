@@ -1,11 +1,11 @@
 from __future__ import annotations
 import pytest
-from konezumiaid.create_gene_dataclass import create_dataclass
-from konezumiaid.nominate_candidate_stopcodon.translate_index_in_exon_to_orf import (
-    get_exon_range,
-    translate_incds_index_to_exon,
-    get_exonnum_of_candidate,
-    translate_index_in_exon_to_orf,
+from src.konezumiaid.create_gene_dataclass import create_dataclass
+from src.konezumiaid.get_exon_range import get_exon_range
+from src.konezumiaid.nominate_ptc_guide.translate_codon_position_to_inorf import (
+    translate_cds_position_to_exon,
+    get_exonindex_in_cand_codon,
+    translate_position_in_splicedexon_to_orf,
 )
 
 input_genedata = [
@@ -69,12 +69,13 @@ expected = [[16]]  # len(NNNNNNNNNNATGNN2CAG)-3. length of C in exon seq
 
 
 @pytest.mark.parametrize(
-    "test_name,input_genedata,orf_seq_dict,candidate_stopcodon_index_incds,exon_num,expected",
+    "test_name,input_genedata,orf_seq_dict,candidate_stopcodon_index_incds,exon_range,exon_num,expected",
     zip(
         test_name,
         [input_genedata] * len(test_name),
         [orf_seq_dict] * len(test_name),
         candidate_stopcodon_index_incds,
+        exon_range,
         exon_num,
         expected,
     ),
@@ -84,14 +85,16 @@ def test_get_candidate_stopcodon_index_incds_to_inexon(
     input_genedata,
     orf_seq_dict,
     candidate_stopcodon_index_incds,
+    exon_range,
     exon_num,
     expected,
 ):
     assert (
-        translate_incds_index_to_exon(
+        translate_cds_position_to_exon(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_incds,
             exon_num,
+            exon_range,
         )
         == expected
     )
@@ -110,7 +113,7 @@ expected = [[1]]
     ),
 )
 def test_get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range, expected):
-    assert get_exonnum_of_candidate(candidate_stopcodon, exon_range) == expected
+    assert get_exonindex_in_cand_codon(candidate_stopcodon, exon_range) == expected
 
 
 exon_index = [[1]]
@@ -137,7 +140,7 @@ def test_add_num_to_change_orf_index(
     expected,
 ):
     assert (
-        translate_index_in_exon_to_orf(
+        translate_position_in_splicedexon_to_orf(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_incds,
             exon_num,
@@ -155,12 +158,13 @@ expected = [[]]
 
 
 @pytest.mark.parametrize(
-    "test_name,input_genedata,orf_seq_dict,candidate_stopcodon,exon_num,expected",
+    "test_name,input_genedata,orf_seq_dict,candidate_stopcodon,exon_range,exon_num,expected",
     zip(
         test_name,
         [input_genedata] * len(test_name),
         [orf_seq_dict] * len(test_name),
         candidate_stopcodon_index_incds,
+        exon_range,
         exon_num,
         expected,
     ),
@@ -170,14 +174,16 @@ def test_nocandidate_get_candidate_stopcodon_index_incds_to_inexon(
     input_genedata,
     orf_seq_dict,
     candidate_stopcodon,
+    exon_range,
     exon_num,
     expected,
 ):
     assert (
-        translate_incds_index_to_exon(
+        translate_cds_position_to_exon(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon,
             exon_num,
+            exon_range,
         )
         == expected
     )
@@ -198,7 +204,7 @@ expected = [[]]
 def test_nocandidate_get_candidate_stopcodon_exon_num(
     candidate_stopcodon, exon_range, expected
 ):
-    assert get_exonnum_of_candidate(candidate_stopcodon, exon_range) == expected
+    assert get_exonindex_in_cand_codon(candidate_stopcodon, exon_range) == expected
 
 
 exon_index = [[]]
@@ -225,7 +231,7 @@ def test_nocandidate_add_num_to_change_orf_index(
     expected,
 ):
     assert (
-        translate_index_in_exon_to_orf(
+        translate_position_in_splicedexon_to_orf(
             create_dataclass(test_name, input_genedata, orf_seq_dict),
             candidate_stopcodon_index_incds,
             exon_num,

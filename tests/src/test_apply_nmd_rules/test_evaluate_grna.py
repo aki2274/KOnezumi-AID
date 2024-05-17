@@ -1,11 +1,11 @@
 from __future__ import annotations
-from konezumiaid.create_gene_dataclass import GeneData
-from konezumiaid.apply_nmd_rules.evaluate_grna import (
+from src.konezumiaid.create_gene_dataclass import GeneData
+from src.konezumiaid.apply_nmd_rules.evaluate_grna import (
     eliminate_in_back_half,
     eliminate_in_last_exon,
     label_in_start_150bp,
     label_in_50bp_from_LEJ,
-    create_candidates_list_dict
+    create_candidates_list_dict,
 )
 
 
@@ -40,6 +40,7 @@ def test_create_candidate_list():
 
     assert create_candidates_list_dict(ct_cand, ga_cand) == expected
 
+
 def test_label_in_start_150bp():
     cand_grna = [
         {"ct_seq": "CTGCAGAACTCGGACAATTCGGG"},
@@ -64,7 +65,6 @@ def test_label_in_start_150bp():
     assert label_in_start_150bp(cand_grna, ds) == expected
 
 
-
 def test_eliminate_in_front_half():
     cand_grna = [
         {"ct_seq": "CTGCAGAACTCGGACAATTCGGG"},
@@ -83,7 +83,6 @@ def test_eliminate_in_front_half():
     )
     expected = [{"ct_seq": "CTGCAGAACTCGGACAATTCGGG"}]
     assert eliminate_in_back_half(cand_grna, ds) == expected
-
 
 
 def test_eliminate_in_last_exon():
