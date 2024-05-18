@@ -37,11 +37,11 @@ def test_has_candidate():
 
     result = search_site_candidate(data)
     excepted = (
-        [{"seq": "CCNNNNNNNNNNNNNNNNNAGNN", "exon_index": 3}],
+        [{"seq": "NNCTNNNNNNNNNNNNNNNNNGG", "exon_index": 3}],
         [
-            {"seq": "CCCNNNNNNNNNNNNNNNNNNGT", "exon_index": 1},
-            {"seq": "CCNNNNNNNNNNNNNNNNNNGTN", "exon_index": 1},
-            {"seq": "CCNNNNNNNNNNNNNNNNNNGTN", "exon_index": 2},
+            {"seq": "ACNNNNNNNNNNNNNNNNNNGGG", "exon_index": 1},
+            {"seq": "NACNNNNNNNNNNNNNNNNNNGG", "exon_index": 1},
+            {"seq": "NACNNNNNNNNNNNNNNNNNNGG", "exon_index": 2},
         ],
     )
     assert result == excepted
