@@ -6,6 +6,17 @@
 - Python 3.9 or later
 - Unix-like environment (Linux, macOS, WSL, etc.)
 
+### Required Packages
+
+This project requires the following packages:
+- poetry
+
+`pip install poetry`
+- bowtie
+
+Install via bioconda
+`conda install bowtie`
+
 ### Input data set
 #### Locus information
 `refFlat.text` from [UCSC](
@@ -50,20 +61,59 @@ Now you're ready to use KOnezumiAID in your Python projects.
 ## Usage
 ### Create data set for KOnezumi-AID
 
-`konezumiaid createdata <your refFlat.txt Path> <your mm39.fa Path>`
+`konezumiaid-createdata <your refFlat.txt Path> <your mm39.fa Path>`
 ### Examples
-`konezumiaid createdata data/refFlat.txt data/mm39.fa`
+`konezumiaid-createdata data/refFlat.txt data/mm39.fa`
 
 ### Search candidate by gene symbol or transcript name
 KOnezumi-AID accepts a gene symbol or a transcript name.
+
+If search by a transcript name, you gan get more information about gRNA.
 
 `konezumiaid <gene symbol or transcript name>`
 
 ### Examples
 - Search candidate by the gene symbol
-
-`konezumiaid Xkr4`
+```
+$konezumiaid Rp1
+PTC gRNA
+                       seq
+0  ACAGGTTATGCAGTGTCCTGTGG
+1  ACGACACAGCATCACCAGGCTGG
+2  GCCAGGGCCGAGGGCGCCTGCGG
+3  ACAGTTTGGCGGCGTTCGGGTGG
+4  CCAGGGCCGAGGGCGCCTGCGGG
+Acceptor gRNA
+No Acceptor gRNA found.
+Donor gRNA
+No Donor gRNA found.
+```
 
 - Search candidate by the transcript name
 
-`konezumiaid NM_001011874`
+```
+$ konezumiaid NM_001370921
+PTC gRNA
+                        seq  in_start_150bp  in_50bp_from_LEJ
+0   ACAGTTTGGCGGCGTTCGGGTGG            True             False
+1   ACGACACAGCATCACCAGGCTGG           False             False
+2   ACAGGTTATGCAGTGTCCTGTGG           False             False
+3   ACAACCTGTCCTTCCAGGTAAGG           False             False
+4   ACCAATCAGAACAATCCCACTGG           False             False
+5   ACGAATGTATCTGAGGATTAAGG           False             False
+6   TCAGGCCAATGTCACATTGTGGG           False             False
+7   CTCAGGCCAATGTCACATTGTGG           False             False
+8   CCAGGGCCGAGGGCGCCTGCGGG           False             False
+9   GCCAGGGCCGAGGGCGCCTGCGG           False             False
+10  TCCAGTGGGATTGTTCTGATTGG           False             False
+11  CCAGTACTGGGATTTGTCACTGG           False             False
+Acceptor gRNA
+                       seq  exon_index
+0  ACCTGGGATTGAAAGGAACAAGG          20
+1  TCTGTTGGAGAAAAGCCCCATGG          22
+2  ACCTGAAGAAAATGGAAAACAGG          23
+Donor gRNA
+                       seq  exon_index
+0  TACCTTGCCCAAGTCCATCATGG           8
+1  TTACCTCTCACAGGTGAAGATGG          22
+```
