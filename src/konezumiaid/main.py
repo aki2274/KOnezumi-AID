@@ -4,9 +4,8 @@ import pickle
 import sys
 from pathlib import Path
 from konezumiaid.create_gene_dataclass import GeneData
-from konezumiaid.format_and_export_dataset.main import export_pkl
 from konezumiaid.create_gene_dataclass import create_dataclass
-from konezumiaid.nominate_candidate_stopcodon.main import nominate_candidate_stopcodon
+from konezumiaid.nominate_ptc_guide.main import nominate_candidate_stopcodon
 from konezumiaid.nominate_splicesite_guide.search_candidate import search_site_candidate
 from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
 from konezumiaid.get_rtpcr_primer.main import export_primers
@@ -86,14 +85,6 @@ def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]
                 v["donor_cand"],
                 v["candidate_primers"],
             )
-
-
-def export():
-    if len(sys.argv) != 3:
-        raise ValueError("Please provide a refflat file and a fasta file as arguments.")
-    refflat_path = Path(sys.argv[1])
-    fasta_path = Path(sys.argv[2])
-    export_pkl(refflat_path, fasta_path)
 
 
 def main():
