@@ -1,4 +1,5 @@
 from __future__ import annotations
+from konezumiaid.get_reverse_complement import get_revcomp
 from konezumiaid.create_gene_dataclass import GeneData
 
 
@@ -13,7 +14,7 @@ def search_site_candidate(
     orf = transcript_record.orf_seq
     acceptor_cands = [
         {
-            "seq": orf[start - 22 : start + 3][cc_idx : cc_idx + 23],
+            "seq": get_revcomp(orf[start - 22 : start + 3][cc_idx : cc_idx + 23]),
             # get 25bp sequence ,then extract 23bp sequence(PAM + 20bp) from the 25bp sequence
             "exon_index": i + 2,
             # exon index is i+2 because the first exon is not included in the list and the index starts from 0
@@ -31,7 +32,7 @@ def search_site_candidate(
 
     donor_cands = [
         {
-            "seq": orf[end - 21 : end + 4][cc_idx : cc_idx + 23],
+            "seq": get_revcomp(orf[end - 21 : end + 4][cc_idx : cc_idx + 23]),
             # get 25bp sequence ,then extract 23bp sequence(PAM + 20bp) from the 25bp sequence
             "exon_index": i + 1,
             # exon index is i+1 because the index starts from 0
@@ -58,7 +59,7 @@ def search_site_candidate(
     acceptor_candidates = [
         cand
         for cand in acceptor_cands
-        if "AAAA" not in cand["seq"][3:]  # exclude PAM
+        if "TTTT" not in cand["seq"][:20]  # exclude PAM
         and (
             exon_end_pos[cand["exon_index"] - 1]
             - exon_start_pos[cand["exon_index"] - 1]
@@ -72,7 +73,7 @@ def search_site_candidate(
     donor_candidates = [
         cand
         for cand in donor_cands
-        if "AAAA" not in cand["seq"][3:]  # exclude PAM
+        if "TTTT" not in cand["seq"][:20]  # exclude PAM
         and (
             transcript_record.exon_end_list[cand["exon_index"] - 1]
             - exon_start_pos[cand["exon_index"] - 1]
