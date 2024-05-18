@@ -8,14 +8,14 @@ from konezumiaid.create_gene_dataclass import create_dataclass
 from konezumiaid.nominate_ptc_guide.main import nominate_candidate_stopcodon
 from konezumiaid.nominate_splicesite_guide.search_candidate import search_site_candidate
 from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
-from konezumiaid.get_rtpcr_primer.main import export_primers
+
+# from konezumiaid.get_rtpcr_primer.main import export_primers
 
 
 def show_table(
     adjusted_gRNA_df: pd.DataFrame,
     acceptor_cand_df: pd.DataFrame,
     donor_cand_df: pd.DataFrame,
-    candidate_primers_df: pd.DataFrame,
 ) -> None:
     print("PTC gRNA")
     print(adjusted_gRNA_df.to_string())
@@ -23,25 +23,15 @@ def show_table(
     print(acceptor_cand_df.to_string())
     print("Donor gRNA")
     print(donor_cand_df.to_string())
-    print("Primer")
-    print(candidate_primers_df.to_string())
 
 
 def konezumiaid_main(
-    ds: GeneData,
-) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
-    ct_acand, ga_acand = nominate_candidate_stopcodon(ds)
-    adjusted_gRNA = apply_nmd_rules(ds, ct_acand, ga_acand)
-    acceptor_cand, donor_cand = search_site_candidate(ds)
-    candidate_primers = export_primers(ds)
-    return adjusted_gRNA, acceptor_cand, donor_cand, candidate_primers
-
-
-def find_common_dicts_by_key(key, lists):
-    value_sets = [{d[key] for d in lst if key in d} for lst in lists]
-    common_values = set.intersection(*value_sets)
-    result = [{key: value} for value in common_values]
-    return result
+    transcript_record: GeneData,
+) -> tuple[list[dict], list[dict], list[dict]]:
+    ct_cand, ga_cand = nominate_candidate_stopcodon(transcript_record)
+    applied_nmd_rules_gRNA = apply_nmd_rules(ct_cand, ga_cand)
+    acceptor_cand, donor_cand = search_site_candidate(transcript_record)
+    return applied_nmd_rules_gRNA, acceptor_cand, donor_cand
 
 
 def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
@@ -49,41 +39,34 @@ def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]
     seq_path = Path("data", "sorted_seq_dict.pkl")
     refflat = pickle.load(open(refflat_path, "rb"))
     seq_dict = pickle.load(open(seq_path, "rb"))
-    if name.startswith("NM_") or name.startswith("NR_"):
-        ds = create_dataclass(name, refflat, seq_dict)
-        stop_cand, acceptor_cand, donor_cand, candidate_primers = konezumiaid_main(ds)
-        stop_cand_df = pd.DataFrame(stop_cand)
+    if name.startswith("NM_"):
+        transcript_record = create_dataclass(name, refflat, seq_dict)
+        ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
+        ptcp_cand_df = pd.DataFrame(ptc_cand)
         acceptor_cand_df = pd.DataFrame(acceptor_cand)
         donor_cand_df = pd.DataFrame(donor_cand)
-        candidate_primers_df = pd.DataFrame(candidate_primers)
-        show_table(stop_cand_df, acceptor_cand_df, donor_cand_df, candidate_primers_df)
-        # return konezumiaid_main(ds)
+        show_table(ptcp_cand_df, acceptor_cand_df, donor_cand_df)
 
     else:
         transcript_names = [d["name"] for d in refflat if d["geneName"] == name]
-        gene_cand = {}
+        symbol_cand = {}
         for transcript in transcript_names:
-            ds = create_dataclass(transcript, refflat, seq_dict)
-            adjusted_gRNA, acceptor_cand, donor_cand, candidate_primers = (
-                konezumiaid_main(ds)
-            )
-            stop_cand_df = pd.DataFrame(adjusted_gRNA)
+            transcript_record = create_dataclass(transcript, refflat, seq_dict)
+            ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
+            ptcp_cand_df = pd.DataFrame(ptc_cand)
             acceptor_cand_df = pd.DataFrame(acceptor_cand)
             donor_cand_df = pd.DataFrame(donor_cand)
-            candidate_primers_df = pd.DataFrame(candidate_primers)
-            gene_cand[transcript] = {
-                "stop_cand": stop_cand_df,
+            symbol_cand[transcript] = {
+                "ptc_cand": ptcp_cand_df,
                 "acceptor_cand": acceptor_cand_df,
                 "donor_cand": donor_cand_df,
-                "candidate_primers": candidate_primers_df,
             }
-        for k, v in gene_cand.items():
+        for k, v in symbol_cand.items():
             print(k)
             show_table(
-                v["stop_cand"],
+                v["ptc_cand"],
                 v["acceptor_cand"],
                 v["donor_cand"],
-                v["candidate_primers"],
             )
 
 
