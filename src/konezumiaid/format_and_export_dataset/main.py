@@ -39,7 +39,10 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
 
     transcripts_fast_path = Path("data", "bed_refFlat.fa")
     bedtools_path = Path(
-        "src", "konezumiaid", "export_dataset_as_pkl", "translate_bed_from_refflat.sh"
+        "src",
+        "konezumiaid",
+        "format_and_export_dataset",
+        "translate_bed_from_refflat.sh",
     )
     subprocess.run(
         [
