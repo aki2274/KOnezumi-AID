@@ -83,3 +83,4 @@ def export():
     if fasta_path.suffix != ".fa":
         raise ValueError("The fasta file must be a fasta file.")
     export_pkl(refflat_path, fasta_path)
+    print("Exported the dataset as pickle files.")
