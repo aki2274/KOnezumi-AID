@@ -12,6 +12,13 @@ from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
 # from konezumiaid.get_rtpcr_primer.main import export_primers
 
 
+def extract_matching_seqs(*lists):
+    seq_sets = [set(d["seq"] for d in lst) for lst in lists]
+    common_seqs = set.intersection(*seq_sets)
+    result = [{"seq": seq} for seq in common_seqs]
+    return result
+
+
 def show_table(
     df_ptc_gRNA: pd.DataFrame,
     df_acceptor_cand: pd.DataFrame,
@@ -31,9 +38,11 @@ def export_csv(
     df_acceptor_cand: pd.DataFrame,
     df_donor_cand: pd.DataFrame,
 ) -> None:
-    df_ptc_gRNA.to_csv(f"{name}_ptc_gRNA.csv", index=False)
-    df_acceptor_cand.to_csv(f"{name}_acceptor_cand.csv", index=False)
-    df_donor_cand.to_csv(f"{name}_donor_cand.csv", index=False)
+    output_folder = Path("data", "output")
+    output_folder.mkdir(parents=True, exist_ok=True)
+    df_ptc_gRNA.to_csv(output_folder / f"{name}_ptc_gRNA.csv", index=False)
+    df_acceptor_cand.to_csv(output_folder / f"{name}_acceptor_cand.csv", index=False)
+    df_donor_cand.to_csv(output_folder / f"{name}_donor_cand.csv", index=False)
 
 
 def konezumiaid_main(
@@ -56,6 +65,27 @@ def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]
         df_ptcp_cand = pd.DataFrame(ptc_cand)
         df_acceptor_cand = pd.DataFrame(acceptor_cand)
         df_donor_cand = pd.DataFrame(donor_cand)
+        show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+        export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+    else:
+        df_symbol = df_refflat[df_refflat["gene_name"] == name]
+        symbol_transcript_names = df_symbol["name"]
+        for i, transcript_name in enumerate(symbol_transcript_names):
+            transcript_record = create_dataclass(transcript_name, df_refflat, seq_dict)
+            ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
+            if i == 0:
+                symbol_ptc_cand = ptc_cand
+                symbol_acceptor_cand = acceptor_cand
+                symbol_donor_cand = donor_cand
+            else:
+                symbol_ptc_cand = extract_matching_seqs(symbol_ptc_cand, ptc_cand)
+                symbol_acceptor_cand = extract_matching_seqs(
+                    symbol_acceptor_cand, acceptor_cand
+                )
+                symbol_donor_cand = extract_matching_seqs(symbol_donor_cand, donor_cand)
+        df_ptcp_cand = pd.DataFrame(symbol_ptc_cand)
+        df_acceptor_cand = pd.DataFrame(symbol_acceptor_cand)
+        df_donor_cand = pd.DataFrame(symbol_donor_cand)
         show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
         export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
 
