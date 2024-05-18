@@ -25,11 +25,20 @@ def show_table(
     df_donor_cand: pd.DataFrame,
 ) -> None:
     print("PTC gRNA")
-    print(df_ptc_gRNA.to_string())
+    if df_ptc_gRNA.empty:
+        print("No PTC gRNA found.")
+    else:
+        print(df_ptc_gRNA.to_string())
     print("Acceptor gRNA")
-    print(df_acceptor_cand.to_string())
+    if df_acceptor_cand.empty:
+        print("No Acceptor gRNA found.")
+    else:
+        print(df_acceptor_cand.to_string())
     print("Donor gRNA")
-    print(df_donor_cand.to_string())
+    if df_donor_cand.empty:
+        print("No Donor gRNA found.")
+    else:
+        print(df_donor_cand.to_string())
 
 
 def export_csv(
@@ -49,18 +58,18 @@ def konezumiaid_main(
     transcript_record: GeneData,
 ) -> tuple[list[dict], list[dict], list[dict]]:
     ct_cand, ga_cand = nominate_candidate_stopcodon(transcript_record)
-    applied_nmd_rules_gRNA = apply_nmd_rules(ct_cand, ga_cand)
+    applied_nmd_rules_gRNA = apply_nmd_rules(transcript_record, ct_cand, ga_cand)
     acceptor_cand, donor_cand = search_site_candidate(transcript_record)
     return applied_nmd_rules_gRNA, acceptor_cand, donor_cand
 
 
-def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
+def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
     seq_path = Path("data", "sorted_seq_dict.pkl")
-    df_refflat = pickle.load(open(refflat_path, "rb"))
+    refflat_dic = pickle.load(open(refflat_path, "rb"))
     seq_dict = pickle.load(open(seq_path, "rb"))
     if name.startswith("NM_"):
-        transcript_record = create_dataclass(name, df_refflat, seq_dict)
+        transcript_record = create_dataclass(name, refflat_dic, seq_dict)
         ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
         df_ptcp_cand = pd.DataFrame(ptc_cand)
         df_acceptor_cand = pd.DataFrame(acceptor_cand)
@@ -68,10 +77,14 @@ def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]
         show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
         export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
     else:
-        df_symbol = df_refflat[df_refflat["gene_name"] == name]
+        try:
+            df_ref = pd.DataFrame(refflat_dic)
+            df_symbol = df_ref[df_ref["geneName"] == name]
+        except KeyError:
+            raise ValueError(f"Gene name {name} not found in the dataset.")
         symbol_transcript_names = df_symbol["name"]
         for i, transcript_name in enumerate(symbol_transcript_names):
-            transcript_record = create_dataclass(transcript_name, df_refflat, seq_dict)
+            transcript_record = create_dataclass(transcript_name, refflat_dic, seq_dict)
             ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
             if i == 0:
                 symbol_ptc_cand = ptc_cand
@@ -94,4 +107,4 @@ def main():
     if len(sys.argv) != 2:
         raise ValueError("Please provide a gene name as an argument.")
     gene_name = sys.argv[1]
-    excecute(gene_name)
+    execute(gene_name)
