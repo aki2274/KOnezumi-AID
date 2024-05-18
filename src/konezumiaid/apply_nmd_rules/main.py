@@ -48,9 +48,9 @@ def apply_nmd_rules(
         tmp_dict = {}
         for k, v in d.items():
             if k == "ct_seq":
-                tmp_dict["candidate"] = v
+                tmp_dict["seq"] = v
             elif k == "ga_seq":
-                tmp_dict["candidate"] = get_revcomp(v)
+                tmp_dict["seq"] = get_revcomp(v)
             else:
                 tmp_dict[k] = v
         candidates.append(tmp_dict)
