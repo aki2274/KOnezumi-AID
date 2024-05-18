@@ -13,16 +13,27 @@ from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
 
 
 def show_table(
-    adjusted_gRNA_df: pd.DataFrame,
-    acceptor_cand_df: pd.DataFrame,
-    donor_cand_df: pd.DataFrame,
+    df_ptc_gRNA: pd.DataFrame,
+    df_acceptor_cand: pd.DataFrame,
+    df_donor_cand: pd.DataFrame,
 ) -> None:
     print("PTC gRNA")
-    print(adjusted_gRNA_df.to_string())
+    print(df_ptc_gRNA.to_string())
     print("Acceptor gRNA")
-    print(acceptor_cand_df.to_string())
+    print(df_acceptor_cand.to_string())
     print("Donor gRNA")
-    print(donor_cand_df.to_string())
+    print(df_donor_cand.to_string())
+
+
+def export_csv(
+    name: str,
+    df_ptc_gRNA: pd.DataFrame,
+    df_acceptor_cand: pd.DataFrame,
+    df_donor_cand: pd.DataFrame,
+) -> None:
+    df_ptc_gRNA.to_csv(f"{name}_ptc_gRNA.csv", index=False)
+    df_acceptor_cand.to_csv(f"{name}_acceptor_cand.csv", index=False)
+    df_donor_cand.to_csv(f"{name}_donor_cand.csv", index=False)
 
 
 def konezumiaid_main(
@@ -37,37 +48,16 @@ def konezumiaid_main(
 def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
     seq_path = Path("data", "sorted_seq_dict.pkl")
-    refflat = pickle.load(open(refflat_path, "rb"))
+    df_refflat = pickle.load(open(refflat_path, "rb"))
     seq_dict = pickle.load(open(seq_path, "rb"))
     if name.startswith("NM_"):
-        transcript_record = create_dataclass(name, refflat, seq_dict)
+        transcript_record = create_dataclass(name, df_refflat, seq_dict)
         ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
-        ptcp_cand_df = pd.DataFrame(ptc_cand)
-        acceptor_cand_df = pd.DataFrame(acceptor_cand)
-        donor_cand_df = pd.DataFrame(donor_cand)
-        show_table(ptcp_cand_df, acceptor_cand_df, donor_cand_df)
-
-    else:
-        transcript_names = [d["name"] for d in refflat if d["geneName"] == name]
-        symbol_cand = {}
-        for transcript in transcript_names:
-            transcript_record = create_dataclass(transcript, refflat, seq_dict)
-            ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
-            ptcp_cand_df = pd.DataFrame(ptc_cand)
-            acceptor_cand_df = pd.DataFrame(acceptor_cand)
-            donor_cand_df = pd.DataFrame(donor_cand)
-            symbol_cand[transcript] = {
-                "ptc_cand": ptcp_cand_df,
-                "acceptor_cand": acceptor_cand_df,
-                "donor_cand": donor_cand_df,
-            }
-        for k, v in symbol_cand.items():
-            print(k)
-            show_table(
-                v["ptc_cand"],
-                v["acceptor_cand"],
-                v["donor_cand"],
-            )
+        df_ptcp_cand = pd.DataFrame(ptc_cand)
+        df_acceptor_cand = pd.DataFrame(acceptor_cand)
+        df_donor_cand = pd.DataFrame(donor_cand)
+        show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+        export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
 
 
 def main():
