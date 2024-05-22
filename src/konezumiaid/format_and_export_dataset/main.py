@@ -2,6 +2,7 @@ from __future__ import annotations
 from pathlib import Path
 import pickle
 import subprocess
+import sys
 from konezumiaid.format_and_export_dataset.convert_refflat_to_bed6 import (
     convert_refFlat_to_bed6,
 )
@@ -15,9 +16,6 @@ from konezumiaid.format_and_export_dataset.generate_sorted_genedata_from_refflat
     remove_transcript_duplicates,
     remove_NR_transcripts,
 )
-
-
-Path("data").mkdir(parents=True, exist_ok=True)
 
 
 def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
@@ -41,7 +39,10 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
 
     transcripts_fast_path = Path("data", "bed_refFlat.fa")
     bedtools_path = Path(
-        "src", "konezumiaid", "export_dataset_as_pkl", "translate_bed_from_refflat.sh"
+        "src",
+        "konezumiaid",
+        "format_and_export_dataset",
+        "translate_bed_from_refflat.sh",
     )
     subprocess.run(
         [
@@ -67,3 +68,19 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
     sorted_refflat = df_refflat_sorted.to_dict(orient="records")
     with open(sorted_refflat_path, "wb") as f:
         pickle.dump(sorted_refflat, f)
+
+
+def export():
+    if len(sys.argv) != 3:
+        raise ValueError("Please provide a refflat file and a fasta file as arguments.")
+    Path("data").mkdir(parents=True, exist_ok=True)
+    refflat_path = Path(sys.argv[1])
+    fasta_path = Path(sys.argv[2])
+    if not refflat_path.exists() or not fasta_path.exists():
+        raise FileNotFoundError("One or both of the specified files were not found.")
+    if refflat_path.suffix != ".txt":
+        raise ValueError("The refflat file must be a txt file.")
+    if fasta_path.suffix != ".fa":
+        raise ValueError("The fasta file must be a fasta file.")
+    export_pkl(refflat_path, fasta_path)
+    print("Exported the dataset as pickle files.")

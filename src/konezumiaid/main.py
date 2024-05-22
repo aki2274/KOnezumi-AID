@@ -4,100 +4,107 @@ import pickle
 import sys
 from pathlib import Path
 from konezumiaid.create_gene_dataclass import GeneData
-from konezumiaid.format_and_export_dataset.main import export_pkl
 from konezumiaid.create_gene_dataclass import create_dataclass
-from konezumiaid.nominate_candidate_stopcodon.main import nominate_candidate_stopcodon
+from konezumiaid.nominate_ptc_guide.main import nominate_candidate_stopcodon
 from konezumiaid.nominate_splicesite_guide.search_candidate import search_site_candidate
 from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
-from konezumiaid.get_rtpcr_primer.main import export_primers
+
+# from konezumiaid.get_rtpcr_primer.main import export_primers
 
 
-def show_table(
-    adjusted_gRNA_df: pd.DataFrame,
-    acceptor_cand_df: pd.DataFrame,
-    donor_cand_df: pd.DataFrame,
-    candidate_primers_df: pd.DataFrame,
-) -> None:
-    print("PTC gRNA")
-    print(adjusted_gRNA_df.to_string())
-    print("Acceptor gRNA")
-    print(acceptor_cand_df.to_string())
-    print("Donor gRNA")
-    print(donor_cand_df.to_string())
-    print("Primer")
-    print(candidate_primers_df.to_string())
-
-
-def konezumiaid_main(
-    ds: GeneData,
-) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
-    ct_acand, ga_acand = nominate_candidate_stopcodon(ds)
-    adjusted_gRNA = apply_nmd_rules(ds, ct_acand, ga_acand)
-    acceptor_cand, donor_cand = search_site_candidate(ds)
-    candidate_primers = export_primers(ds)
-    return adjusted_gRNA, acceptor_cand, donor_cand, candidate_primers
-
-
-def find_common_dicts_by_key(key, lists):
-    value_sets = [{d[key] for d in lst if key in d} for lst in lists]
-    common_values = set.intersection(*value_sets)
-    result = [{key: value} for value in common_values]
+def extract_matching_seqs(*lists):
+    seq_sets = [set(d["seq"] for d in lst) for lst in lists]
+    common_seqs = set.intersection(*seq_sets)
+    result = [{"seq": seq} for seq in common_seqs]
     return result
 
 
-def excecute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
+def show_table(
+    df_ptc_gRNA: pd.DataFrame,
+    df_acceptor_cand: pd.DataFrame,
+    df_donor_cand: pd.DataFrame,
+) -> None:
+    print("PTC gRNA")
+    if df_ptc_gRNA.empty:
+        print("No PTC gRNA found.")
+    else:
+        print(df_ptc_gRNA.to_string())
+    print("Acceptor gRNA")
+    if df_acceptor_cand.empty:
+        print("No Acceptor gRNA found.")
+    else:
+        print(df_acceptor_cand.to_string())
+    print("Donor gRNA")
+    if df_donor_cand.empty:
+        print("No Donor gRNA found.")
+    else:
+        print(df_donor_cand.to_string())
+
+
+def export_csv(
+    name: str,
+    df_ptc_gRNA: pd.DataFrame,
+    df_acceptor_cand: pd.DataFrame,
+    df_donor_cand: pd.DataFrame,
+) -> None:
+    output_folder = Path("data", "output")
+    output_folder.mkdir(parents=True, exist_ok=True)
+    df_ptc_gRNA.to_csv(output_folder / f"{name}_ptc_gRNA.csv", index=False)
+    df_acceptor_cand.to_csv(output_folder / f"{name}_acceptor_cand.csv", index=False)
+    df_donor_cand.to_csv(output_folder / f"{name}_donor_cand.csv", index=False)
+
+
+def konezumiaid_main(
+    transcript_record: GeneData,
+) -> tuple[list[dict], list[dict], list[dict]]:
+    ct_cand, ga_cand = nominate_candidate_stopcodon(transcript_record)
+    applied_nmd_rules_gRNA = apply_nmd_rules(transcript_record, ct_cand, ga_cand)
+    acceptor_cand, donor_cand = search_site_candidate(transcript_record)
+    return applied_nmd_rules_gRNA, acceptor_cand, donor_cand
+
+
+def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
     seq_path = Path("data", "sorted_seq_dict.pkl")
-    refflat = pickle.load(open(refflat_path, "rb"))
+    refflat_dic = pickle.load(open(refflat_path, "rb"))
     seq_dict = pickle.load(open(seq_path, "rb"))
-    if name.startswith("NM_") or name.startswith("NR_"):
-        ds = create_dataclass(name, refflat, seq_dict)
-        stop_cand, acceptor_cand, donor_cand, candidate_primers = konezumiaid_main(ds)
-        stop_cand_df = pd.DataFrame(stop_cand)
-        acceptor_cand_df = pd.DataFrame(acceptor_cand)
-        donor_cand_df = pd.DataFrame(donor_cand)
-        candidate_primers_df = pd.DataFrame(candidate_primers)
-        show_table(stop_cand_df, acceptor_cand_df, donor_cand_df, candidate_primers_df)
-        # return konezumiaid_main(ds)
-
+    if name.startswith("NM_"):
+        transcript_record = create_dataclass(name, refflat_dic, seq_dict)
+        ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
+        df_ptcp_cand = pd.DataFrame(ptc_cand)
+        df_acceptor_cand = pd.DataFrame(acceptor_cand)
+        df_donor_cand = pd.DataFrame(donor_cand)
+        show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+        export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
     else:
-        transcript_names = [d["name"] for d in refflat if d["geneName"] == name]
-        gene_cand = {}
-        for transcript in transcript_names:
-            ds = create_dataclass(transcript, refflat, seq_dict)
-            adjusted_gRNA, acceptor_cand, donor_cand, candidate_primers = (
-                konezumiaid_main(ds)
-            )
-            stop_cand_df = pd.DataFrame(adjusted_gRNA)
-            acceptor_cand_df = pd.DataFrame(acceptor_cand)
-            donor_cand_df = pd.DataFrame(donor_cand)
-            candidate_primers_df = pd.DataFrame(candidate_primers)
-            gene_cand[transcript] = {
-                "stop_cand": stop_cand_df,
-                "acceptor_cand": acceptor_cand_df,
-                "donor_cand": donor_cand_df,
-                "candidate_primers": candidate_primers_df,
-            }
-        for k, v in gene_cand.items():
-            print(k)
-            show_table(
-                v["stop_cand"],
-                v["acceptor_cand"],
-                v["donor_cand"],
-                v["candidate_primers"],
-            )
-
-
-def export():
-    if len(sys.argv) != 3:
-        raise ValueError("Please provide a refflat file and a fasta file as arguments.")
-    refflat_path = Path(sys.argv[1])
-    fasta_path = Path(sys.argv[2])
-    export_pkl(refflat_path, fasta_path)
+        try:
+            df_ref = pd.DataFrame(refflat_dic)
+            df_symbol = df_ref[df_ref["geneName"] == name]
+        except KeyError:
+            raise ValueError(f"Gene name {name} not found in the dataset.")
+        symbol_transcript_names = df_symbol["name"]
+        for i, transcript_name in enumerate(symbol_transcript_names):
+            transcript_record = create_dataclass(transcript_name, refflat_dic, seq_dict)
+            ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
+            if i == 0:
+                symbol_ptc_cand = ptc_cand
+                symbol_acceptor_cand = acceptor_cand
+                symbol_donor_cand = donor_cand
+            else:
+                symbol_ptc_cand = extract_matching_seqs(symbol_ptc_cand, ptc_cand)
+                symbol_acceptor_cand = extract_matching_seqs(
+                    symbol_acceptor_cand, acceptor_cand
+                )
+                symbol_donor_cand = extract_matching_seqs(symbol_donor_cand, donor_cand)
+        df_ptcp_cand = pd.DataFrame(symbol_ptc_cand)
+        df_acceptor_cand = pd.DataFrame(symbol_acceptor_cand)
+        df_donor_cand = pd.DataFrame(symbol_donor_cand)
+        show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+        export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
 
 
 def main():
     if len(sys.argv) != 2:
         raise ValueError("Please provide a gene name as an argument.")
     gene_name = sys.argv[1]
-    excecute(gene_name)
+    execute(gene_name)

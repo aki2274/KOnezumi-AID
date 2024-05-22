@@ -74,10 +74,8 @@ def generate_cdsseq(transcript_record: GeneData) -> str:
     if startcodon_index == 0:  # the case of startcodon is in the first exon
         cds_seq = seq_to_stopcodon[startcodon_distance_from_exonstart:]
     else:  # if startcodon is not in the first exon. (add the len of exons before startcodon)
+        startcodon_distance_from_first_exonstart = startcodon_distance_from_exonstart
         for s in range(startcodon_index):
-            startcodon_distance_from_first_exonstart = (
-                startcodon_distance_from_exonstart
-            )
             startcodon_distance_from_first_exonstart += (
                 transcript_record.exon_end_list[s]
                 - transcript_record.exon_start_list[s]
