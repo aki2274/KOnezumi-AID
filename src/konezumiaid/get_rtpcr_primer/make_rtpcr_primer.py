@@ -101,9 +101,9 @@ def generate_candidate_info(
             left_end_within_exon = exon_start <= primer["left_end"] <= exon_end
             right_start_within_exon = exon_start <= primer["right_start"] <= exon_end
             if left_end_within_exon:
-                primer["left_exon_num"] = s
+                primer["left_exon_num"] = s + 1
             if right_start_within_exon:
-                primer["right_exon_num"] = s
+                primer["right_exon_num"] = s + 1
         if primer["left_exon_num"] == primer["right_exon_num"]:
             candidate_primers.remove(primer)
     return candidate_primers
