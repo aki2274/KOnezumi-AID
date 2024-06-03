@@ -7,15 +7,17 @@
 - Unix-like environment (Linux, macOS, WSL, etc.)
 
 ### Required Packages
+- bedtools
 
-This project requires the following packages:
-- poetry
+Install bedtools according to the [official instruction](https://bedtools.readthedocs.io/en/latest/content/installation.html)
 
-`pip install poetry`
 - bowtie
 
 Install via bioconda
+
 `conda install bowtie`
+
+or follow the [official instruction](https://bowtie-bio.sourceforge.net/manual.shtml#:~:text=is%20future%20work.-,Obtaining%20Bowtie,-You%20may%20download)
 
 ### Input data set
 #### Locus information
@@ -23,7 +25,7 @@ Install via bioconda
 https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/
 )
 
-### genomic sequence
+#### genomic sequence
 `mm39.fa.gz` from [UCSC](
 https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/
 )
@@ -39,24 +41,9 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
 ```
 
 ### Installation🔨
-#### Follow these steps to get started with KOnezumiAID using git clone
-- Clone the repository
+#### Follow these steps to get started with KOnezumiAID from PyPI:
 
-`git clone https://github.com/aki2274/KOnezumi-AID.git`
-
-- Move into the cloned directory
-
-`cd KOnezumi-AID`
-
-- Build package with poetry
-
-`poetry build`
-
-- Install KOnezumiAID from the generated package
-
-`pip install <package_name>.whl`
-
-Now you're ready to use KOnezumiAID in your Python projects.
+`pip install KOnezumiAID`
 
 ## Usage
 ### Create data set for KOnezumi-AID
