@@ -1,21 +1,18 @@
 from __future__ import annotations
 from pathlib import Path
 
-def export_fasta(
-    candidate_primers: list[dict], output_path: Path
-) -> None:
+
+def export_fasta(candidate_primers: list[dict], output_path: Path) -> None:
     """
     Export candidate primer sequences to a FASTA file for executing bowtie.
-    
-
     Args:
         candidate_primers (list[dict]): A list of dictionaries containing candidate primer information.
         output_path (Path): The path to the output FASTA file.
 
     Returns:
         None
-    
-    Note; The output file will contain the same name and sequence 
+
+    Note; The output fasta file contains the same headers and sequences for each entry.
 
     Example:
         input:
@@ -28,9 +25,6 @@ def export_fasta(
         TACG
         >GCTA
         GCTA
-        
-      
-    
     """
     processed_names = set()
 
