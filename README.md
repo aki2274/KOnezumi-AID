@@ -9,6 +9,10 @@
 ### Required Packages
 - bedtools
 
+Install via bioconda
+
+`conda install -c conda-forge -c bioconda bedtools`
+
 Install bedtools according to the [official instruction](https://bedtools.readthedocs.io/en/latest/content/installation.html)
 
 - bowtie
