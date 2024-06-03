@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "KOnezumiAID"
-version = "0.1.0"
+version = "0.1.1"
 description = "Project description"
 authors = ["Taki Taito <s2110307@u.tsukuba.ac.jp>"]
 readme = "README.md"
