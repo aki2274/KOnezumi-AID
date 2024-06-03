@@ -8,8 +8,8 @@ def test_exprt_fasta():
             "left_cross_junction": 0,
             "right_cross_junction": 0,
             "intron_len": 0,
-            "left_seq": "agcaaaagtgtgaagcgccc",
-            "right_seq": "atctcgatcaccacgggctg",
+            "left": "agcaaaagtgtgaagcgccc",
+            "right": "atctcgatcaccacgggctg",
             "left_end": 29,
             "right_start": 60,
             "left_exon_num": 0,
@@ -18,7 +18,4 @@ def test_exprt_fasta():
     ]
     export_fasta(data, "tests/data/reads/candidateprimer.fa")
     with open("tests/data/reads/candidateprimer.fa", "r") as file:
-        assert (
-            file.read()
-            == ">agcaaaagtgtgaagcgccc\nagcaaaagtgtgaagcgccc\n>atctcgatcaccacgggctg\natctcgatcaccacgggctg\n"
-        )
+        assert file.read() == ">agcaaaagtgtgaagcgccc\nagcaaaagtgtgaagcgccc\n>atctcgatcaccacgggctg\natctcgatcaccacgggctg\n"

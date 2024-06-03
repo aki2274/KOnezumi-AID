@@ -16,44 +16,44 @@ def test_read_uniqueness():
 
 def test_add_uniqueness():
     candidate = [
-        {"left_seq": "ATGC", "right_seq": "TCGA"},
-        {"left_seq": "TTTT", "right_seq": "AAAA"},
-        {"left_seq": "CCCC", "right_seq": "GGGG"},
+        {"left": "ATGC", "right": "TCGA"},
+        {"left": "TTTT", "right": "AAAA"},
+        {"left": "CCCC", "right": "GGGG"},
     ]
-    
+
     expected = [
         {
-            "left_seq": "ATGC",
-            "right_seq": "TCGA",
-            "left_0_mismatch": "23",
-            "right_0_mismatch": "7",
-            "left_1_mismatch": "23",
-            "right_1_mismatch": "7",
-            "left_2_mismatch": "23",
-            "right_2_mismatch": "7",
+            "left": "ATGC",
+            "right": "TCGA",
+            "left_0_uniq": "23",
+            "right_0_uniq": "7",
+            "left_1_uniq": "23",
+            "right_1_uniq": "7",
+            "left_2_uniq": "23",
+            "right_2_uniq": "7",
         },
         {
-            "left_seq": "TTTT",
-            "right_seq": "AAAA",
-            "left_0_mismatch": "7",
-            "right_0_mismatch": "3",
-            "left_1_mismatch": "7",
-            "right_1_mismatch": "3",
-            "left_2_mismatch": "7",
-            "right_2_mismatch": "3",
+            "left": "TTTT",
+            "right": "AAAA",
+            "left_0_uniq": "7",
+            "right_0_uniq": "3",
+            "left_1_uniq": "7",
+            "right_1_uniq": "3",
+            "left_2_uniq": "7",
+            "right_2_uniq": "3",
         },
         {
-            "left_seq": "CCCC",
-            "right_seq": "GGGG",
-            "left_0_mismatch": "12",
-            "right_0_mismatch": 0,
-            "left_1_mismatch": "12",
-            "right_1_mismatch": 0,
-            "left_2_mismatch": "12",
-            "right_2_mismatch": 0,
+            "left": "CCCC",
+            "right": "GGGG",
+            "left_0_uniq": "12",
+            "right_0_uniq": 0,
+            "left_1_uniq": "12",
+            "right_1_uniq": 0,
+            "left_2_uniq": "12",
+            "right_2_uniq": 0,
         },
     ]
-    
+
     assert (
         add_uniqueness(
             candidate,
