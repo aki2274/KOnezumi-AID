@@ -60,9 +60,9 @@ def export_primers(transcript_record: GeneData) -> list[dict]:
     # 1 Create a directory named "uniq" inside the "data" directory if it doesn't exist.
     Path("data", "uniq").mkdir(parents=True, exist_ok=True)
     # 2 Define file paths for storing mismatch counts.
-    miss_0_path = Path("data", "uniq", "0_miss_counts.txt")
-    miss_1_path = Path("data", "uniq", "1_miss_counts.txt")
-    miss_2_path = Path("data", "uniq", "2_miss_counts.txt")
+    miss_0_path = Path("data", "uniq", "missmatch_0_counts.txt")
+    miss_1_path = Path("data", "uniq", "missmatch_1_counts.txt")
+    miss_2_path = Path("data", "uniq", "missmatch_2_counts.txt")
     # 3 Retrieve the exon range of the transcript record.
     exon_range = get_exon_range(transcript_record)
     # 4 Generate the exon sequence.
@@ -77,13 +77,8 @@ def export_primers(transcript_record: GeneData) -> list[dict]:
     fasta_path = Path("data", "uniq", "candidateprimer.fa")
     export_fasta(intron_len_added, fasta_path)
     # 9 Execute a shell script to calculate the uniqueness of the candidate primers.
-    path_get_uniqueness = Path(
-        "src", "konezumiaid", "get_rtpcr_primer", "get_uniqueness.sh"
-    )
+    path_get_uniqueness = Path("src", "konezumiaid", "get_rtpcr_primer", "get_uniqueness.sh")
     subprocess.run(["bash", path_get_uniqueness], check=True)
     # 10 Add the uniqueness information to the candidate primers.
-    candidate_pairs = add_uniqueness(
-        intron_len_added, miss_0_path, miss_1_path, miss_2_path
-    )
+    candidate_pairs = add_uniqueness(intron_len_added, miss_0_path, miss_1_path, miss_2_path)
     return candidate_pairs
-
