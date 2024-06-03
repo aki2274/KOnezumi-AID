@@ -17,8 +17,8 @@ def test_is_cross_junction():
             "right_seq": "atctcgatcaccacgggctg",
             "left_end": 29,
             "right_start": 60,
-            "left_exon_num": 0,
-            "right_exon_num": 2,
+            "left_exon_num": 1,
+            "right_exon_num": 3,
         },
         # right primer is in exon junction
         {
@@ -29,8 +29,8 @@ def test_is_cross_junction():
             "right_seq": "atctcgatcaccacgggctg",
             "left_end": 45,
             "right_start": 49,
-            "left_exon_num": 0,
-            "right_exon_num": 2,
+            "left_exon_num": 1,
+            "right_exon_num": 3,
         },
     ]
     exon_range = [[0, 10], [10, 50], [50, 100]]
@@ -43,8 +43,8 @@ def test_is_cross_junction():
             "right_seq": "atctcgatcaccacgggctg",
             "left_end": 29,
             "right_start": 60,
-            "left_exon_num": 0,
-            "right_exon_num": 2,
+            "left_exon_num": 1,
+            "right_exon_num": 3,
         },
         {
             "left_cross_junction": False,
@@ -54,8 +54,8 @@ def test_is_cross_junction():
             "right_seq": "atctcgatcaccacgggctg",
             "left_end": 45,
             "right_start": 49,
-            "left_exon_num": 0,
-            "right_exon_num": 2,
+            "left_exon_num": 1,
+            "right_exon_num": 3,
         },
     ]
     assert is_crossing_juncion(True_info, exon_range) == expected
@@ -71,8 +71,8 @@ def test_not_corss_verify_cross_junction():
             "right_seq": "atctcgatcaccacgggctg",
             "left_end": 45,
             "right_start": 60,
-            "left_exon_num": 0,
-            "right_exon_num": 0,
+            "left_exon_num": 1,
+            "right_exon_num": 1,
         },
         {
             "left_cross_junction": False,
@@ -82,8 +82,8 @@ def test_not_corss_verify_cross_junction():
             "right_seq": "atctcgatcaccacgggctg",
             "left_end": 30,
             "right_start": 50,
-            "left_exon_num": 0,
-            "right_exon_num": 2,
+            "left_exon_num": 1,
+            "right_exon_num": 3,
         },
     ]
 
@@ -98,8 +98,8 @@ def test_not_corss_verify_cross_junction():
             "right_seq": "atctcgatcaccacgggctg",
             "left_end": 45,
             "right_start": 60,
-            "left_exon_num": 0,
-            "right_exon_num": 0,
+            "left_exon_num": 1,
+            "right_exon_num": 1,
         },
         {
             "left_cross_junction": False,
@@ -109,8 +109,8 @@ def test_not_corss_verify_cross_junction():
             "right_seq": "atctcgatcaccacgggctg",
             "left_end": 30,
             "right_start": 50,
-            "left_exon_num": 0,
-            "right_exon_num": 2,
+            "left_exon_num": 1,
+            "right_exon_num": 3,
         },
     ]
     assert is_crossing_juncion(False_info, exon_range) == expected
@@ -127,17 +127,6 @@ def test_add_intron_len():
             "right": "atctcgatcaccacgggctg",
             "left_end": 5,
             "right_start": 60,
-            "left_exon_num": 0,
-            "right_exon_num": 1,
-        },
-        {
-            "left_cross_junction": False,
-            "right_cross_junction": False,
-            "intron_len": 0,
-            "left": "agcaaaagtgtgaagcgccc",
-            "right": "atctcgatcaccacgggctg",
-            "left_end": 5,
-            "right_start": 60,
             "left_exon_num": 1,
             "right_exon_num": 2,
         },
@@ -147,10 +136,21 @@ def test_add_intron_len():
             "intron_len": 0,
             "left": "agcaaaagtgtgaagcgccc",
             "right": "atctcgatcaccacgggctg",
+            "left_end": 5,
+            "right_start": 60,
+            "left_exon_num": 2,
+            "right_exon_num": 3,
+        },
+        {
+            "left_cross_junction": False,
+            "right_cross_junction": False,
+            "intron_len": 0,
+            "left": "agcaaaagtgtgaagcgccc",
+            "right": "atctcgatcaccacgggctg",
             "left_end": 15,
             "right_start": 49,
-            "left_exon_num": 0,
-            "right_exon_num": 2,
+            "left_exon_num": 1,
+            "right_exon_num": 3,
         },
         # 0 intron length
         {
@@ -161,8 +161,8 @@ def test_add_intron_len():
             "right": "atctcgatcaccacgggctg",
             "left_end": 15,
             "right_start": 49,
-            "left_exon_num": 0,
-            "right_exon_num": 0,
+            "left_exon_num": 1,
+            "right_exon_num": 1,
         },
     ]
     set_data = GeneData("sample_base", 0, 100, 10, 90, 3, [0, 25, 60], [15, 50, 95])
@@ -175,8 +175,8 @@ def test_add_intron_len():
             "right": "atctcgatcaccacgggctg",
             "left_end": 5,
             "right_start": 60,
-            "left_exon_num": 0,
-            "right_exon_num": 1,
+            "left_exon_num": 1,
+            "right_exon_num": 2,
         },
         {
             "left_cross_junction": False,
@@ -186,8 +186,8 @@ def test_add_intron_len():
             "right": "atctcgatcaccacgggctg",
             "left_end": 5,
             "right_start": 60,
-            "left_exon_num": 1,
-            "right_exon_num": 2,
+            "left_exon_num": 2,
+            "right_exon_num": 3,
         },
         {
             "left_cross_junction": False,
@@ -197,8 +197,8 @@ def test_add_intron_len():
             "right": "atctcgatcaccacgggctg",
             "left_end": 15,
             "right_start": 49,
-            "left_exon_num": 0,
-            "right_exon_num": 2,
+            "left_exon_num": 1,
+            "right_exon_num": 3,
         },
         {
             "left_cross_junction": False,
@@ -208,8 +208,8 @@ def test_add_intron_len():
             "right": "atctcgatcaccacgggctg",
             "left_end": 15,
             "right_start": 49,
-            "left_exon_num": 0,
-            "right_exon_num": 0,
+            "left_exon_num": 1,
+            "right_exon_num": 1,
         },
     ]
     result = add_intron_len(candidate_info, set_data)
