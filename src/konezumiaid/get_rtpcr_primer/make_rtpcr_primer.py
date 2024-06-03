@@ -79,8 +79,8 @@ def generate_candidate_info(
     primer3_return = export_candidate(spliced_exon_seq)
     candidate_primers = [
         {
-            "left_seq": primer_left["SEQUENCE"],
-            "right_seq": primer_right["SEQUENCE"],
+            "left": primer_left["SEQUENCE"],
+            "right": primer_right["SEQUENCE"],
             "left_tm": primer_left["TM"],
             "right_tm": primer_right["TM"],
             "left_end": spliced_exon_seq.find(primer_left["SEQUENCE"]) + len(primer_left["SEQUENCE"]),
@@ -96,6 +96,7 @@ def generate_candidate_info(
             primer3_return["PRIMER_RIGHT"],
         )
     ]
+    result = []
     for primer in candidate_primers:
         for s, (exon_start, exon_end) in enumerate(exon_range):
             left_end_within_exon = exon_start <= primer["left_end"] <= exon_end
@@ -105,5 +106,6 @@ def generate_candidate_info(
             if right_start_within_exon:
                 primer["right_exon_num"] = s + 1
         if primer["left_exon_num"] == primer["right_exon_num"]:
-            candidate_primers.remove(primer)
-    return candidate_primers
+            continue
+        result.append(primer)
+    return result
