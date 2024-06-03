@@ -49,7 +49,7 @@ def export_candidate(exon_seq: str) -> dict:
 
 
 def generate_candidate_info(
-    exon_seq: str,
+    spliced_exon_seq: str,
     exon_range: list[list[int, int]],
 ) -> list[dict]:
     """
@@ -76,16 +76,15 @@ def generate_candidate_info(
         - left_exon_num (int): The exon number of the left primer.
         - right_exon_num (int): The exon number of the right primer.
     """
-    primer3_return = export_candidate(exon_seq)
-    primer3_result = [
+    primer3_return = export_candidate(spliced_exon_seq)
+    candidate_primers = [
         {
             "left_seq": primer_left["SEQUENCE"],
             "right_seq": primer_right["SEQUENCE"],
             "left_tm": primer_left["TM"],
             "right_tm": primer_right["TM"],
-            "left_end": exon_seq.find(primer_left["SEQUENCE"])
-            + len(primer_left["SEQUENCE"]),
-            "right_start": exon_seq.find(get_revcomp(primer_right["SEQUENCE"])),
+            "left_end": spliced_exon_seq.find(primer_left["SEQUENCE"]) + len(primer_left["SEQUENCE"]),
+            "right_start": spliced_exon_seq.find(get_revcomp(primer_right["SEQUENCE"])),
             "product_size": primer_pair["PRODUCT_SIZE"],
             "left_cross_junction": False,
             "right_cross_junction": False,
@@ -97,20 +96,14 @@ def generate_candidate_info(
             primer3_return["PRIMER_RIGHT"],
         )
     ]
-    for primer in primer3_result:
-        exon_start_index = 0
-        exon_end_index = 1
-        for s in range(len(exon_range)):
-            if (
-                exon_range[s][exon_start_index]
-                <= primer["left_end"]
-                <= exon_range[s][exon_end_index]
-            ):
+    for primer in candidate_primers:
+        for s, (exon_start, exon_end) in enumerate(exon_range):
+            left_end_within_exon = exon_start <= primer["left_end"] <= exon_end
+            right_start_within_exon = exon_start <= primer["right_start"] <= exon_end
+            if left_end_within_exon:
                 primer["left_exon_num"] = s
-            if (
-                exon_range[s][exon_start_index]
-                <= primer["right_start"]
-                <= exon_range[s][exon_end_index]
-            ):
+            if right_start_within_exon:
                 primer["right_exon_num"] = s
-    return primer3_result
+        if primer["left_exon_num"] == primer["right_exon_num"]:
+            candidate_primers.remove(primer)
+    return candidate_primers
