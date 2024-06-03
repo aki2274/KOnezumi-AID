@@ -30,8 +30,8 @@ def export_fasta(candidate_primers: list[dict], output_path: Path) -> None:
 
     with open(output_path, "w") as file:
         for primer_pair in candidate_primers:
-            left_primer = primer_pair["left_seq"]
-            right_primer = primer_pair["right_seq"]
+            left_primer = primer_pair["left"]
+            right_primer = primer_pair["right"]
 
             left_primer_name = left_primer
             if left_primer_name not in processed_names:
