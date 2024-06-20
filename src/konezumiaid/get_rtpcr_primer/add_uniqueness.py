@@ -9,33 +9,27 @@ def read_uniqueness(file_path) -> list[list]:
 
 
 def add_uniqueness(
-    candidate: list[dict],
+    candidate_primers: list[dict],
     miss_0_path: Path,
     miss_1_path: Path,
     miss_2_path: Path,
 ) -> list[dict]:
     # import primer uniqueness from files
+    # data format: [[count of matched in the genome: int, primer_seq: str],...]
     miss_0 = read_uniqueness(miss_0_path)
     miss_1 = read_uniqueness(miss_1_path)
     miss_2 = read_uniqueness(miss_2_path)
     # add uniqueness info to candidate
-    return_candidate = candidate.copy()
-    for primers in return_candidate:
-        left_primer = primers["left"]
-        right_primer = primers["right"]
+    return_candidates = candidate_primers.copy()
+    for primer_pair in return_candidates:
+        left_primer = primer_pair["left"]
+        right_primer = primer_pair["right"]
 
-        left_0_uniq = next((x[0] for x in miss_0 if x[1] == left_primer), 0)
-        right_0_uniq = next((x[0] for x in miss_0 if x[1] == right_primer), 0)
-        left_1_uniq = next((x[0] for x in miss_1 if x[1] == left_primer), 0)
-        right_1_uniq = next((x[0] for x in miss_1 if x[1] == right_primer), 0)
-        left_2_uniq = next((x[0] for x in miss_2 if x[1] == left_primer), 0)
-        right_2_uniq = next((x[0] for x in miss_2 if x[1] == right_primer), 0)
+        for allowed_miss, matched_count in [(0, miss_0), (1, miss_1), (2, miss_2)]:
+            left_mismatch = next((x[0] for x in matched_count if x[1] == left_primer), 0)
+            right_mismatch = next((x[0] for x in matched_count if x[1] == right_primer), 0)
 
-        primers["left_0_uniq"] = left_0_uniq
-        primers["right_0_uniq"] = right_0_uniq
-        primers["left_1_uniq"] = left_1_uniq
-        primers["right_1_uniq"] = right_1_uniq
-        primers["left_2_uniq"] = left_2_uniq
-        primers["right_2_uniq"] = right_2_uniq
+            primer_pair[f"left_{allowed_miss}_mismatch"] = left_mismatch
+            primer_pair[f"right_{allowed_miss}_mismatch"] = right_mismatch
 
-    return return_candidate
+    return return_candidates

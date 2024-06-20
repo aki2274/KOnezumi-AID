@@ -20,38 +20,40 @@ def test_add_uniqueness():
         {"left": "TTTT", "right": "AAAA"},
         {"left": "CCCC", "right": "GGGG"},
     ]
+
     expected = [
         {
             "left": "ATGC",
             "right": "TCGA",
-            "left_0_uniq": "23",
-            "right_0_uniq": "7",
-            "left_1_uniq": "23",
-            "right_1_uniq": "7",
-            "left_2_uniq": "23",
-            "right_2_uniq": "7",
+            "left_0_mismatch": "23",
+            "right_0_mismatch": "7",
+            "left_1_mismatch": "23",
+            "right_1_mismatch": "7",
+            "left_2_mismatch": "23",
+            "right_2_mismatch": "7",
         },
         {
             "left": "TTTT",
             "right": "AAAA",
-            "left_0_uniq": "7",
-            "right_0_uniq": "3",
-            "left_1_uniq": "7",
-            "right_1_uniq": "3",
-            "left_2_uniq": "7",
-            "right_2_uniq": "3",
+            "left_0_mismatch": "7",
+            "right_0_mismatch": "3",
+            "left_1_mismatch": "7",
+            "right_1_mismatch": "3",
+            "left_2_mismatch": "7",
+            "right_2_mismatch": "3",
         },
         {
             "left": "CCCC",
             "right": "GGGG",
-            "left_0_uniq": "12",
-            "right_0_uniq": 0,
-            "left_1_uniq": "12",
-            "right_1_uniq": 0,
-            "left_2_uniq": "12",
-            "right_2_uniq": 0,
+            "left_0_mismatch": "12",
+            "right_0_mismatch": 0,
+            "left_1_mismatch": "12",
+            "right_1_mismatch": 0,
+            "left_2_mismatch": "12",
+            "right_2_mismatch": 0,
         },
     ]
+
     assert (
         add_uniqueness(
             candidate,

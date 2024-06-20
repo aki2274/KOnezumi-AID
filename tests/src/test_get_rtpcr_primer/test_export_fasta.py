@@ -18,7 +18,4 @@ def test_exprt_fasta():
     ]
     export_fasta(data, "tests/data/reads/candidateprimer.fa")
     with open("tests/data/reads/candidateprimer.fa", "r") as file:
-        assert (
-            file.read()
-            == ">agcaaaagtgtgaagcgccc\nagcaaaagtgtgaagcgccc\n>atctcgatcaccacgggctg\natctcgatcaccacgggctg\n"
-        )
+        assert file.read() == ">agcaaaagtgtgaagcgccc\nagcaaaagtgtgaagcgccc\n>atctcgatcaccacgggctg\natctcgatcaccacgggctg\n"

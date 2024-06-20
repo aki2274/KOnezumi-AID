@@ -1,23 +1,37 @@
 from __future__ import annotations
+from pathlib import Path
 
 
-def export_fasta(
-    data: list[dict], file_path: str = "data/uniq/candidateprimer.fa"
-) -> None:
+def export_fasta(candidate_primers: list[dict], output_path: Path) -> None:
     """
-    export candidate primer seqs to fasta file to exceute bowtie
-    example output file: index and seqs are equal.
-        >ATGCATGC
-        ATCGATCG
-        >AAAAAAAAAAA
-        AAAAAAAAAAA
+    Export candidate primer sequences to a FASTA file for executing bowtie.
+    Args:
+        candidate_primers (list[dict]): A list of dictionaries containing candidate primer information.
+        output_path (Path): The path to the output FASTA file.
+
+    Returns:
+        None
+
+    Note; The output fasta file contains the same headers and sequences for each entry.
+
+    Example:
+        input:
+        [{"left_seq": "AAAA", "right_seq": "TACG"},{"left_seq": "AAAA", "right_seq": "CATG"}]
+
+        outputfile:
+        >AAAA
+        AAAA
+        >TACG
+        TACG
+        >GCTA
+        GCTA
     """
     processed_names = set()
 
-    with open(file_path, "w") as file:
-        for item in data:
-            left_primer = item["left"]
-            right_primer = item["right"]
+    with open(output_path, "w") as file:
+        for primer_pair in candidate_primers:
+            left_primer = primer_pair["left"]
+            right_primer = primer_pair["right"]
 
             left_primer_name = left_primer
             if left_primer_name not in processed_names:
