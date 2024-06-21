@@ -40,8 +40,8 @@ input_genedata = [
     },
 ]
 orf_seq_dict = {
-    "t1::chr1:0-100": "1NNNNNNNNNATGNNNNNNNNNNNN2CAGNNNNNNNNNNNNNNNNNGGNNNNNNNNNNNN3NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNENNNNN",
-    "t2::chr1:0-30": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN",
+    "t1": "1NNNNNNNNNATGNNNNNNNNNNNN2CAGNNNNNNNNNNNNNNNNNGGNNNNNNNNNNNN3NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNENNNNN",
+    "t2": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN",
 }
 
 test_name = ["t1", "t2"]
@@ -62,10 +62,7 @@ expected_return = [
     ),
 )
 def test_get_exon_seq(test_name, input_genedata, orf_seq_dict, expected):
-    assert (
-        generate_exon_seq(create_dataclass(test_name, input_genedata, orf_seq_dict))
-        == expected
-    )
+    assert generate_exon_seq(create_dataclass(test_name, input_genedata, orf_seq_dict)) == expected
 
 
 #####
@@ -82,12 +79,7 @@ expected_return = [0, 1]
     ),
 )
 def test_get_startcodon_exon_num(test_name, input_genedata, orf_seq_dict, expected):
-    assert (
-        get_startcodon_exon_index(
-            create_dataclass(test_name, input_genedata, orf_seq_dict)
-        )
-        == expected
-    )
+    assert get_startcodon_exon_index(create_dataclass(test_name, input_genedata, orf_seq_dict)) == expected
 
 
 #####
@@ -104,12 +96,7 @@ expected_return = [2, 2]
     ),
 )
 def test_get_stopcodon_exon_num(test_name, input_genedata, orf_seq_dict, expected):
-    assert (
-        get_stopcodon_exon_index(
-            create_dataclass(test_name, input_genedata, orf_seq_dict)
-        )
-        == expected
-    )
+    assert get_stopcodon_exon_index(create_dataclass(test_name, input_genedata, orf_seq_dict)) == expected
 
 
 #####

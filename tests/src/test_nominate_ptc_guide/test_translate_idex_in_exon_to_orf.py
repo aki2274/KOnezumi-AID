@@ -37,8 +37,8 @@ input_genedata = [
     },
 ]
 orf_seq_dict = {
-    "t1::chr1:0-100": "1NNNNNNNNNATGNNNNNNNNNNNN2CAGNNNNNNNNNNNNNNNNNGGNNNNNNNNNNNN3NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNENNNNN",
-    "t2::chr1:0-30": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN",
+    "t1": "1NNNNNNNNNATGNNNNNNNNNNNN2CAGNNNNNNNNNNNNNNNNNGGNNNNNNNNNNNN3NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNENNNNN",
+    "t2": "NNNNNNNNNNATGTNANNNNNNNNNNNNNN",
 }
 test_name = ["t1", "t2"]
 expected = [[0, 14], [15, 39], [40, 74]], [[0, 2], [3, 10], [11, 24]]
@@ -54,10 +54,7 @@ expected = [[0, 14], [15, 39], [40, 74]], [[0, 2], [3, 10], [11, 24]]
     ),
 )
 def test_get_range_of_exon(test_name, input_genedata, orf_seq_dict, expected):
-    assert (
-        get_exon_range(create_dataclass(test_name, input_genedata, orf_seq_dict))
-        == expected
-    )
+    assert get_exon_range(create_dataclass(test_name, input_genedata, orf_seq_dict)) == expected
 
 
 # there is the candidate stopcodon
@@ -201,9 +198,7 @@ expected = [[]]
         expected,
     ),
 )
-def test_nocandidate_get_candidate_stopcodon_exon_num(
-    candidate_stopcodon, exon_range, expected
-):
+def test_nocandidate_get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range, expected):
     assert get_exonindex_in_cand_codon(candidate_stopcodon, exon_range) == expected
 
 
