@@ -21,7 +21,7 @@ def test_read_fasta():
     assert read_fasta(temp_file_name) == expected
 
 
-def test_create_sorted_seq_dict():
+def test_create_strand_plus_seq_dict():
     gene_data = [
         {
             "geneName": "Xkr4",
@@ -50,34 +50,6 @@ def test_create_sorted_seq_dict():
             "exonEnds": "15,25,35,45",
         },
     ]
-    sort_gene_data = [
-        {
-            "geneName": "Xkr4",
-            "name": "NM_001011874",
-            "chrom": "chr1",
-            "strand": "-",
-            "txStart": 0,
-            "txEnd": 100,
-            "cdsStart": 0,
-            "cdsEnd": 100,
-            "exonCount": "3",
-            "exonStarts": "0,20,40",
-            "exonEnds": "10,30,50",
-        },
-        {
-            "geneName": "Lypla1",
-            "name": "NM_001355712",
-            "chrom": "chr1",
-            "strand": "+",
-            "txStart": 0,
-            "txEnd": 100,
-            "cdsStart": 0,
-            "cdsEnd": 100,
-            "exonCount": "4",
-            "exonStarts": "0,10,20,30",
-            "exonEnds": "5,15,25,35",
-        },
-    ]
     seq_dict = {
         "NM_001011874": "ATGC",
         "NM_001355712": "TTGGCC",
@@ -86,4 +58,4 @@ def test_create_sorted_seq_dict():
         "NM_001011874": "GCAT",
         "NM_001355712": "TTGGCC",
     }
-    assert create_strand_plus_seq_dict(pd.DataFrame(gene_data), pd.DataFrame(sort_gene_data), seq_dict) == expected
+    assert create_strand_plus_seq_dict(pd.DataFrame(gene_data), seq_dict) == expected
