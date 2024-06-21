@@ -3,6 +3,7 @@ from pathlib import Path
 import pickle
 import subprocess
 import sys
+import argparse
 from konezumiaid.format_and_export_dataset.convert_refflat_to_bed6 import (
     convert_refFlat_to_bed6,
 )
@@ -16,6 +17,14 @@ from konezumiaid.format_and_export_dataset.generate_sorted_genedata_from_refflat
     remove_transcript_duplicates,
     remove_NR_transcripts,
 )
+
+
+parser = argparse.ArgumentParser(description="Format and export the dataset as pickle files.")
+
+parser.add_argument("refflat_path", type=Path, help="Path to the refFlat txt file.")
+parser.add_argument("chromosome_fasta_path", type=Path, help="Path to the chromosome fasta file.(ex. mm39.fa)")
+
+args = parser.parse_args()
 
 
 def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
@@ -35,7 +44,11 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
     sorted_transcript_seq_dict_path = Path("data", "sorted_seq_dict.pkl")
 
     bed6_path = Path("data", "refFlat.bed")
-    convert_refFlat_to_bed6(refflat_path, bed6_path)
+
+    df_refflat = built_gene_dataframe(refflat_path)
+    df_refflat = remove_transcript_duplicates(df_refflat)
+    df_removed = remove_NR_transcripts(df_refflat)
+    convert_refFlat_to_bed6(df_removed, bed6_path)
 
     transcripts_fast_path = Path("data", "bed_refFlat.fa")
     bedtools_path = Path(
@@ -53,16 +66,14 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
             str(transcripts_fast_path),
         ]
     )
-    df_refflat = built_gene_dataframe(refflat_path)
-    df_refflat = remove_transcript_duplicates(df_refflat)
-    df_refflat = remove_NR_transcripts(df_refflat)
-    df_refflat_sorted = df_refflat.copy()
+    print("converted bed to fasta.")
+    df_refflat_sorted = df_removed.copy()
     df_refflat_sorted = clean_refflat(df_refflat_sorted)
 
     transcript_seq_dict = read_fasta(transcripts_fast_path)
-    transcript_seq_sorted_dict = create_strand_plus_seq_dict(
-        df_refflat, df_refflat_sorted, transcript_seq_dict
-    )
+    print("creating transcript_seq_dict")
+    transcript_seq_sorted_dict = create_strand_plus_seq_dict(df_removed, transcript_seq_dict)
+    print("created transcript_seq_dict")
     with open(sorted_transcript_seq_dict_path, "wb") as f:
         pickle.dump(transcript_seq_sorted_dict, f)
     sorted_refflat = df_refflat_sorted.to_dict(orient="records")
@@ -71,16 +82,13 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
 
 
 def export():
-    if len(sys.argv) != 3:
-        raise ValueError("Please provide a refflat file and a fasta file as arguments.")
-    Path("data").mkdir(parents=True, exist_ok=True)
-    refflat_path = Path(sys.argv[1])
-    fasta_path = Path(sys.argv[2])
+    refflat_path = args.refflat_path
+    fasta_path = args.chromosome_fasta_path
     if not refflat_path.exists() or not fasta_path.exists():
         raise FileNotFoundError("One or both of the specified files were not found.")
     if refflat_path.suffix != ".txt":
-        raise ValueError("The refflat file must be a txt file.")
+        raise ValueError("The refflat file must be .txt file.")
     if fasta_path.suffix != ".fa":
-        raise ValueError("The fasta file must be a fasta file.")
+        raise ValueError("The fasta file must be .fa file.")
     export_pkl(refflat_path, fasta_path)
     print("Exported the dataset as pickle files.")
