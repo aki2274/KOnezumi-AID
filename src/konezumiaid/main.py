@@ -4,7 +4,8 @@ import pickle
 import argparse
 from pathlib import Path
 from konezumiaid.create_gene_dataclass import GeneData
-from konezumiaid.format_and_export_dataset.main import export_pkl
+
+# from konezumiaid.format_and_export_dataset.main import execute_export
 from konezumiaid.create_gene_dataclass import create_dataclass
 from konezumiaid.nominate_ptc_guide.main import nominate_candidate_stopcodon
 from konezumiaid.nominate_splicesite_guide.search_candidate import search_site_candidate
@@ -15,7 +16,7 @@ from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
 parser = argparse.ArgumentParser(
     description="This is KonezumiAID. A software to automate the design of gRNA for multiplex KO mouse using Target-AID"
 )
-parser.add_argument("gene_name", type=str, help="Gene name or transcript name you want to.")
+parser.add_argument("-n", "--gene_name", type=str, help="Gene name or transcript name you want to.")
 
 subparsers = parser.add_subparsers(dest="subcommand")
 
@@ -99,6 +100,7 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
             raise ValueError(f"Gene name {name} not found in the dataset.")
         symbol_transcript_names = df_symbol["name"]
         for i, transcript_name in enumerate(symbol_transcript_names):
+            print(f"Processing {transcript_name}...")
             transcript_record = create_dataclass(transcript_name, refflat_dic, seq_dict)
             ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
             if i == 0:
@@ -118,7 +120,9 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
 
 def main():
     if args.subcommand == "create":
-        export_pkl(args.refflat_path, args.chromosome_fasta_path)
+        execute_export(args.refflat_path, args.chromosome_fasta_path)
     else:
         gene_name = args.gene_name
+        if gene_name is None:
+            raise ValueError("Please provide a gene name.")
         execute(gene_name)
