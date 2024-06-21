@@ -2,8 +2,6 @@ from __future__ import annotations
 from pathlib import Path
 import pickle
 import subprocess
-import sys
-import argparse
 from konezumiaid.format_and_export_dataset.convert_refflat_to_bed6 import (
     convert_refFlat_to_bed6,
 )
@@ -17,14 +15,6 @@ from konezumiaid.format_and_export_dataset.generate_sorted_genedata_from_refflat
     remove_transcript_duplicates,
     remove_NR_transcripts,
 )
-
-
-parser = argparse.ArgumentParser(description="Format and export the dataset as pickle files.")
-
-parser.add_argument("refflat_path", type=Path, help="Path to the refFlat txt file.")
-parser.add_argument("chromosome_fasta_path", type=Path, help="Path to the chromosome fasta file.(ex. mm39.fa)")
-
-args = parser.parse_args()
 
 
 def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
@@ -81,9 +71,7 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
         pickle.dump(sorted_refflat, f)
 
 
-def export():
-    refflat_path = args.refflat_path
-    fasta_path = args.chromosome_fasta_path
+def excute_export(refflat_path: Path, fasta_path: Path):
     if not refflat_path.exists() or not fasta_path.exists():
         raise FileNotFoundError("One or both of the specified files were not found.")
     if refflat_path.suffix != ".txt":
