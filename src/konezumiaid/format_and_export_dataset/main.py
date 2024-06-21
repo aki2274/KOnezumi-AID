@@ -71,7 +71,7 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
         pickle.dump(sorted_refflat, f)
 
 
-def excute_export(refflat_path: Path, fasta_path: Path):
+def execute_export(refflat_path: Path, fasta_path: Path):
     if not refflat_path.exists() or not fasta_path.exists():
         raise FileNotFoundError("One or both of the specified files were not found.")
     if refflat_path.suffix != ".txt":
