@@ -1,15 +1,30 @@
 from __future__ import annotations
 import pandas as pd
 import pickle
-import sys
+import argparse
 from pathlib import Path
 from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.format_and_export_dataset.main import export_pkl
 from konezumiaid.create_gene_dataclass import create_dataclass
 from konezumiaid.nominate_ptc_guide.main import nominate_candidate_stopcodon
 from konezumiaid.nominate_splicesite_guide.search_candidate import search_site_candidate
 from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
 
 # from konezumiaid.get_rtpcr_primer.main import export_primers
+
+parser = argparse.ArgumentParser(
+    description="This is KonezumiAID. A software to automate the design of gRNA for multiplex KO mouse using Target-AID"
+)
+parser.add_argument("gene_name", type=str, help="Gene name or transcript name you want to.")
+
+subparsers = parser.add_subparsers(dest="subcommand")
+
+parser_create = subparsers.add_parser("create", help="Format and export the dataset as pickle files.")
+parser_create.add_argument("refflat_path", type=Path, help="Path to the refFlat text file.")
+parser_create.add_argument("chromosome_fasta_path", type=Path, help="Path to the chromosome fasta file.(ex. mm39.fa)")
+
+
+args = parser.parse_args()
 
 
 def extract_matching_seqs(*lists):
@@ -92,9 +107,7 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
                 symbol_donor_cand = donor_cand
             else:
                 symbol_ptc_cand = extract_matching_seqs(symbol_ptc_cand, ptc_cand)
-                symbol_acceptor_cand = extract_matching_seqs(
-                    symbol_acceptor_cand, acceptor_cand
-                )
+                symbol_acceptor_cand = extract_matching_seqs(symbol_acceptor_cand, acceptor_cand)
                 symbol_donor_cand = extract_matching_seqs(symbol_donor_cand, donor_cand)
         df_ptcp_cand = pd.DataFrame(symbol_ptc_cand)
         df_acceptor_cand = pd.DataFrame(symbol_acceptor_cand)
@@ -104,7 +117,8 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
 
 
 def main():
-    if len(sys.argv) != 2:
-        raise ValueError("Please provide a gene name as an argument.")
-    gene_name = sys.argv[1]
-    execute(gene_name)
+    if args.subcommand == "create":
+        export_pkl(args.refflat_path, args.chromosome_fasta_path)
+    else:
+        gene_name = args.gene_name
+        execute(gene_name)
