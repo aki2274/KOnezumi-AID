@@ -1,5 +1,4 @@
 from __future__ import annotations
-import sys
 from pathlib import Path
 import pickle
 import subprocess
@@ -74,13 +73,10 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
 
 def execute_export(refflat_path: Path, fasta_path: Path):
     if not refflat_path.exists() or not fasta_path.exists():
-        print("One or both of the specified files were not found.")
-        sys.exit(1)
+        raise FileNotFoundError("One or both of the specified files were not found.")
     if refflat_path.suffix != ".txt":
-        print("The refflat file must be .txt file.")
-        sys.exit(1)
+        raise ValueError("The refflat file must be .txt file.")
     if fasta_path.suffix != ".fa" or fasta_path.suffix != ".fasta":
-        print("The fasta file must be .fa or .fasta file.")
-        sys.exit(1)
+        raise ValueError("The fasta file must be .fa file.")
     export_pkl(refflat_path, fasta_path)
     print("Exported the dataset as pickle files.")
