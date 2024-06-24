@@ -2,6 +2,7 @@ from __future__ import annotations
 import pandas as pd
 import pickle
 import argparse
+import sys
 from pathlib import Path
 from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.format_and_export_dataset.main import execute_export
@@ -97,12 +98,14 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
         try:
             df_ref = pd.DataFrame(refflat_dic)
             df_symbol = df_ref[df_ref["geneName"] == name]
-        except KeyError:
-            raise ValueError(f"Gene name {name} not found in the dataset.")
+        except Exception as e:
+            raise Exception(f"Gene name {name} not found in the dataset. Original error: {e}")
         symbol_transcript_names = df_symbol["name"]
         for i, transcript_name in enumerate(symbol_transcript_names):
             print(f"Processing {transcript_name}...")
             transcript_record = create_dataclass(transcript_name, refflat_dic, seq_dict)
+            if transcript_record is None:
+                continue
             ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
             if i == 0:
                 symbol_ptc_cand = ptc_cand
@@ -124,7 +127,8 @@ def main():
     path_seq = Path("data", "sorted_seq_dict.pkl")
     if args.subcommand == "preprocess":
         if path_refFlat.exists() or path_seq.exists():
-            raise FileExistsError("The dataset is already preprocessed.")
+            print("The dataset is already preprocessed.")
+            sys.exit(0)
         execute_export(args.refflat_path, args.chromosome_fasta_path)
     else:
         if not path_refFlat.exists() or not path_seq.exists():
@@ -132,6 +136,4 @@ def main():
                 "The dataset is not found. Please preprocess the dataset by running 'konezumiaid preprocess'."
             )
         gene_name = args.gene_name
-        if gene_name is None:
-            raise ValueError("Please provide a gene name or transcript name (Refseq ID).")
         execute(gene_name)
