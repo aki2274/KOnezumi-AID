@@ -77,6 +77,6 @@ def execute_export(refflat_path: Path, fasta_path: Path):
     if refflat_path.suffix != ".txt":
         raise ValueError("The refflat file must be .txt file.")
     if fasta_path.suffix != ".fa" or fasta_path.suffix != ".fasta":
-        raise ValueError("The fasta file must be .fa file.")
+        raise ValueError("The fasta file must be .fa or .fasta file.")
     export_pkl(refflat_path, fasta_path)
     print("Exported the dataset as pickle files.")
