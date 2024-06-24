@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 import argparse
 import sys
+import shutil
 from pathlib import Path
 from konezumiaid.create_gene_dataclass import GeneData
 from konezumiaid.format_and_export_dataset.main import execute_export
@@ -126,6 +127,8 @@ def main():
     path_refFlat = Path("data", "refFlat_genedata_sorted.pkl")
     path_seq = Path("data", "sorted_seq_dict.pkl")
     if args.subcommand == "preprocess":
+        if not shutil.which("bedtools"):
+            raise Exception("bedtools is not installed. Please install bedtools before running this script.")
         if path_refFlat.exists() or path_seq.exists():
             print("The dataset is already preprocessed.")
             sys.exit(0)
