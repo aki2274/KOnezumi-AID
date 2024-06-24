@@ -24,7 +24,7 @@ input_genedata = [
 input_transcript_name = ["t1"]  # test_df["name"]
 
 input_seq = [
-    {"t1::chr1:0-30": "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN"}
+    {"t1": "NNNNNNNNNNATGTNNNNNNNNNNNNNNNN"}
 ]  # dict key is "{transcripts_name}::{chrom}:{txStart}-{txEnd}". Value is orf_seq.
 
 
@@ -59,6 +59,4 @@ expected = [expected_return]
     zip(input_transcript_name, [input_genedata], input_seq, expected),
 )
 def test_setup_data(transcripts_name, gene_data, gene_seq_data, expected):
-    assert asdict(
-        create_dataclass(transcripts_name, gene_data, gene_seq_data)
-    ) == asdict(expected)
+    assert asdict(create_dataclass(transcripts_name, gene_data, gene_seq_data)) == asdict(expected)

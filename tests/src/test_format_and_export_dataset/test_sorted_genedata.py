@@ -76,7 +76,7 @@ def test_built_gene_dataframe():
     assert test_dataframe.to_dict(orient="records") == expected
 
 
-def test_sort_gene_dataframe():
+def test_clean_refflat():
     test = [
         {
             "geneName": "Xkr4",
@@ -164,7 +164,7 @@ def test_sort_gene_dataframe():
     assert result_dataframe.to_dict(orient="records") == excepted
 
 
-def test_remove_genedata_duplicates():
+def test_remove_transcript_duplicates():
     test = [
         {
             "geneName": "Xkr4",
