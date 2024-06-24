@@ -21,7 +21,8 @@ def create_dataclass(transcript_name: str, refflat: list[dict], transcript_seq_d
         None,
     )
     if transcript_filtered is None:
-        raise ValueError("Transcript name doesn't exist in the refflat")
+        print("The transcript doesn't exist in the refflat")
+        return None
 
     txStart = int(transcript_filtered["txStart"])
     txEnd = int(transcript_filtered["txEnd"])
@@ -33,7 +34,8 @@ def create_dataclass(transcript_name: str, refflat: list[dict], transcript_seq_d
 
     orf_seq = transcript_seq_dict.get(f"{transcript_name}")
     if orf_seq is None:
-        raise ValueError("Transcript sequence doesn't exist in the transcript_seq_dict")
+        print("the transcript sequence doesn't exist in formatted sequence dictionary")
+        return None
 
     transcript_record = GeneData(
         orf_seq,
