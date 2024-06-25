@@ -1,3 +1,6 @@
+[![License](https://img.shields.io/badge/License-MIT-9cf.svg)](https://choosealicense.com/licenses/mit/)
+[![DOI](https://zenodo.org/badge/673151657.svg)](https://zenodo.org/badge/latestdoi/673151657)
+
 # KOnezumi-AID
 `KOnezumi-AID` is the command-line tool to automate the gRNA design for multiplex KO mouse using Target-AID
 
