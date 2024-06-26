@@ -100,7 +100,9 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
             df_ref = pd.DataFrame(refflat_dic)
             df_symbol = df_ref[df_ref["geneName"] == name]
         except Exception as e:
-            raise Exception(f"Gene name {name} not found in the dataset. Original error: {e}")
+            raise Exception(f"Error: {e}")
+        if df_symbol.empty:
+            raise Exception(f"Gene name {name} not found in the dataset.")
         symbol_transcript_names = df_symbol["name"]
         for i, transcript_name in enumerate(symbol_transcript_names):
             print(f"Processing {transcript_name}...")
