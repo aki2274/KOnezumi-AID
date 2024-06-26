@@ -17,7 +17,7 @@ from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
 parser = argparse.ArgumentParser(
     description="This is KonezumiAID. A software to automate the design of gRNA for multiplex KO mouse using Target-AID"
 )
-parser.add_argument("-n", "--gene_name", type=str, help="Gene name or transcript name (Refseq ID) you want to.")
+parser.add_argument("-n", "--name", type=str, help="Gene name or transcript name (Refseq ID) you want to.")
 
 subparsers = parser.add_subparsers(dest="subcommand")
 
@@ -138,5 +138,5 @@ def main():
             raise FileNotFoundError(
                 "The dataset is not found. Please preprocess the dataset by running 'konezumiaid preprocess'."
             )
-        gene_name = args.gene_name
+        gene_name = args.name
         execute(gene_name)
