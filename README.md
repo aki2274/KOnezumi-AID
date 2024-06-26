@@ -9,24 +9,33 @@
 - Python 3.9 or later
 - Unix-like environment (Linux, macOS, WSL, etc.)
 
-### Required Packages
+### Installation🔨
+#### From [Bioconda](https://anaconda.org/bioconda/konezumiaid) (Recommended)
+
+`conda install -c conda-forge -c bioconda konezumiaid`
+
+#### From [PyPI](https://libraries.io/pypi/KOnezumiAID):
+
+`pip install KOnezumiAID`
+
+### Required Packages(Don't need if you install via conda)
 - bedtools
 
 Install via bioconda
 
 `conda install -c conda-forge -c bioconda bedtools`
 
-Install bedtools according to the [official instruction](https://bedtools.readthedocs.io/en/latest/content/installation.html)
+or follow the [official instruction](https://bedtools.readthedocs.io/en/latest/content/installation.html)
 
 - bowtie
 
 Install via bioconda
 
-`conda install bowtie`
+`conda install -c conda-forge -c bioconda bowtie`
 
 or follow the [official instruction](https://bowtie-bio.sourceforge.net/manual.shtml#:~:text=is%20future%20work.-,Obtaining%20Bowtie,-You%20may%20download)
 
-### Input data set
+### Input data set (e.g. Mus musculus mm39)
 #### Locus information
 `refFlat.text` from [UCSC](
 https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/
@@ -47,24 +56,21 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
     gzip -dc > data/mm39.fa
 ```
 
-### Installation🔨
-#### Follow these steps to get started with KOnezumiAID from PyPI:
 
-`pip install KOnezumiAID`
 
 ## Usage
 ### Create data set for KOnezumi-AID
 
-`konezumiaid-createdata <your refFlat.txt Path> <your mm39.fa Path>`
+`konezumiaid preprocess <your refFlat.txt Path> <your mm39.fa Path>`
 ### Examples
-`konezumiaid-createdata data/refFlat.txt data/mm39.fa`
+`konezumiaid preprocess data/refFlat.txt data/mm39.fa`
 
 ### Search candidate by gene symbol or transcript name
 KOnezumi-AID accepts a gene symbol or a transcript name.
 
 If search by a transcript name, you gan get more information about gRNA.
 
-`konezumiaid <gene symbol or transcript name>`
+`konezumiaid <-n | -name> <gene symbol | transcript name>`
 
 ### Examples
 - Search candidate by the gene symbol
