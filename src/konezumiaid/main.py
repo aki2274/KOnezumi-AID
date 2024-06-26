@@ -130,7 +130,7 @@ def main():
         if not shutil.which("bedtools"):
             raise Exception("bedtools is not installed. Please install bedtools before running this script.")
         if path_refFlat.exists() or path_seq.exists():
-            print("The dataset is already preprocessed.")
+            print("Pre-processing is already done.")
             sys.exit(0)
         execute_export(args.refflat_path, args.chromosome_fasta_path)
     else:
