@@ -70,7 +70,7 @@ KOnezumi-AID accepts a gene symbol or a transcript name.
 
 If search by a transcript name, you gan get more information about gRNA.
 
-`konezumiaid <-n | -name> <gene symbol | transcript name>`
+`konezumiaid <-n | --name> <gene symbol | transcript name>`
 
 ### Examples
 - Search candidate by the gene symbol
