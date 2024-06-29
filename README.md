@@ -23,17 +23,11 @@
 
 Install via bioconda
 
-`conda install -c conda-forge -c bioconda bedtools`
-
-or follow the [official instruction](https://bedtools.readthedocs.io/en/latest/content/installation.html)
+Follow the [official instruction](https://bedtools.readthedocs.io/en/latest/content/installation.html)
 
 - bowtie
 
-Install via bioconda
-
-`conda install -c conda-forge -c bioconda bowtie`
-
-or follow the [official instruction](https://bowtie-bio.sourceforge.net/manual.shtml#:~:text=is%20future%20work.-,Obtaining%20Bowtie,-You%20may%20download)
+Follow the [official instruction](https://bowtie-bio.sourceforge.net/manual.shtml#:~:text=is%20future%20work.-,Obtaining%20Bowtie,-You%20may%20download)
 
 ### Input data set (e.g. Mus musculus mm39)
 #### Locus information
@@ -66,7 +60,7 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
 `konezumiaid preprocess data/refFlat.txt data/mm39.fa`
 
 ### Search candidate by gene symbol or transcript name
-KOnezumi-AID accepts a gene symbol or a transcript name.
+KOnezumi-AID accepts a gene symbol or a transcript name(Refseq id).
 
 If search by a transcript name, you gan get more information about gRNA.
 
