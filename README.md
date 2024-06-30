@@ -7,7 +7,7 @@
 ## Installation
 ### Prerequisits
 - Python 3.9 or later
-- Unix-like environment (Linux, macOS, WSL, etc.)
+- Unix-like environment (Linux, macOS, WSL2, etc.)
 
 ### Installation🔨
 #### From [Bioconda](https://anaconda.org/bioconda/konezumiaid) (Recommended)
@@ -18,7 +18,7 @@
 
 `pip install KOnezumiAID`
 
-### Required Packages(Not needed if installed via conda)
+### Required Packages (Not needed if installed via conda)
 - bedtools
 
 
@@ -30,7 +30,7 @@ Follow the [official instruction](https://bowtie-bio.sourceforge.net/manual.shtm
 
 ### Input data set (e.g. Mus musculus mm39)
 #### Locus information
-`refFlat.text.gz` from [UCSC](
+`refFlat.txt.gz` from [UCSC](
 https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/
 )
 
@@ -55,10 +55,13 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
 ### Create data set for KOnezumi-AID
 
 `konezumiaid preprocess <your refFlat.txt Path> <your mm39.fa Path>`
+
 ### Examples
+
 `konezumiaid preprocess data/refFlat.txt data/mm39.fa`
 
 ### Search candidate by gene symbol or transcript name
+
 KOnezumi-AID accepts a gene symbol or a transcript name(Refseq id).
 
 If search by a transcript name, you can get more information about gRNAs.
