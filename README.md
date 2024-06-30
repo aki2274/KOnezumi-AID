@@ -60,11 +60,18 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
 
 `konezumiaid preprocess data/refFlat.txt data/mm39.fa`
 
-### Search candidate by gene symbol or transcript name
+### Search candidate by gene symbol or transcript name (Refseq id)
 
-KOnezumi-AID accepts a gene symbol or a transcript name(Refseq id).
+KOnezumi-AID accepts a gene symbol or a transcript name.
 
-If search by a transcript name, you can get more information about gRNAs.
+- Search by gene symbol
+
+You can obtain the gRNAs that are present in all transcript variants.
+
+- Search by transcript name
+
+You can obtain the transcript's gRNAs and access more information about the gRNAs.
+
 
 `konezumiaid <-n | --name> <gene symbol | transcript name>`
 
