@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class GeneData:
+class TranscriptRecord:
     orf_seq: str
     txStart: int
     txend: int
@@ -14,7 +14,7 @@ class GeneData:
     exon_end_list: list[int]
 
 
-def create_dataclass(transcript_name: str, refflat: list[dict], transcript_seq_dict: dict) -> GeneData:
+def create_dataclass(transcript_name: str, refflat: list[dict], transcript_seq_dict: dict) -> TranscriptRecord:
     # Create dataclass from the transcript name.
     transcript_filtered = next(
         (transcript_data for transcript_data in refflat if transcript_data["name"] == transcript_name),
@@ -35,7 +35,7 @@ def create_dataclass(transcript_name: str, refflat: list[dict], transcript_seq_d
     if orf_seq is None:
         raise ValueError("The transcript sequence doesn't exist in formatted sequence dictionary")
 
-    transcript_record = GeneData(
+    transcript_record = TranscriptRecord(
         orf_seq,
         txStart,
         txEnd,

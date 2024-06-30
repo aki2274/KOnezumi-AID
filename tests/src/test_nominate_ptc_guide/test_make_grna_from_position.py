@@ -1,13 +1,12 @@
-
 from konezumiaid.nominate_ptc_guide.make_grna_from_position import (
-    GeneData,
+    TranscriptRecord,
     extract_c_to_t_grna_from_position,
     extract_g_to_a_grna_from_position,
 )
 
 
 def test_convert_ct_grna():
-    ds = GeneData(
+    ds = TranscriptRecord(
         orf_seq="ATGNCAGNNNNNNNNNNNNNNNNPGGATCGANNNNCAGNNNNNNNNNNNNNNPGGCATATAA",
         txStart=0,
         txend=80,
@@ -26,7 +25,7 @@ def test_convert_ct_grna():
 
 
 def test_convert_ga_grna():
-    ds = GeneData(
+    ds = TranscriptRecord(
         orf_seq="ATGCCPNNNNNNNNNNNNNNTGGNNNATCGAGCCPNNNNNNNNNNNNNNNNNTGGCATATAA",
         txStart=0,
         txend=80,
@@ -45,7 +44,7 @@ def test_convert_ga_grna():
 
 
 def test_nocandidate_convert_ct_grna():
-    ds = GeneData(
+    ds = TranscriptRecord(
         orf_seq="ATGNCAGNNNNNNNNNNNNNNNNPGGATCGANNNNCAGNNNNNNNNNNNNNNPGGCATATAANNNNCAGNNNNNNNTTTTNNNNNPGGNNN",
         txStart=0,
         txend=91,
@@ -61,7 +60,7 @@ def test_nocandidate_convert_ct_grna():
 
 
 def test_nocandidate_convert_ga_grna():
-    ds = GeneData(
+    ds = TranscriptRecord(
         orf_seq="ATGCCPNNNNNNNNNNNNNNTGGNNNATCGAGCCPNNNNNNNNNNNNNNNNNTGGCATATCCPNNNNNNNNNNNNNNAAAAGGAA",
         txStart=0,
         txend=85,

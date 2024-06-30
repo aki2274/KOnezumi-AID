@@ -5,7 +5,7 @@ import argparse
 import sys
 import shutil
 from pathlib import Path
-from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.create_gene_dataclass import TranscriptRecord
 from konezumiaid.format_and_export_dataset.main import execute_export
 from konezumiaid.create_gene_dataclass import create_dataclass
 from konezumiaid.nominate_ptc_guide.main import nominate_candidate_stopcodon
@@ -74,7 +74,7 @@ def export_csv(
 
 
 def konezumiaid_main(
-    transcript_record: GeneData,
+    transcript_record: TranscriptRecord,
 ) -> tuple[list[dict], list[dict], list[dict]]:
     ct_cand, ga_cand = nominate_candidate_stopcodon(transcript_record)
     applied_nmd_rules_gRNA = apply_nmd_rules(transcript_record, ct_cand, ga_cand)
