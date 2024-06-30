@@ -4,14 +4,14 @@ from dataclasses import dataclass
 
 @dataclass
 class TranscriptRecord:
-    orf_seq: str
-    txStart: int
-    txend: int
-    cdsStart: int
-    cdsEnd: int
-    exonCount: int
-    exon_start_list: list[int]
-    exon_end_list: list[int]
+    transcript_seq: str
+    transcript_start: int
+    transcript_end: int
+    cds_start: int
+    cds_end: int
+    exon_count: int
+    exon_start_positions: list[int]
+    exon_end_positions: list[int]
 
 
 def create_dataclass(transcript_name: str, refflat: list[dict], transcript_seq_dict: dict) -> TranscriptRecord:
