@@ -13,9 +13,9 @@ def translate_cds_position_to_exon(
     # the distance from the exon start which has startcodon(on splicedexon)
     dist_to_exon_has_startcodon_splicedexon = exon_range_list[startcodon_exon_index][0]
     # the distance from the exon start which has startcodon(on orf)
-    dist_to_exon_has_startcodon_from_txstart = int(transcript_record.exon_start_list[startcodon_exon_index])
+    dist_to_exon_has_startcodon_from_txstart = int(transcript_record.exon_start_positions[startcodon_exon_index])
     dist_5UTR = (
-        transcript_record.cdsStart - dist_to_exon_has_startcodon_from_txstart + dist_to_exon_has_startcodon_splicedexon
+        transcript_record.cds_start - dist_to_exon_has_startcodon_from_txstart + dist_to_exon_has_startcodon_splicedexon
     )
     # add 5'UTR length to the candidate codon position in splicedexon
     candidate_codon_position_in_splicedexon = [posistion + dist_5UTR for posistion in candidate_codon_position_in_cds]
@@ -52,7 +52,7 @@ def translate_position_in_splicedexon_to_orf(
     exon_indexes_in_ptc = get_exonindex_in_cand_codon(candidate_codon_positions_in_splicedexon, exon_range_list)
 
     intron_len_to_exon_has_ptc = [
-        (transcript_record.exon_start_list[i] - exon_range_list[i][0]) for i in exon_indexes_in_ptc
+        (transcript_record.exon_start_positions[i] - exon_range_list[i][0]) for i in exon_indexes_in_ptc
     ]
     # add intron length (exon length + the length from exon which has candidate codon to it)
     candidate_ptc_codon_positions = np.array(candidate_codon_positions_in_splicedexon) + np.array(

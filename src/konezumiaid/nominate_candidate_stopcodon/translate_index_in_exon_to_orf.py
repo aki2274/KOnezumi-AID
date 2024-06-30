@@ -21,7 +21,7 @@ def translate_incds_index_to_exon(
     # the distance from the start of orf to the exon which has startcodon
     dist_to_startcodon_exon = exon_range_list[cdsStart_exon_index][0]
     # the distance from the start of the exon(has startcodn) to the startcodon(cdsStart)
-    dist_to_startcodon = ds.cdsStart - int(ds.exon_start_list[cdsStart_exon_index]) + dist_to_startcodon_exon
+    dist_to_startcodon = ds.cds_start - int(ds.exon_start_positions[cdsStart_exon_index]) + dist_to_startcodon_exon
     # calculate candidate codon index in exon
     candidate_codon_index_inexon = [index + dist_to_startcodon for index in candidate_stopcodon_cds_index_list]
     return candidate_codon_index_inexon
@@ -49,7 +49,9 @@ def translate_index_in_exon_to_orf(
     )
     exon_index_list = get_exonnum_of_candidate(candidate_codon_index_inexon_list, exon_range_list)
 
-    add_num_to_genome_index = [(ds.exon_start_list[i] - ds.txStart - exon_range_list[i][0]) for i in exon_index_list]
+    add_num_to_genome_index = [
+        (ds.exon_start_positions[i] - ds.transcript_start - exon_range_list[i][0]) for i in exon_index_list
+    ]
     # add intron length abd (exon length + the length from exon which has candidate codon to candidate) to get the index of candidate codon in genome
     candidate_stopcodon_index = np.array(candidate_codon_index_inexon_list) + np.array(add_num_to_genome_index)
     return candidate_stopcodon_index.tolist()

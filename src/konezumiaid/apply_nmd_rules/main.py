@@ -30,7 +30,7 @@ def apply_nmd_rules(transcript_record: TranscriptRecord, ct_cand: list[str], ga_
     # 2. label in start 150bp
     gRNA_list = label_in_start_150bp(gRNA_list, transcript_record)
 
-    if transcript_record.exonCount == 1:  # The case of single exon
+    if transcript_record.exon_count == 1:  # The case of single exon
         # 3. label in front half
         gRNA_list = eliminate_in_back_half(gRNA_list, transcript_record)
 

@@ -32,8 +32,8 @@ def add_intron_len(
     added_len = candidate_primers.copy()
     for primer_pair in added_len:
         intron_len = (
-            transcript_record.exon_start_list[primer_pair["right_exon_num"] - 1]
-            - transcript_record.exon_end_list[primer_pair["left_exon_num"] - 1]
+            transcript_record.exon_start_positions[primer_pair["right_exon_num"] - 1]
+            - transcript_record.exon_end_positions[primer_pair["left_exon_num"] - 1]
             + 1
         )
         if intron_len > 0:
