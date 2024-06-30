@@ -78,7 +78,7 @@ You can obtain the transcript's gRNAs and access more information about the gRNA
 ### Examples
 - Search candidate by the gene symbol
 ```
-$konezumiaid Rp1
+$konezumiaid -n Rp1
 PTC gRNA
                        seq
 0  ACAGGTTATGCAGTGTCCTGTGG
@@ -95,7 +95,7 @@ No Donor gRNA found.
 - Search candidate by the transcript name
 
 ```
-$ konezumiaid NM_001370921
+$ konezumiaid -n NM_001370921
 PTC gRNA
                         seq  in_start_150bp  in_50bp_from_LEJ
 0   ACAGTTTGGCGGCGTTCGGGTGG            True             False
