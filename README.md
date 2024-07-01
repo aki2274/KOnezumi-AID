@@ -71,6 +71,9 @@ You can obtain the gRNAs that are present in all transcript variants.
 - Search by transcript name
 
 You can obtain the transcript's gRNAs and access more information about the gRNAs.
+- in_start_150bp: The gRNA is located in the first 150bp of the transcript or not.
+- in_50bp_from_LEJ: The gRNA is located in the 50bp from the last exon junction or not.
+- exon_index: the index of the exon where the gRNA is located.
 
 
 `konezumiaid <-n | --name> <gene symbol | transcript name>`
