@@ -7,28 +7,30 @@
 ## Installation
 ### Prerequisits
 - Python 3.9 or later
-- Unix-like environment (Linux, macOS, WSL, etc.)
+- Unix-like environment (Linux, macOS, WSL2, etc.)
 
-### Required Packages
+### Installation🔨
+#### From [Bioconda](https://anaconda.org/bioconda/konezumiaid) (Recommended)
+
+`conda install -c conda-forge -c bioconda konezumiaid`
+
+#### From [PyPI](https://libraries.io/pypi/KOnezumiAID):
+
+`pip install KOnezumiAID`
+
+### Required Packages (Not needed if installed via conda)
 - bedtools
 
-Install via bioconda
 
-`conda install -c conda-forge -c bioconda bedtools`
-
-Install bedtools according to the [official instruction](https://bedtools.readthedocs.io/en/latest/content/installation.html)
+Follow the [official instruction](https://bedtools.readthedocs.io/en/latest/content/installation.html)
 
 - bowtie
 
-Install via bioconda
+Follow the [official instruction](https://bowtie-bio.sourceforge.net/manual.shtml#:~:text=is%20future%20work.-,Obtaining%20Bowtie,-You%20may%20download)
 
-`conda install bowtie`
-
-or follow the [official instruction](https://bowtie-bio.sourceforge.net/manual.shtml#:~:text=is%20future%20work.-,Obtaining%20Bowtie,-You%20may%20download)
-
-### Input data set
+### Input data set (e.g. Mus musculus mm39)
 #### Locus information
-`refFlat.text` from [UCSC](
+`refFlat.txt.gz` from [UCSC](
 https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/
 )
 
@@ -47,29 +49,39 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
     gzip -dc > data/mm39.fa
 ```
 
-### Installation🔨
-#### Follow these steps to get started with KOnezumiAID from PyPI:
 
-`pip install KOnezumiAID`
 
 ## Usage
 ### Create data set for KOnezumi-AID
 
-`konezumiaid-createdata <your refFlat.txt Path> <your mm39.fa Path>`
-### Examples
-`konezumiaid-createdata data/refFlat.txt data/mm39.fa`
+`konezumiaid preprocess <your refFlat.txt Path> <your mm39.fa Path>`
 
-### Search candidate by gene symbol or transcript name
+### Examples
+
+`konezumiaid preprocess data/refFlat.txt data/mm39.fa`
+
+### Search candidate by gene symbol or transcript name (Refseq id)
+
 KOnezumi-AID accepts a gene symbol or a transcript name.
 
-If search by a transcript name, you gan get more information about gRNA.
+- Search by gene symbol
 
-`konezumiaid <gene symbol or transcript name>`
+You can obtain the gRNAs that are present in all transcript variants.
+
+- Search by transcript name
+
+You can obtain the transcript's gRNAs and access more information about the gRNAs.
+- in_start_150bp: The gRNA is located in the first 150bp of the transcript or not.
+- in_50bp_from_LEJ: The gRNA is located in the 50bp from the last exon junction or not.
+- exon_index: the index of the exon where the gRNA is located.
+
+
+`konezumiaid <-n | --name> <gene symbol | transcript name>`
 
 ### Examples
 - Search candidate by the gene symbol
 ```
-$konezumiaid Rp1
+$konezumiaid -n Rp1
 PTC gRNA
                        seq
 0  ACAGGTTATGCAGTGTCCTGTGG
@@ -86,7 +98,7 @@ No Donor gRNA found.
 - Search candidate by the transcript name
 
 ```
-$ konezumiaid NM_001370921
+$ konezumiaid -n NM_001370921
 PTC gRNA
                         seq  in_start_150bp  in_50bp_from_LEJ
 0   ACAGTTTGGCGGCGTTCGGGTGG            True             False

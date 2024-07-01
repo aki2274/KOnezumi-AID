@@ -17,7 +17,7 @@ from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
 parser = argparse.ArgumentParser(
     description="This is KonezumiAID. A software to automate the design of gRNA for multiplex KO mouse using Target-AID"
 )
-parser.add_argument("-n", "--gene_name", type=str, help="Gene name or transcript name (Refseq ID) you want to.")
+parser.add_argument("-n", "--name", type=str, help="Gene name or transcript name (Refseq ID) you want to.")
 
 subparsers = parser.add_subparsers(dest="subcommand")
 
@@ -100,7 +100,9 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
             df_ref = pd.DataFrame(refflat_dic)
             df_symbol = df_ref[df_ref["geneName"] == name]
         except Exception as e:
-            raise Exception(f"Gene name {name} not found in the dataset. Original error: {e}")
+            raise Exception(f"Error: {e}")
+        if df_symbol.empty:
+            raise Exception(f"Gene name {name} not found in the dataset.")
         symbol_transcript_names = df_symbol["name"]
         for i, transcript_name in enumerate(symbol_transcript_names):
             print(f"Processing {transcript_name}...")
@@ -130,7 +132,7 @@ def main():
         if not shutil.which("bedtools"):
             raise Exception("bedtools is not installed. Please install bedtools before running this script.")
         if path_refFlat.exists() or path_seq.exists():
-            print("The dataset is already preprocessed.")
+            print("Pre-processing is already done.")
             sys.exit(0)
         execute_export(args.refflat_path, args.chromosome_fasta_path)
     else:
@@ -138,5 +140,5 @@ def main():
             raise FileNotFoundError(
                 "The dataset is not found. Please preprocess the dataset by running 'konezumiaid preprocess'."
             )
-        gene_name = args.gene_name
+        gene_name = args.name
         execute(gene_name)
