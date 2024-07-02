@@ -37,11 +37,29 @@ def test_has_candidate():
 
     result = search_site_candidate(data)
     excepted = (
-        [{"seq": "NNCTNNNNNNNNNNNNNNNNNGG", "exon_index": 3}],
         [
-            {"seq": "ACNNNNNNNNNNNNNNNNNNGGG", "exon_index": 1},
-            {"seq": "NACNNNNNNNNNNNNNNNNNNGG", "exon_index": 1},
-            {"seq": "NACNNNNNNNNNNNNNNNNNNGG", "exon_index": 2},
+            {
+                "seq": "NNCTNNNNNNNNNNNNNNNNNGG",
+                "exon_index": 3,
+                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=NNCTNNNNNNNNNNNNNNNNNGG&pam=NGG&db=mm39",
+            }
+        ],
+        [
+            {
+                "seq": "ACNNNNNNNNNNNNNNNNNNGGG",
+                "exon_index": 1,
+                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=ACNNNNNNNNNNNNNNNNNNGGG&pam=NGG&db=mm39",
+            },
+            {
+                "seq": "NACNNNNNNNNNNNNNNNNNNGG",
+                "exon_index": 1,
+                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=NACNNNNNNNNNNNNNNNNNNGG&pam=NGG&db=mm39",
+            },
+            {
+                "seq": "NACNNNNNNNNNNNNNNNNNNGG",
+                "exon_index": 2,
+                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=NACNNNNNNNNNNNNNNNNNNGG&pam=NGG&db=mm39",
+            },
         ],
     )
     assert result == excepted
