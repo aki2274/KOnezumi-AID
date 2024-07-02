@@ -1,6 +1,6 @@
 from __future__ import annotations
 from src.konezumiaid.create_gene_dataclass import TranscriptRecord
-from src.konezumiaid.apply_nmd_rules.evaluate_grna import (
+from src.konezumiaid.evaluate_grna.apply_nmd_rules import (
     eliminate_in_back_half,
     eliminate_in_last_exon,
     label_in_start_150bp,
@@ -11,31 +11,31 @@ from src.konezumiaid.apply_nmd_rules.evaluate_grna import (
 
 def test_create_candidate_list():
     ct_cand = [
-        "CTGCAGAACTCGGACAATTCGGG",
-        "GCAGCGGCGTTACTCGCTGTGGG",
-        "AGCAGCGGCGTTACTCGCTGTGG",
-        "TGCAAGTGTTCAGCTTCCGCTGG",
-        "TGCAGCTTGGGCAAATCTGGAGG",
-        "GGCAGAGTGGGGAGAGCGGCAGG",
+        {"aminoacid": "Q", "seq": "CTGCAGAACTCGGACAATTCGGG"},
+        {"aminoacid": "R", "seq": "GCAGCGGCGTTACTCGCTGTGGG"},
+        {"aminoacid": "S", "seq": "AGCAGCGGCGTTACTCGCTGTGG"},
+        {"aminoacid": "C", "seq": "TGCAAGTGTTCAGCTTCCGCTGG"},
+        {"aminoacid": "L", "seq": "TGCAGCTTGGGCAAATCTGGAGG"},
+        {"aminoacid": "E", "seq": "GGCAGAGTGGGGAGAGCGGCAGG"},
     ]
     ga_cand = [
-        "CCTGCGTGGCCAGCGCTGGTGGT",
-        "CCTGCTCCTTTTGCATCTGGCTC",
-        "CCTCCCTTGTGTCCTTGGCTTGG",
-        "CCCTTGTGTCCTTGGCTTGGGCC",
+        {"aminoacid": "R", "seq": "CCTGCGTGGCCAGCGCTGGTGGT"},
+        {"aminoacid": "S", "seq": "CCTGCTCCTTTTGCATCTGGCTC"},
+        {"aminoacid": "P", "seq": "CCTCCCTTGTGTCCTTGGCTTGG"},
+        {"aminoacid": "L", "seq": "CCCTTGTGTCCTTGGCTTGGGCC"},
     ]
 
     expected = [
-        {"ct_seq": "CTGCAGAACTCGGACAATTCGGG"},
-        {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG"},
-        {"ct_seq": "AGCAGCGGCGTTACTCGCTGTGG"},
-        {"ct_seq": "TGCAAGTGTTCAGCTTCCGCTGG"},
-        {"ct_seq": "TGCAGCTTGGGCAAATCTGGAGG"},
-        {"ct_seq": "GGCAGAGTGGGGAGAGCGGCAGG"},
-        {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT"},
-        {"ga_seq": "CCTGCTCCTTTTGCATCTGGCTC"},
-        {"ga_seq": "CCTCCCTTGTGTCCTTGGCTTGG"},
-        {"ga_seq": "CCCTTGTGTCCTTGGCTTGGGCC"},
+        {"aminoacid": "Q", "ct_seq": "CTGCAGAACTCGGACAATTCGGG"},
+        {"aminoacid": "R", "ct_seq": "GCAGCGGCGTTACTCGCTGTGGG"},
+        {"aminoacid": "S", "ct_seq": "AGCAGCGGCGTTACTCGCTGTGG"},
+        {"aminoacid": "C", "ct_seq": "TGCAAGTGTTCAGCTTCCGCTGG"},
+        {"aminoacid": "L", "ct_seq": "TGCAGCTTGGGCAAATCTGGAGG"},
+        {"aminoacid": "E", "ct_seq": "GGCAGAGTGGGGAGAGCGGCAGG"},
+        {"aminoacid": "R", "ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT"},
+        {"aminoacid": "S", "ga_seq": "CCTGCTCCTTTTGCATCTGGCTC"},
+        {"aminoacid": "P", "ga_seq": "CCTCCCTTGTGTCCTTGGCTTGG"},
+        {"aminoacid": "L", "ga_seq": "CCCTTGTGTCCTTGGCTTGGGCC"},
     ]
 
     assert create_candidates_list_dict(ct_cand, ga_cand) == expected

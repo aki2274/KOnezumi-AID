@@ -1,6 +1,7 @@
 from __future__ import annotations
 from konezumiaid.get_reverse_complement import get_revcomp
 from konezumiaid.create_gene_dataclass import TranscriptRecord
+from konezumiaid.evaluate_grna.add_primer_info import link_to_crisperdirect
 
 
 def search_site_candidate(
@@ -68,5 +69,8 @@ def search_site_candidate(
         and (cand["exon_index"] - 1) < index_exon_has_3_utr
         # It is NOT acceptable.exon as having a 3'UTR.
     ]
+
+    acceptor_candidates = link_to_crisperdirect(acceptor_candidates)
+    donor_candidates = link_to_crisperdirect(donor_candidates)
 
     return acceptor_candidates, donor_candidates

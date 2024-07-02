@@ -10,7 +10,7 @@ from konezumiaid.format_and_export_dataset.main import execute_export
 from konezumiaid.create_gene_dataclass import create_dataclass
 from konezumiaid.nominate_ptc_guide.main import nominate_candidate_stopcodon
 from konezumiaid.nominate_splicesite_guide.search_candidate import search_site_candidate
-from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
+from konezumiaid.evaluate_grna.main import apply_nmd_rules
 
 # from konezumiaid.get_rtpcr_primer.main import export_primers
 
@@ -31,11 +31,45 @@ parser_preprocess.add_argument(
 args = parser.parse_args()
 
 
-def extract_matching_seqs(*lists):
+def format_output(
+    list_of_dict: list[dict],
+    transcript_record: TranscriptRecord,
+    flag_ptc: bool = False,
+) -> pd.DataFrame:
+    if flag_ptc:
+        target_aminoacids = [d["aminoacid"] for d in list_of_dict]
+        if transcript_record.exon_count == 1:
+            recomend = [not any(d["in_start_150bp"]) for d in list_of_dict]
+        else:
+            recomend = [not any([d["in_start_150bp"], d["in_50bp_from_LEJ"]]) for d in list_of_dict]
+    else:
+        target_aminoacids = [None for d in list_of_dict]
+        recomend = [None for d in list_of_dict]
+    result_dict = [
+        {
+            "Target sequence (20mer + PAM)": d["seq"],
+            "Recommended": r,
+            "Target amino acid": aa,
+            "link to CRISPRdirect": d["link_to_crisprdirect"],
+        }
+        for d, aa, r in zip(list_of_dict, target_aminoacids, recomend)
+    ]
+    return pd.DataFrame(result_dict)
+
+
+def extract_matching_seqs(*lists, flag_ptc=False) -> list[dict]:
     seq_sets = [set(d["seq"] for d in lst) for lst in lists]
     common_seqs = set.intersection(*seq_sets)
-    result = [{"seq": seq} for seq in common_seqs]
-    return result
+    link_to_crisperdirect = [d["link_to_crisprdirect"] for d in lists[0] if d["seq"] in common_seqs]
+    if flag_ptc:
+        target_aminoacids = [d["aminoacid"] for d in lists[0] if d["seq"] in common_seqs]
+    else:
+        target_aminoacids = [None for d in lists[0] if d["seq"] in common_seqs]
+    result = [
+        {"Target sequence (20mer + PAM)": seq, "Target amino acid": aa, "link to CRISPRdirect": link}
+        for seq, link, aa in zip(common_seqs, link_to_crisperdirect, target_aminoacids)
+    ]
+    return pd.DataFrame(result)
 
 
 def show_table(
@@ -43,19 +77,19 @@ def show_table(
     df_acceptor_cand: pd.DataFrame,
     df_donor_cand: pd.DataFrame,
 ) -> None:
-    print("PTC gRNA")
+    print("List of gRNAs to generate PTC (premature termination codon)")
     if df_ptc_gRNA.empty:
-        print("No PTC gRNA found.")
+        print("No gRNA found.")
     else:
         print(df_ptc_gRNA.to_string())
-    print("Acceptor gRNA")
+    print("List of gRNAs to disrupt splice acceptor site")
     if df_acceptor_cand.empty:
-        print("No Acceptor gRNA found.")
+        print("No gRNA found.")
     else:
         print(df_acceptor_cand.to_string())
-    print("Donor gRNA")
+    print("List of gRNAs to disrupt splice donor site")
     if df_donor_cand.empty:
-        print("No Donor gRNA found.")
+        print("No gRNA found.")
     else:
         print(df_donor_cand.to_string())
 
@@ -68,9 +102,9 @@ def export_csv(
 ) -> None:
     output_folder = Path("data", "output")
     output_folder.mkdir(parents=True, exist_ok=True)
-    df_ptc_gRNA.to_csv(output_folder / f"{name}_ptc_gRNA.csv", index=False)
-    df_acceptor_cand.to_csv(output_folder / f"{name}_acceptor_cand.csv", index=False)
-    df_donor_cand.to_csv(output_folder / f"{name}_donor_cand.csv", index=False)
+    df_ptc_gRNA.to_csv(output_folder / f"{name}_ptc.csv", index=False)
+    df_acceptor_cand.to_csv(output_folder / f"{name}_acceptor_site.csv", index=False)
+    df_donor_cand.to_csv(output_folder / f"{name}_donor_site.csv", index=False)
 
 
 def konezumiaid_main(
@@ -90,9 +124,10 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     if name.startswith("NM_"):
         transcript_record = create_dataclass(name, refflat_dic, seq_dict)
         ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
-        df_ptcp_cand = pd.DataFrame(ptc_cand)
-        df_acceptor_cand = pd.DataFrame(acceptor_cand)
-        df_donor_cand = pd.DataFrame(donor_cand)
+        df_ptcp_cand = format_output(ptc_cand, transcript_record, flag_ptc=True)
+        df_acceptor_cand = format_output(acceptor_cand, transcript_record)
+        df_donor_cand = format_output(donor_cand, transcript_record)
+
         show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
         export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
     else:
@@ -104,23 +139,22 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
         if df_symbol.empty:
             raise Exception(f"Gene name {name} not found in the dataset.")
         symbol_transcript_names = df_symbol["name"]
-        for i, transcript_name in enumerate(symbol_transcript_names):
+        tmp_ptc_cand = []
+        tmp_acceptor_cand = []
+        tmp_donor_cand = []
+        for transcript_name in symbol_transcript_names:
             print(f"Processing {transcript_name}...")
             transcript_record = create_dataclass(transcript_name, refflat_dic, seq_dict)
             if transcript_record is None:
                 continue
             ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
-            if i == 0:
-                symbol_ptc_cand = ptc_cand
-                symbol_acceptor_cand = acceptor_cand
-                symbol_donor_cand = donor_cand
-            else:
-                symbol_ptc_cand = extract_matching_seqs(symbol_ptc_cand, ptc_cand)
-                symbol_acceptor_cand = extract_matching_seqs(symbol_acceptor_cand, acceptor_cand)
-                symbol_donor_cand = extract_matching_seqs(symbol_donor_cand, donor_cand)
-        df_ptcp_cand = pd.DataFrame(symbol_ptc_cand)
-        df_acceptor_cand = pd.DataFrame(symbol_acceptor_cand)
-        df_donor_cand = pd.DataFrame(symbol_donor_cand)
+            tmp_ptc_cand.extend(ptc_cand)
+            tmp_acceptor_cand.extend(acceptor_cand)
+            tmp_donor_cand.extend(donor_cand)
+
+        df_ptcp_cand = extract_matching_seqs(tmp_ptc_cand, flag_ptc=True)
+        df_acceptor_cand = extract_matching_seqs(tmp_acceptor_cand)
+        df_donor_cand = extract_matching_seqs(tmp_donor_cand)
         show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
         export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
 
