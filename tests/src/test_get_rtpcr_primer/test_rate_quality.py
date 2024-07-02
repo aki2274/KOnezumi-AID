@@ -1,5 +1,5 @@
 from __future__ import annotations
-from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.create_gene_dataclass import TranscriptRecord
 from konezumiaid.get_rtpcr_primer.rate_quality import (
     is_crossing_juncion,
     add_intron_len,
@@ -165,7 +165,7 @@ def test_add_intron_len():
             "right_exon_num": 1,
         },
     ]
-    set_data = GeneData("sample_base", 0, 100, 10, 90, 3, [0, 25, 60], [15, 50, 95])
+    set_data = TranscriptRecord("sample_base", 0, 100, 10, 90, 3, [0, 25, 60], [15, 50, 95])
     expected = [
         {
             "left_cross_junction": False,

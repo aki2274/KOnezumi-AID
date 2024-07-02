@@ -2,19 +2,19 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 
-@dataclass
-class GeneData:
-    orf_seq: str
-    txStart: int
-    txend: int
-    cdsStart: int
-    cdsEnd: int
-    exonCount: int
-    exon_start_list: list[int]
-    exon_end_list: list[int]
+@dataclass(frozen=True)
+class TranscriptRecord:
+    transcript_seq: str
+    transcript_start: int
+    transcript_end: int
+    cds_start: int
+    cds_end: int
+    exon_count: int
+    exon_start_positions: list[int]
+    exon_end_positions: list[int]
 
 
-def create_dataclass(transcript_name: str, refflat: list[dict], transcript_seq_dict: dict) -> GeneData:
+def create_dataclass(transcript_name: str, refflat: list[dict], transcript_seq_dict: dict) -> TranscriptRecord:
     # Create dataclass from the transcript name.
     transcript_filtered = next(
         (transcript_data for transcript_data in refflat if transcript_data["name"] == transcript_name),
@@ -35,7 +35,7 @@ def create_dataclass(transcript_name: str, refflat: list[dict], transcript_seq_d
     if orf_seq is None:
         raise ValueError("The transcript sequence doesn't exist in formatted sequence dictionary")
 
-    transcript_record = GeneData(
+    transcript_record = TranscriptRecord(
         orf_seq,
         txStart,
         txEnd,

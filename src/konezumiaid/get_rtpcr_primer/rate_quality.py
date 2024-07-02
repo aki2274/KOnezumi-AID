@@ -1,5 +1,5 @@
 from __future__ import annotations
-from konezumiaid.create_gene_dataclass import GeneData
+from konezumiaid.create_gene_dataclass import TranscriptRecord
 
 
 def is_crossing_juncion(
@@ -26,14 +26,14 @@ def is_crossing_juncion(
 
 def add_intron_len(
     candidate_primers: list[dict],
-    transcript_record: GeneData,
+    transcript_record: TranscriptRecord,
 ) -> list[dict]:
     # The additional length does not account for the size of the exons housing the primer pairs."
     added_len = candidate_primers.copy()
     for primer_pair in added_len:
         intron_len = (
-            transcript_record.exon_start_list[primer_pair["right_exon_num"] - 1]
-            - transcript_record.exon_end_list[primer_pair["left_exon_num"] - 1]
+            transcript_record.exon_start_positions[primer_pair["right_exon_num"] - 1]
+            - transcript_record.exon_end_positions[primer_pair["left_exon_num"] - 1]
             + 1
         )
         if intron_len > 0:

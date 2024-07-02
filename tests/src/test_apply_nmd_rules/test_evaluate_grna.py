@@ -1,5 +1,5 @@
 from __future__ import annotations
-from src.konezumiaid.create_gene_dataclass import GeneData
+from src.konezumiaid.create_gene_dataclass import TranscriptRecord
 from src.konezumiaid.apply_nmd_rules.evaluate_grna import (
     eliminate_in_back_half,
     eliminate_in_last_exon,
@@ -47,7 +47,7 @@ def test_label_in_start_150bp():
         {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG"},
         {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT"},
     ]
-    ds = GeneData(
+    ds = TranscriptRecord(
         "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNCTGCAGAACTCGGACAATTCGGGNNNNNNNNNNNNNNNNNNNNNNNGCAGCGGCGTTACTCGCTGTGGGCCTGCGTGGCCAGCGCTGGTGGT",
         0,
         229,
@@ -71,7 +71,7 @@ def test_eliminate_in_front_half():
         {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG"},
         {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT"},
     ]
-    ds = GeneData(
+    ds = TranscriptRecord(
         "CTGCAGAACTCGGACAATTCGGGNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNGCAGCGGCGTTACTCGCTGTGGGCCTGCGTGGCCAGCGCTGGTGGT",
         0,
         111,
@@ -91,7 +91,7 @@ def test_eliminate_in_last_exon():
         {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG"},
         {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT"},
     ]
-    ds = GeneData(
+    ds = TranscriptRecord(
         "CTGCAGAACTCGGACAATTCGGGNNNNNNNNNNNNNNNNNNNNNNNGCAGCGGCGTTACTCGCTGTGGGCCTGCGTGGCCAGCGCTGGTGGT",
         0,
         91,
@@ -114,7 +114,7 @@ def test_label_in_50bp_from_LEJ():
         {"ct_seq": "GCAGCGGCGTTACTCGCTGTGGG"},
         {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT"},
     ]
-    ds = GeneData(
+    ds = TranscriptRecord(
         "CTGCAGAACTCGGACAATTCGGGNNNNNNNNNNNNNNNNNNNNNNNGCAGCGGCGTTACTCGCTGTGGGCCTGCGTGGCCAGCGCTGGTGGT",
         0,
         91,

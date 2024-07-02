@@ -1,9 +1,9 @@
-from src.konezumiaid.create_gene_dataclass import GeneData
+from src.konezumiaid.create_gene_dataclass import TranscriptRecord
 from src.konezumiaid.get_exon_range import get_exon_range
 
 
 def test_get_exon_range():
-    data = GeneData(
+    data = TranscriptRecord(
         "NNNNGGCCNNNNNNNAAAANNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNCCNNNNNNNNNNNNNNNNNNAGNNNNNNNNCCNNNNNNNNNNNNNNNNGTNNNNNNNNNNNN",
         0,
         150,

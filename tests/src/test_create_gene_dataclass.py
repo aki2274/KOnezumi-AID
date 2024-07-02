@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
 from dataclasses import dataclass, asdict
-from konezumiaid.create_gene_dataclass import create_dataclass
+from src.konezumiaid.create_gene_dataclass import create_dataclass
 
 # Make test data
 # txStart とexonStart[0]は一致している必要がある
@@ -31,14 +31,14 @@ input_seq = [
 # setup module return DataClass
 @dataclass
 class DataClass:
-    orf_seq: str
-    txStart: int
-    txend: int
-    cdsStart: int
-    cdsEnd: int
-    exonCount: int
-    exon_start_list: list[int]
-    exon_end_list: list[int]
+    transcript_seq: str
+    transcript_start: int
+    transcript_end: int
+    cds_start: int
+    cds_end: int
+    exon_count: int
+    exon_start_positions: list[int]
+    exon_end_positions: list[int]
 
 
 expected_return = DataClass(
@@ -58,5 +58,5 @@ expected = [expected_return]
     "transcripts_name,gene_data,gene_seq_data,expected",
     zip(input_transcript_name, [input_genedata], input_seq, expected),
 )
-def test_setup_data(transcripts_name, gene_data, gene_seq_data, expected):
+def test_create_dataclass(transcripts_name, gene_data, gene_seq_data, expected):
     assert asdict(create_dataclass(transcripts_name, gene_data, gene_seq_data)) == asdict(expected)

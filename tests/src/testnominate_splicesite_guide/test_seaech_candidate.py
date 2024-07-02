@@ -1,11 +1,11 @@
 from src.konezumiaid.nominate_splicesite_guide.search_candidate import (
     search_site_candidate,
 )
-from src.konezumiaid.create_gene_dataclass import GeneData
+from src.konezumiaid.create_gene_dataclass import TranscriptRecord
 
 
 def test_no_candidate():
-    data = GeneData(
+    data = TranscriptRecord(
         "NNNNGGCCNNNNNNNAAAANNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNCCNNNNNNNNNNNNNNNNNNAGNNNNNNNNCCNNNNNNNNNNNNNNNNGTNNNNNNNNNNNN",
         # PAM isn't CC,there is TTTT(AAAA, because this gRNA is revers compliment), Donor isn't GT , Acceptor isn't AG,
         # the exon length is a multiple of 3 and skipping exon has only 3'UTR
@@ -24,7 +24,7 @@ def test_no_candidate():
 
 
 def test_has_candidate():
-    data = GeneData(
+    data = TranscriptRecord(
         "NNNNCCCNNNNNNNNNNNNNNNNNNGTNNNCCNNNNNNNNNNNNNNNNNNGTNNNNNNNCCNNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNN",
         0,
         100,
