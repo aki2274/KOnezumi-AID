@@ -25,11 +25,15 @@ from konezumiaid.nominate_ptc_guide.make_grna_from_position import (
     extract_c_to_t_grna_from_position,
     extract_g_to_a_grna_from_position,
 )
+from konezumiaid.nominate_ptc_guide.add_aminoacid_info import (
+    link_position_and_aminoacid,
+    add_aminoacid_info,
+)
 
 
 def nominate_candidate_stopcodon(
     transcript_recod: TranscriptRecord,
-) -> list[dict]:
+) -> tuple[list[dict], list[dict]]:
     """
     Export candidate gRNA, that can induce PTC by using Target-AID.
 
@@ -41,7 +45,7 @@ def nominate_candidate_stopcodon(
     # 1. generate cds seq
     cds_seq = generate_cdsseq(transcript_recod)
     # 2. search candidate index
-    candidate_ptc_index = search_candidate_codon_position(cds_seq)
+    candidate_ptc_index, candidate_codon = search_candidate_codon_position(cds_seq)
     # 3. get startcodon exon number
     exon_index = get_startcodon_exon_index(transcript_recod)
     # 4. translate candidate index in exon to index in genome
@@ -55,9 +59,7 @@ def nominate_candidate_stopcodon(
     # 7. transform ct guideseq to index
     editable_c_positions = transform_c_to_t_guideseq_to_position(transcript_recod.transcript_seq, all_ct_guide_seq)
     # 8. transform ga guideseq to index
-    editable_codon_T_positions = transform_g_to_a_guideseq_to_position(
-        transcript_recod.transcript_seq, all_ga_guide_seq
-    )
+    editable_codon_T_positions = transform_g_to_a_guideseq_to_position(transcript_recod.transcript_seq, all_ga_guide_seq)
     # 9. compare candidate index and guideseq index,then export candidate if the same index
     ct_candidate_positions = [index for index in candidate_ptc_codon_positions if index in editable_c_positions]
     ga_candidate_positions = [index for index in candidate_ptc_codon_positions if index in editable_codon_T_positions]
@@ -65,4 +67,7 @@ def nominate_candidate_stopcodon(
     ct_candidate_grna = extract_c_to_t_grna_from_position(transcript_recod, ct_candidate_positions)
     ga_candidate_grna = extract_g_to_a_grna_from_position(transcript_recod, ga_candidate_positions)
 
+    aminoacid = link_position_and_aminoacid(candidate_ptc_codon_positions, candidate_codon)
+    ct_candidate_grna = add_aminoacid_info(ct_candidate_grna, aminoacid)
+    ga_candidate_grna = add_aminoacid_info(ga_candidate_grna, aminoacid)
     return ct_candidate_grna, ga_candidate_grna
