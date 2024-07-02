@@ -43,19 +43,19 @@ def show_table(
     df_acceptor_cand: pd.DataFrame,
     df_donor_cand: pd.DataFrame,
 ) -> None:
-    print("PTC gRNA")
+    print("List of gRNAs to generate PTC (premature termination codon)")
     if df_ptc_gRNA.empty:
-        print("No PTC gRNA found.")
+        print("No gRNA found.")
     else:
         print(df_ptc_gRNA.to_string())
-    print("Acceptor gRNA")
+    print("List of gRNAs to disrupt splice acceptor site")
     if df_acceptor_cand.empty:
-        print("No Acceptor gRNA found.")
+        print("No gRNA found.")
     else:
         print(df_acceptor_cand.to_string())
-    print("Donor gRNA")
+    print("List of gRNAs to disrupt splice donor site")
     if df_donor_cand.empty:
-        print("No Donor gRNA found.")
+        print("No gRNA found.")
     else:
         print(df_donor_cand.to_string())
 
@@ -68,9 +68,9 @@ def export_csv(
 ) -> None:
     output_folder = Path("data", "output")
     output_folder.mkdir(parents=True, exist_ok=True)
-    df_ptc_gRNA.to_csv(output_folder / f"{name}_ptc_gRNA.csv", index=False)
-    df_acceptor_cand.to_csv(output_folder / f"{name}_acceptor_cand.csv", index=False)
-    df_donor_cand.to_csv(output_folder / f"{name}_donor_cand.csv", index=False)
+    df_ptc_gRNA.to_csv(output_folder / f"{name}_ptc.csv", index=False)
+    df_acceptor_cand.to_csv(output_folder / f"{name}_acceptor_site.csv", index=False)
+    df_donor_cand.to_csv(output_folder / f"{name}_donor_site.csv", index=False)
 
 
 def konezumiaid_main(
