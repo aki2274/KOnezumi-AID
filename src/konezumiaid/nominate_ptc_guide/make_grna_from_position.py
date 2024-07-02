@@ -3,10 +3,11 @@ import re
 from konezumiaid.create_gene_dataclass import TranscriptRecord
 
 
-def extract_c_to_t_grna_from_position(transcript_record: TranscriptRecord, positions: list[int]) -> list[str]:
+def extract_c_to_t_grna_from_position(transcript_record: TranscriptRecord, positions: list[int]) -> list[dict]:
     # Convert positions to grna sequence.
     ct_grna = []
     for editable_C_position in positions:
+        tmp_dict = {}
         # pro_sgRNA is 25bp sequence. Because the editable "C" is in 3 patterns. The posistions are -17~-19bp from PAM.
         pro_sgRNA = transcript_record.transcript_seq[editable_C_position - 1 : editable_C_position + 24]
         # extract the 20bp + PAM, as grna sequence
@@ -25,14 +26,17 @@ def extract_c_to_t_grna_from_position(transcript_record: TranscriptRecord, posit
                 # Check if the sgRNA has "TTTT" in the guide (first 20bp, excluding PAM).
                 # If it has "TTTT", U6 promoter will not work.
                 if "TTTT" not in sgRNA[:20]:
-                    ct_grna.append(sgRNA)
+                    tmp_dict["seq"] = sgRNA
+                    tmp_dict["position"] = editable_C_position
+                    ct_grna.append(tmp_dict)
     return ct_grna
 
 
-def extract_g_to_a_grna_from_position(transcript_record: TranscriptRecord, positions: list[int]) -> list[str]:
+def extract_g_to_a_grna_from_position(transcript_record: TranscriptRecord, positions: list[int]) -> list[dict]:
     #  convert positions to grna sequence.
     ga_grna = []
     for editable_codons_T_positon in positions:
+        tmp_dict = {}
         pro_sgRNA = transcript_record.transcript_seq[editable_codons_T_positon - 20 : editable_codons_T_positon + 3]
         PAM_positions = re.finditer("(?=(CC))", pro_sgRNA)
         # extract the grna sequence from the candidate sequence.
@@ -49,5 +53,7 @@ def extract_g_to_a_grna_from_position(transcript_record: TranscriptRecord, posit
                 # Check if the sgRNA has "AAAA" in the guide (excluding PAM).
                 # If it has "AAAA", U6 promoter will not work.
                 if "AAAA" not in sgRNA[3:]:
-                    ga_grna.append(sgRNA)
+                    tmp_dict["seq"] = sgRNA
+                    tmp_dict["position"] = editable_codons_T_positon
+                    ga_grna.append(tmp_dict)
     return ga_grna
