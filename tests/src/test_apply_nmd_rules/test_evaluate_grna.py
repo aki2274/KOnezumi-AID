@@ -1,6 +1,6 @@
 from __future__ import annotations
 from src.konezumiaid.create_gene_dataclass import TranscriptRecord
-from src.konezumiaid.apply_nmd_rules.evaluate_grna import (
+from src.konezumiaid.evaluate_grna.apply_nmd_rules import (
     eliminate_in_back_half,
     eliminate_in_last_exon,
     label_in_start_150bp,

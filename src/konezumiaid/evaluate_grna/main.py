@@ -1,7 +1,7 @@
 from __future__ import annotations
 from konezumiaid.create_gene_dataclass import TranscriptRecord
 from konezumiaid.get_reverse_complement import get_revcomp
-from konezumiaid.apply_nmd_rules.evaluate_grna import (
+from konezumiaid.evaluate_grna.apply_nmd_rules import (
     create_candidates_list_dict,
     label_in_start_150bp,
     eliminate_in_back_half,

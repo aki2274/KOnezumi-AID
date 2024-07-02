@@ -10,7 +10,7 @@ from konezumiaid.format_and_export_dataset.main import execute_export
 from konezumiaid.create_gene_dataclass import create_dataclass
 from konezumiaid.nominate_ptc_guide.main import nominate_candidate_stopcodon
 from konezumiaid.nominate_splicesite_guide.search_candidate import search_site_candidate
-from konezumiaid.apply_nmd_rules.main import apply_nmd_rules
+from konezumiaid.evaluate_grna.main import apply_nmd_rules
 
 # from konezumiaid.get_rtpcr_primer.main import export_primers
 
