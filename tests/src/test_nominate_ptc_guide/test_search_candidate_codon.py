@@ -13,7 +13,7 @@ test_candidate_cds_seq = [
 ]
 
 
-expected = [[3], [3], [3], [3], [3, 12]]
+expected = [([3], ["CAA"]), ([3], ["CAG"]), ([3], ["CGA"]), ([3], ["TGG"]), ([3, 12], ["CAA", "TGG"])]
 
 
 @pytest.mark.parametrize(
@@ -31,7 +31,7 @@ test_not_candidate_cds_seq = [
 ]
 
 
-expected = [[], [], []]
+expected = [([], []), ([], []), ([], [])]
 
 
 @pytest.mark.parametrize(

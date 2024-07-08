@@ -18,8 +18,8 @@ def test_convert_ct_grna():
     )
     indices = [4, 35]
     expected_grna = [
-        "NCAGNNNNNNNNNNNNNNNNPGG",
-        "NNNCAGNNNNNNNNNNNNNNPGG",
+        {"position": 4, "seq": "NCAGNNNNNNNNNNNNNNNNPGG"},
+        {"position": 35, "seq": "NNNCAGNNNNNNNNNNNNNNPGG"},
     ]
     assert extract_c_to_t_grna_from_position(ds, indices) == expected_grna
 
@@ -37,8 +37,8 @@ def test_convert_ga_grna():
     )
     indices = [20, 52]
     expected_grna = [
-        "CCPNNNNNNNNNNNNNNTGGNNN",
-        "CCPNNNNNNNNNNNNNNNNNTGG",
+        {"position": 20, "seq": "CCPNNNNNNNNNNNNNNTGGNNN"},
+        {"position": 52, "seq": "CCPNNNNNNNNNNNNNNNNNTGG"},
     ]
     assert extract_g_to_a_grna_from_position(ds, indices) == expected_grna
 

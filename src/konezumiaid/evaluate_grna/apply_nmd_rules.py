@@ -4,12 +4,12 @@ from konezumiaid.create_gene_dataclass import TranscriptRecord
 from konezumiaid.nominate_ptc_guide.generate_cds_seq import generate_cdsseq
 
 
-def create_candidates_list_dict(ct_cand: list[str], ga_cand: list[str]) -> list[dict]:
+def create_candidates_list_dict(ct_cand: list[dict], ga_cand: list[dict]) -> list[dict]:
     candidates_list = []
-    for grna in ct_cand:
-        candidates_list.append({"ct_seq": grna})
-    for grna in ga_cand:
-        candidates_list.append({"ga_seq": grna})
+    for cand in ct_cand:
+        candidates_list.append({"aminoacid": cand["aminoacid"], "ct_seq": cand["seq"]})
+    for cand in ga_cand:
+        candidates_list.append({"aminoacid": cand["aminoacid"], "ga_seq": cand["seq"]})
     return candidates_list
 
 
