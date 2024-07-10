@@ -42,18 +42,25 @@ def format_output(
             recomend = [not d["in_start_150bp"] for d in list_of_dict]
         else:
             recomend = [not any([d["in_start_150bp"], d["in_50bp_from_LEJ"]]) for d in list_of_dict]
+        result_dict = [
+            {
+                "Target sequence (20mer + PAM)": d["seq"],
+                "Recommended": r,
+                "Target amino acid": aa,
+                "link to CRISPRdirect": d["link_to_crisprdirect"],
+            }
+            for d, aa, r in zip(list_of_dict, target_aminoacids, recomend)
+        ]
     else:
-        target_aminoacids = [None for _ in list_of_dict]
-        recomend = [None for _ in list_of_dict]
-    result_dict = [
-        {
-            "Target sequence (20mer + PAM)": d["seq"],
-            "Recommended": r,
-            "Target amino acid": aa,
-            "link to CRISPRdirect": d["link_to_crisprdirect"],
-        }
-        for d, aa, r in zip(list_of_dict, target_aminoacids, recomend)
-    ]
+        exon_index = [d["exon_index"] for d in list_of_dict]
+        result_dict = [
+            {
+                "Target sequence (20mer + PAM)": d["seq"],
+                "Exon index": ei,
+                "link to CRISPRdirect": d["link_to_crisprdirect"],
+            }
+            for d, ei in zip(list_of_dict, exon_index)
+        ]
     return pd.DataFrame(result_dict)
 
 
@@ -65,12 +72,17 @@ def extract_matching_seqs(lists, flag_ptc=False) -> list[dict]:
     if flag_ptc:
         target_aminoacids = [d["aminoacid"] for d in lists[0] if d["seq"] in common_seqs]
         target_aminoacids = [aa[-1:] for aa in target_aminoacids]
+        result = [
+            {"Target sequence (20mer + PAM)": seq, "Target amino acid": aa, "link to CRISPRdirect": link}
+            for seq, link, aa in zip(common_seqs, link_to_crisprdirect, target_aminoacids)
+        ]
     else:
-        target_aminoacids = [None for d in lists[0] if d["seq"] in common_seqs]
-    result = [
-        {"Target sequence (20mer + PAM)": seq, "Target amino acid": aa, "link to CRISPRdirect": link}
-        for seq, link, aa in zip(common_seqs, link_to_crisprdirect, target_aminoacids)
-    ]
+        exon_index = [d["exon_index"] for d in lists[0] if d["seq"] in common_seqs]
+        result = [
+            {"Target sequence (20mer + PAM)": seq, "Exon index": ei, "link to CRISPRdirect": link}
+            for seq, link, ei in zip(common_seqs, link_to_crisprdirect, exon_index)
+        ]
+
     return pd.DataFrame(result)
 
 
@@ -104,9 +116,11 @@ def export_csv(
 ) -> None:
     output_folder = Path("data", "output")
     output_folder.mkdir(parents=True, exist_ok=True)
-    df_ptc_gRNA.to_csv(output_folder / f"{name}_ptc.csv", index=False)
-    df_acceptor_cand.to_csv(output_folder / f"{name}_acceptor_site.csv", index=False)
-    df_donor_cand.to_csv(output_folder / f"{name}_donor_site.csv", index=False)
+    df_splice_gRNA = pd.concat([df_acceptor_cand, df_donor_cand])
+    if not df_ptc_gRNA.empty:
+        df_ptc_gRNA.to_csv(output_folder / f"{name}_ptc_gRNA.csv", index=False)
+    if not df_splice_gRNA.empty:
+        df_splice_gRNA.to_csv(output_folder / f"{name}_splice_gRNA.csv", index=False)
 
 
 def konezumiaid_main(
