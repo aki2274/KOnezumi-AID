@@ -132,7 +132,8 @@ def konezumiaid_main(
     return applied_nmd_rules_gRNA, acceptor_cand, donor_cand
 
 
-def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
+def execute(input_name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
+    name = input_name
     refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
     seq_path = Path("data", "sorted_seq_dict.pkl")
     refflat_dic = pickle.load(open(refflat_path, "rb"))
@@ -175,7 +176,7 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     df_donor_cand = format_output(donor_cand, transcript_record)
 
     show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
-    export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+    export_csv(input_name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
     return None
 
 
