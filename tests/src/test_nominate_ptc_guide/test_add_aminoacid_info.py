@@ -3,13 +3,14 @@ from src.konezumiaid.nominate_ptc_guide.add_aminoacid_info import link_position_
 
 def test_link_position_and_aminoacid():
     positions = [1, 2, 3]
+    cds_position = [0, 3, 6]
     seq = ["ATG", "ATC", "GGA"]
     expected = [
-        {"position": 1, "aminoacid": "M"},
-        {"position": 2, "aminoacid": "I"},
-        {"position": 3, "aminoacid": "G"},
+        {"position": 1, "aminoacid": "1M"},
+        {"position": 2, "aminoacid": "2I"},
+        {"position": 3, "aminoacid": "3G"},
     ]
-    assert link_position_and_aminoacid(positions, seq) == expected
+    assert link_position_and_aminoacid(positions, cds_position, seq) == expected
 
 
 def test_add_aminoacid_info():
