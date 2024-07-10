@@ -123,16 +123,7 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     seq_path = Path("data", "sorted_seq_dict.pkl")
     refflat_dic = pickle.load(open(refflat_path, "rb"))
     seq_dict = pickle.load(open(seq_path, "rb"))
-    if name.startswith("NM_"):
-        transcript_record = create_dataclass(name, refflat_dic, seq_dict)
-        ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
-        df_ptcp_cand = format_output(ptc_cand, transcript_record, flag_ptc=True)
-        df_acceptor_cand = format_output(acceptor_cand, transcript_record)
-        df_donor_cand = format_output(donor_cand, transcript_record)
-
-        show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
-        export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
-    else:
+    if not name.startswith("NM_"):
         try:
             df_ref = pd.DataFrame(refflat_dic)
             df_symbol = df_ref[df_ref["geneName"] == name]
@@ -141,23 +132,37 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
         if df_symbol.empty:
             raise Exception(f"Gene name {name} not found in the dataset.")
         symbol_transcript_names = df_symbol["name"]
-        tmp_ptc_cand = []
-        tmp_acceptor_cand = []
-        tmp_donor_cand = []
-        for transcript_name in symbol_transcript_names:
-            print(f"Processing {transcript_name}...")
-            transcript_record = create_dataclass(transcript_name, refflat_dic, seq_dict)
-            if transcript_record is None:
-                continue
-            ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
-            tmp_ptc_cand.append(ptc_cand)
-            tmp_acceptor_cand.append(acceptor_cand)
-            tmp_donor_cand.append(donor_cand)
-        df_ptcp_cand = extract_matching_seqs(tmp_ptc_cand, flag_ptc=True)
-        df_acceptor_cand = extract_matching_seqs(tmp_acceptor_cand)
-        df_donor_cand = extract_matching_seqs(tmp_donor_cand)
-        show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
-        export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+        if len(symbol_transcript_names) == 1:
+            name = symbol_transcript_names.values[0]
+        else:
+            tmp_ptc_cand = []
+            tmp_acceptor_cand = []
+            tmp_donor_cand = []
+            for transcript_name in symbol_transcript_names:
+                print(f"Processing {transcript_name}...")
+                transcript_record = create_dataclass(transcript_name, refflat_dic, seq_dict)
+                if transcript_record is None:
+                    continue
+                ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
+                tmp_ptc_cand.append(ptc_cand)
+                tmp_acceptor_cand.append(acceptor_cand)
+                tmp_donor_cand.append(donor_cand)
+            df_ptcp_cand = extract_matching_seqs(tmp_ptc_cand, flag_ptc=True)
+            df_acceptor_cand = extract_matching_seqs(tmp_acceptor_cand)
+            df_donor_cand = extract_matching_seqs(tmp_donor_cand)
+            show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+            export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+            return None
+
+    transcript_record = create_dataclass(name, refflat_dic, seq_dict)
+    ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
+    df_ptcp_cand = format_output(ptc_cand, transcript_record, flag_ptc=True)
+    df_acceptor_cand = format_output(acceptor_cand, transcript_record)
+    df_donor_cand = format_output(donor_cand, transcript_record)
+
+    show_table(df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+    export_csv(name, df_ptcp_cand, df_acceptor_cand, df_donor_cand)
+    return None
 
 
 def main():
