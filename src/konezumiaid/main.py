@@ -38,13 +38,14 @@ def format_output(
 ) -> pd.DataFrame:
     if flag_ptc:
         target_aminoacids = [d["aminoacid"] for d in list_of_dict]
+        print(target_aminoacids)
         if transcript_record.exon_count == 1:
-            recomend = [not any(d["in_start_150bp"]) for d in list_of_dict]
+            recomend = [not d["in_start_150bp"] for d in list_of_dict]
         else:
             recomend = [not any([d["in_start_150bp"], d["in_50bp_from_LEJ"]]) for d in list_of_dict]
     else:
-        target_aminoacids = [None for d in list_of_dict]
-        recomend = [None for d in list_of_dict]
+        target_aminoacids = [None for _ in list_of_dict]
+        recomend = [None for _ in list_of_dict]
     result_dict = [
         {
             "Target sequence (20mer + PAM)": d["seq"],
