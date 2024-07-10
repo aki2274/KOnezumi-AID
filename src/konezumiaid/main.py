@@ -38,7 +38,6 @@ def format_output(
 ) -> pd.DataFrame:
     if flag_ptc:
         target_aminoacids = [d["aminoacid"] for d in list_of_dict]
-        print(target_aminoacids)
         if transcript_record.exon_count == 1:
             recomend = [not d["in_start_150bp"] for d in list_of_dict]
         else:
@@ -64,6 +63,7 @@ def extract_matching_seqs(*lists, flag_ptc=False) -> list[dict]:
     link_to_crisperdirect = [d["link_to_crisprdirect"] for d in lists[0] if d["seq"] in common_seqs]
     if flag_ptc:
         target_aminoacids = [d["aminoacid"] for d in lists[0] if d["seq"] in common_seqs]
+        target_aminoacids = [aa[-1:] for aa in target_aminoacids]
     else:
         target_aminoacids = [None for d in lists[0] if d["seq"] in common_seqs]
     result = [
