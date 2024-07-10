@@ -57,10 +57,11 @@ def format_output(
     return pd.DataFrame(result_dict)
 
 
-def extract_matching_seqs(*lists, flag_ptc=False) -> list[dict]:
+def extract_matching_seqs(lists, flag_ptc=False) -> list[dict]:
     seq_sets = [set(d["seq"] for d in lst) for lst in lists]
     common_seqs = set.intersection(*seq_sets)
-    link_to_crisperdirect = [d["link_to_crisprdirect"] for d in lists[0] if d["seq"] in common_seqs]
+    common_seqs = [d["seq"] for d in lists[0] if d["seq"] in common_seqs]
+    link_to_crisprdirect = [d["link_to_crisprdirect"] for d in lists[0] if d["seq"] in common_seqs]
     if flag_ptc:
         target_aminoacids = [d["aminoacid"] for d in lists[0] if d["seq"] in common_seqs]
         target_aminoacids = [aa[-1:] for aa in target_aminoacids]
@@ -68,7 +69,7 @@ def extract_matching_seqs(*lists, flag_ptc=False) -> list[dict]:
         target_aminoacids = [None for d in lists[0] if d["seq"] in common_seqs]
     result = [
         {"Target sequence (20mer + PAM)": seq, "Target amino acid": aa, "link to CRISPRdirect": link}
-        for seq, link, aa in zip(common_seqs, link_to_crisperdirect, target_aminoacids)
+        for seq, link, aa in zip(common_seqs, link_to_crisprdirect, target_aminoacids)
     ]
     return pd.DataFrame(result)
 
@@ -149,10 +150,9 @@ def execute(name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
             if transcript_record is None:
                 continue
             ptc_cand, acceptor_cand, donor_cand = konezumiaid_main(transcript_record)
-            tmp_ptc_cand.extend(ptc_cand)
-            tmp_acceptor_cand.extend(acceptor_cand)
-            tmp_donor_cand.extend(donor_cand)
-
+            tmp_ptc_cand.append(ptc_cand)
+            tmp_acceptor_cand.append(acceptor_cand)
+            tmp_donor_cand.append(donor_cand)
         df_ptcp_cand = extract_matching_seqs(tmp_ptc_cand, flag_ptc=True)
         df_acceptor_cand = extract_matching_seqs(tmp_acceptor_cand)
         df_donor_cand = extract_matching_seqs(tmp_donor_cand)
