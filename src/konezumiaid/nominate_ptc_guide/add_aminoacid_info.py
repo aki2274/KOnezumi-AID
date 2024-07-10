@@ -79,13 +79,14 @@ def transrate_codon_to_aminoacid(seq: str) -> str:
     return amino_acid
 
 
-def link_position_and_aminoacid(positions: list[int], seq: list[str]) -> list[dict]:
+def link_position_and_aminoacid(positions_orf: list[int], position_cds: list[int], seq: list[str]) -> list[dict]:
     """
     Link the position of the candidate PTC and the amino acid.
     """
     aminoacid = []
-    for position, seq in zip(positions, seq):
-        aminoacid.append({"position": position, "aminoacid": transrate_codon_to_aminoacid(seq)})
+    for orf, cds, seq in zip(positions_orf, position_cds, seq):
+        aminoacid_index = cds // 3
+        aminoacid.append({"position": orf, "aminoacid": f"{aminoacid_index+1}{transrate_codon_to_aminoacid(seq)}"})
     return aminoacid
 
 
