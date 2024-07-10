@@ -59,7 +59,7 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
 
 KOnezumi-AID provides these gRNAs in CLI and CSV format. 
 
-The CSV file is located in data/output directory and named as `<gene symbol/transcript name>_ptc_gRNA.csv` or `<gene symbol/transcript name>_splice_gRNA.csv`.
+The CSV file is located in `data/output directory` and named as `<gene symbol/transcript name>_ptc_gRNA.csv` or `<gene symbol/transcript name>_splice_gRNA.csv`.
 
 ### Create data set for KOnezumi-AID
 
