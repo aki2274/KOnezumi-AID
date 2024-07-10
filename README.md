@@ -63,7 +63,7 @@ KOnezumi-AID provides these gRNAs in CLI and CSV format.
 
 `konezumiaid preprocess <your refFlat.txt Path> <your mm39.fa Path>`
 
-### Examples
+### Example
 
 `konezumiaid preprocess data/refFlat.txt data/mm39.fa`
 
@@ -75,7 +75,7 @@ KOnezumi-AID accepts a gene symbol or a transcript name.
 
 You can obtain the gRNAs that are present in all transcript variants.
 
-(if the gene has one transcript, the result is the same as searching by the transcript name)
+(If the gene has one transcript, the result is the same as searching by the transcript name)
 
 - Search by transcript name
 
