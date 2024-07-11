@@ -32,55 +32,55 @@ args = parser.parse_args()
 
 
 def format_output(
-    list_of_dict: list[dict],
+    candidate_primers: list[dict],
     transcript_record: TranscriptRecord,
     flag_ptc: bool = False,
 ) -> pd.DataFrame:
     if flag_ptc:
-        target_aminoacids = [d["aminoacid"] for d in list_of_dict]
+        target_aminoacids = [d["aminoacid"] for d in candidate_primers]
         if transcript_record.exon_count == 1:
-            recomend = [not d["in_start_150bp"] for d in list_of_dict]
+            is_recomend = [not d["in_start_150bp"] for d in candidate_primers]
         else:
-            recomend = [not any([d["in_start_150bp"], d["in_50bp_from_LEJ"]]) for d in list_of_dict]
-        result_dict = [
+            is_recomend = [not any([d["in_start_150bp"], d["in_50bp_from_LEJ"]]) for d in candidate_primers]
+        output_primers = [
             {
                 "Target sequence (20mer + PAM)": d["seq"],
                 "Recommended": r,
                 "Target amino acid": aa,
                 "link to CRISPRdirect": d["link_to_crisprdirect"],
             }
-            for d, aa, r in zip(list_of_dict, target_aminoacids, recomend)
+            for d, aa, r in zip(candidate_primers, target_aminoacids, is_recomend)
         ]
     else:
-        exon_index = [d["exon_index"] for d in list_of_dict]
-        result_dict = [
+        exon_index = [d["exon_index"] for d in candidate_primers]
+        output_primers = [
             {
                 "Target sequence (20mer + PAM)": d["seq"],
                 "Exon index": ei,
                 "link to CRISPRdirect": d["link_to_crisprdirect"],
             }
-            for d, ei in zip(list_of_dict, exon_index)
+            for d, ei in zip(candidate_primers, exon_index)
         ]
-    return pd.DataFrame(result_dict)
+    return pd.DataFrame(output_primers)
 
 
-def extract_matching_seqs(lists, flag_ptc=False) -> list[dict]:
-    seq_sets = [set(d["seq"] for d in lst) for lst in lists]
-    common_seqs = set.intersection(*seq_sets)
-    common_seqs = [d["seq"] for d in lists[0] if d["seq"] in common_seqs]
-    link_to_crisprdirect = [d["link_to_crisprdirect"] for d in lists[0] if d["seq"] in common_seqs]
+def extract_matching_seqs(candidate_gene_primers: list[list], flag_ptc: bool = False) -> list[dict]:
+    seq_sets = [set(d["seq"] for d in lst) for lst in candidate_gene_primers]
+    common_seq = set.intersection(*seq_sets)
+    common_seq = [d["seq"] for d in candidate_gene_primers[0] if d["seq"] in common_seq]
+    link_to_crisprdirect = [d["link_to_crisprdirect"] for d in candidate_gene_primers[0] if d["seq"] in common_seq]
     if flag_ptc:
-        target_aminoacids = [d["aminoacid"] for d in lists[0] if d["seq"] in common_seqs]
+        target_aminoacids = [d["aminoacid"] for d in candidate_gene_primers[0] if d["seq"] in common_seq]
         target_aminoacids = [aa[-1:] for aa in target_aminoacids]
         result = [
             {"Target sequence (20mer + PAM)": seq, "Target amino acid": aa, "link to CRISPRdirect": link}
-            for seq, link, aa in zip(common_seqs, link_to_crisprdirect, target_aminoacids)
+            for seq, link, aa in zip(common_seq, link_to_crisprdirect, target_aminoacids)
         ]
     else:
-        exon_index = [d["exon_index"] for d in lists[0] if d["seq"] in common_seqs]
+        exon_index = [d["exon_index"] for d in candidate_gene_primers[0] if d["seq"] in common_seq]
         result = [
             {"Target sequence (20mer + PAM)": seq, "Exon index": ei, "link to CRISPRdirect": link}
-            for seq, link, ei in zip(common_seqs, link_to_crisprdirect, exon_index)
+            for seq, link, ei in zip(common_seq, link_to_crisprdirect, exon_index)
         ]
 
     return pd.DataFrame(result)
