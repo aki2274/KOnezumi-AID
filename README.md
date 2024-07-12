@@ -49,9 +49,9 @@ https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/
 
 ```bash
 mkdir -p data
-wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/refFlat.txt.gz |
+curl https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/refFlat.txt.gz |
     gzip -dc > data/refFlat.txt
-wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
+curl https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
     gzip -dc > data/mm39.fa
 ```
 
