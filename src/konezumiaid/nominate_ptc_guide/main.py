@@ -67,7 +67,7 @@ def nominate_candidate_stopcodon(
     ct_candidate_grna = extract_c_to_t_grna_from_position(transcript_recod, ct_candidate_positions)
     ga_candidate_grna = extract_g_to_a_grna_from_position(transcript_recod, ga_candidate_positions)
 
-    aminoacid = link_position_and_aminoacid(candidate_ptc_codon_positions, candidate_codon)
+    aminoacid = link_position_and_aminoacid(candidate_ptc_codon_positions, candidate_ptc_index, candidate_codon)
     ct_candidate_grna = add_aminoacid_info(ct_candidate_grna, aminoacid)
     ga_candidate_grna = add_aminoacid_info(ga_candidate_grna, aminoacid)
     return ct_candidate_grna, ga_candidate_grna

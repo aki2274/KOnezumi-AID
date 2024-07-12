@@ -52,11 +52,20 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
 
 
 ## Usage
+### KOnezumi-AID's output   
+- gRNAs to generate PTC (premature termination codon)
+- gRNAs to disrupt splice acceptor site
+- gRNAs to disrupt splice donor site
+
+KOnezumi-AID provides these gRNAs in CLI and CSV format. 
+
+The CSV file is located in `data/output` directory and named as `<gene symbol/transcript name>_ptc_gRNA.csv` or `<gene symbol/transcript name>_splice_gRNA.csv`.
+
 ### Create data set for KOnezumi-AID
 
 `konezumiaid preprocess <your refFlat.txt Path> <your mm39.fa Path>`
 
-### Examples
+### Example
 
 `konezumiaid preprocess data/refFlat.txt data/mm39.fa`
 
@@ -67,6 +76,8 @@ KOnezumi-AID accepts a gene symbol or a transcript name.
 - Search by gene symbol
 
 You can obtain the gRNAs that are present in all transcript variants.
+
+(If the gene has one transcript, the result is the same as searching by the transcript name)
 
 - Search by transcript name
 
@@ -81,45 +92,62 @@ You can obtain the transcript's gRNAs and access more information about the gRNA
 ### Examples
 - Search candidate by the gene symbol
 ```
-$konezumiaid -n Rp1
-PTC gRNA
-                       seq
-0  ACAGGTTATGCAGTGTCCTGTGG
-1  ACGACACAGCATCACCAGGCTGG
-2  GCCAGGGCCGAGGGCGCCTGCGG
-3  ACAGTTTGGCGGCGTTCGGGTGG
-4  CCAGGGCCGAGGGCGCCTGCGGG
-Acceptor gRNA
-No Acceptor gRNA found.
-Donor gRNA
-No Donor gRNA found.
+$konezumiaid -n Rp1     
+Processing NM_001370921...
+Processing NM_001195662...
+Processing NM_011283...
+List of gRNAs to generate PTC (premature termination codon)
+  Target sequence (20mer + PAM) Target amino acid                                                      link to CRISPRdirect
+0       ACAGTTTGGCGGCGTTCGGGTGG                 Q  https://crispr.dbcls.jp/?userseq=ACAGTTTGGCGGCGTTCGGGTGG&pam=NGG&db=mm39
+1       ACGACACAGCATCACCAGGCTGG                 R  https://crispr.dbcls.jp/?userseq=ACGACACAGCATCACCAGGCTGG&pam=NGG&db=mm39
+2       ACAGGTTATGCAGTGTCCTGTGG                 Q  https://crispr.dbcls.jp/?userseq=ACAGGTTATGCAGTGTCCTGTGG&pam=NGG&db=mm39
+3       CCAGGGCCGAGGGCGCCTGCGGG                 W  https://crispr.dbcls.jp/?userseq=CCAGGGCCGAGGGCGCCTGCGGG&pam=NGG&db=mm39
+4       GCCAGGGCCGAGGGCGCCTGCGG                 W  https://crispr.dbcls.jp/?userseq=GCCAGGGCCGAGGGCGCCTGCGG&pam=NGG&db=mm39
+List of gRNAs to disrupt splice acceptor site
+No gRNA found.
+List of gRNAs to disrupt splice donor site
+No gRNA found.
+```
+
+```
+$konezumiaid -n Mafa    
+List of gRNAs to generate PTC (premature termination codon)
+  Target sequence (20mer + PAM)  Recommended Target amino acid                                                      link to CRISPRdirect
+0       CTCAGGCCGGGGGCGCCCCGGGG         True               87Q  https://crispr.dbcls.jp/?userseq=CTCAGGCCGGGGGCGCCCCGGGG&pam=NGG&db=mm39
+1       GCTCAGGCCGGGGGCGCCCCGGG         True               87Q  https://crispr.dbcls.jp/?userseq=GCTCAGGCCGGGGGCGCCCCGGG&pam=NGG&db=mm39
+2       CCAGCACCACCTGAACCCCGAGG         True              121Q  https://crispr.dbcls.jp/?userseq=CCAGCACCACCTGAACCCCGAGG&pam=NGG&db=mm39
+3       GGTCAGAGCTTCGCGGGCGGCGG         True              167Q  https://crispr.dbcls.jp/?userseq=GGTCAGAGCTTCGCGGGCGGCGG&pam=NGG&db=mm39
+List of gRNAs to disrupt splice acceptor site
+No gRNA found.
+List of gRNAs to disrupt splice donor site
+No gRNA found.
 ```
 
 - Search candidate by the transcript name
 
 ```
 $ konezumiaid -n NM_001370921
-PTC gRNA
-                        seq  in_start_150bp  in_50bp_from_LEJ
-0   ACAGTTTGGCGGCGTTCGGGTGG            True             False
-1   ACGACACAGCATCACCAGGCTGG           False             False
-2   ACAGGTTATGCAGTGTCCTGTGG           False             False
-3   ACAACCTGTCCTTCCAGGTAAGG           False             False
-4   ACCAATCAGAACAATCCCACTGG           False             False
-5   ACGAATGTATCTGAGGATTAAGG           False             False
-6   TCAGGCCAATGTCACATTGTGGG           False             False
-7   CTCAGGCCAATGTCACATTGTGG           False             False
-8   CCAGGGCCGAGGGCGCCTGCGGG           False             False
-9   GCCAGGGCCGAGGGCGCCTGCGG           False             False
-10  TCCAGTGGGATTGTTCTGATTGG           False             False
-11  CCAGTACTGGGATTTGTCACTGG           False             False
-Acceptor gRNA
-                       seq  exon_index
-0  ACCTGGGATTGAAAGGAACAAGG          20
-1  TCTGTTGGAGAAAAGCCCCATGG          22
-2  ACCTGAAGAAAATGGAAAACAGG          23
-Donor gRNA
-                       seq  exon_index
-0  TACCTTGCCCAAGTCCATCATGG           8
-1  TTACCTCTCACAGGTGAAGATGG          22
+List of gRNAs to generate PTC (premature termination codon)
+   Target sequence (20mer + PAM)  Recommended Target amino acid                                                      link to CRISPRdirect
+0        ACAGTTTGGCGGCGTTCGGGTGG        False               46Q  https://crispr.dbcls.jp/?userseq=ACAGTTTGGCGGCGTTCGGGTGG&pam=NGG&db=mm39
+1        ACGACACAGCATCACCAGGCTGG         True               88R  https://crispr.dbcls.jp/?userseq=ACGACACAGCATCACCAGGCTGG&pam=NGG&db=mm39
+2        ACAGGTTATGCAGTGTCCTGTGG         True              192Q  https://crispr.dbcls.jp/?userseq=ACAGGTTATGCAGTGTCCTGTGG&pam=NGG&db=mm39
+3        ACAACCTGTCCTTCCAGGTAAGG         True              389Q  https://crispr.dbcls.jp/?userseq=ACAACCTGTCCTTCCAGGTAAGG&pam=NGG&db=mm39
+4        ACCAATCAGAACAATCCCACTGG         True              698Q  https://crispr.dbcls.jp/?userseq=ACCAATCAGAACAATCCCACTGG&pam=NGG&db=mm39
+5        ACGAATGTATCTGAGGATTAAGG         True              723R  https://crispr.dbcls.jp/?userseq=ACGAATGTATCTGAGGATTAAGG&pam=NGG&db=mm39
+6        TCAGGCCAATGTCACATTGTGGG         True              861Q  https://crispr.dbcls.jp/?userseq=TCAGGCCAATGTCACATTGTGGG&pam=NGG&db=mm39
+7        CTCAGGCCAATGTCACATTGTGG         True              861Q  https://crispr.dbcls.jp/?userseq=CTCAGGCCAATGTCACATTGTGG&pam=NGG&db=mm39
+8        CCAGGGCCGAGGGCGCCTGCGGG         True              126W  https://crispr.dbcls.jp/?userseq=CCAGGGCCGAGGGCGCCTGCGGG&pam=NGG&db=mm39
+9        GCCAGGGCCGAGGGCGCCTGCGG         True              126W  https://crispr.dbcls.jp/?userseq=GCCAGGGCCGAGGGCGCCTGCGG&pam=NGG&db=mm39
+10       TCCAGTGGGATTGTTCTGATTGG         True              704W  https://crispr.dbcls.jp/?userseq=TCCAGTGGGATTGTTCTGATTGG&pam=NGG&db=mm39
+11       CCAGTACTGGGATTTGTCACTGG         True             1052W  https://crispr.dbcls.jp/?userseq=CCAGTACTGGGATTTGTCACTGG&pam=NGG&db=mm39
+List of gRNAs to disrupt splice acceptor site
+  Target sequence (20mer + PAM)  Exon index                                                      link to CRISPRdirect
+0       ACCTGGGATTGAAAGGAACAAGG          20  https://crispr.dbcls.jp/?userseq=ACCTGGGATTGAAAGGAACAAGG&pam=NGG&db=mm39
+1       TCTGTTGGAGAAAAGCCCCATGG          22  https://crispr.dbcls.jp/?userseq=TCTGTTGGAGAAAAGCCCCATGG&pam=NGG&db=mm39
+2       ACCTGAAGAAAATGGAAAACAGG          23  https://crispr.dbcls.jp/?userseq=ACCTGAAGAAAATGGAAAACAGG&pam=NGG&db=mm39
+List of gRNAs to disrupt splice donor site
+  Target sequence (20mer + PAM)  Exon index                                                      link to CRISPRdirect
+0       TACCTTGCCCAAGTCCATCATGG           8  https://crispr.dbcls.jp/?userseq=TACCTTGCCCAAGTCCATCATGG&pam=NGG&db=mm39
+1       TTACCTCTCACAGGTGAAGATGG          22  https://crispr.dbcls.jp/?userseq=TTACCTCTCACAGGTGAAGATGG&pam=NGG&db=mm39
 ```
