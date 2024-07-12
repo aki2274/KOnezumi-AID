@@ -31,7 +31,7 @@ Follow the [official instruction](https://bowtie-bio.sourceforge.net/manual.shtm
 > CONDA_SUBDIR=osx-64 conda create -n env-konezumiaid -c conda-forge -c bioconda python=3.10 konezumiaid -y
 > conda activate env-konezumiaid
 > conda config --env --set subdir osx-64
-> python -c "import platform; print(platform.machine())" 
+> python -c "import platform; print(platform.machine())"  # Confirm that the output is 'x86_64', not 'arm64'
 > ```
 
 ### Input data set (e.g. Mus musculus mm39)
