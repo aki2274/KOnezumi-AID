@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 def test_bedtools_getfasta():
-    tmp_path = Path("tests/data/tmp")
+    tmp_path = Path("tests/data/bedtools")
     # Setup test files
     expected_output = """>feature1
     TAGC
