@@ -1,7 +1,7 @@
 [![License](https://img.shields.io/badge/License-MIT-9cf.svg)](https://choosealicense.com/licenses/mit/)
 [![DOI](https://zenodo.org/badge/673151657.svg)](https://zenodo.org/badge/latestdoi/673151657)
 
-# KOnezumi-AID
+# KOnezumi-AID  
 `KOnezumi-AID` is the command-line tool to automate the gRNA design for multiplex KO mouse using Target-AID
 
 ## Installation
@@ -10,27 +10,22 @@
 - Unix-like environment (Linux, macOS, WSL2, etc.)
 
 ### Installation🔨
-#### From [Bioconda](https://anaconda.org/bioconda/konezumiaid) (Recommended)
-
+#### From [Bioconda](https://anaconda.org/bioconda/konezumiaid) (Recommended)  
 `conda install -c conda-forge -c bioconda konezumiaid`
 
 #### From [PyPI](https://libraries.io/pypi/KOnezumiAID):
-
 `pip install KOnezumiAID`
 
 ### Required Packages (Not needed if installed via Bioconda)
-- bedtools
-
-
+- bedtools  
 Follow the [official instruction](https://bedtools.readthedocs.io/en/latest/content/installation.html)
 
-- bowtie
-
+- bowtie  
 Follow the [official instruction](https://bowtie-bio.sourceforge.net/manual.shtml#:~:text=is%20future%20work.-,Obtaining%20Bowtie,-You%20may%20download)
 
 
 > [!NOTE]
-> TI Apple silicon (ARM64) users:
+> TI Apple silicon (ARM64) users:  
 > [Since the Bioconda channel does not yet support Apple Silicon](https://github.com/bioconda/bioconda-recipes/issues/37068#issuecomment-1257790919), please use the following command to install `KOnezumi-AID`.
 > ``` bash
 > CONDA_SUBDIR=osx-64 conda create -n env-konezumiaid -c conda-forge -c bioconda python=3.10 konezumiaid -y
@@ -68,8 +63,7 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
 - gRNAs to disrupt splice acceptor site
 - gRNAs to disrupt splice donor site
 
-KOnezumi-AID provides these gRNAs in CLI and CSV format. 
-
+KOnezumi-AID provides these gRNAs in CLI and CSV format.   
 The CSV file is located in `data/output` directory and named as `<gene symbol/transcript name>_ptc_gRNA.csv` or `<gene symbol/transcript name>_splice_gRNA.csv`.
 
 ### Create data set for KOnezumi-AID
@@ -82,26 +76,21 @@ The CSV file is located in `data/output` directory and named as `<gene symbol/tr
 
 ### Search candidate by gene symbol or transcript name (Refseq id)
 
-KOnezumi-AID accepts a gene symbol or a transcript name.
+KOnezumi-AID accepts a gene symbol or a transcript name.  
+`konezumiaid <-n | --name> <gene symbol | transcript name>`
 
-- Search by gene symbol
-
-You can obtain the gRNAs that are present in all transcript variants.
-
+#### Search by gene symbol
+You can obtain the gRNAs that are present in all transcript variants.  
 (If the gene has one transcript, the result is the same as searching by the transcript name)
 
-- Search by transcript name
-
-You can obtain the transcript's gRNAs and access more information about the gRNAs.
+#### Search by transcript name
+You can obtain the transcript's gRNAs and access more information about the gRNAs.  
 - in_start_150bp: The gRNA is located in the first 150bp of the transcript or not.
 - in_50bp_from_LEJ: The gRNA is located in the 50bp from the last exon junction or not.
 - exon_index: the index of the exon where the gRNA is located.
 
-
-`konezumiaid <-n | --name> <gene symbol | transcript name>`
-
 ### Examples
-- Search candidate by the gene symbol
+- Search candidate by the gene symbol  
 ```
 $konezumiaid -n Rp1     
 Processing NM_001370921...
@@ -119,7 +108,6 @@ No gRNA found.
 List of gRNAs to disrupt splice donor site
 No gRNA found.
 ```
-
 ```
 $konezumiaid -n Mafa    
 List of gRNAs to generate PTC (premature termination codon)
@@ -134,8 +122,7 @@ List of gRNAs to disrupt splice donor site
 No gRNA found.
 ```
 
-- Search candidate by the transcript name
-
+- Search candidate by the transcript name  
 ```
 $ konezumiaid -n NM_001370921
 List of gRNAs to generate PTC (premature termination codon)
