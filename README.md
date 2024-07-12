@@ -16,7 +16,7 @@
 #### From [PyPI](https://libraries.io/pypi/KOnezumiAID):
 `pip install KOnezumiAID`
 
-### Required Packages (Not needed if installed via Bioconda)
+#### Required Packages (Not needed if installed via Bioconda)
 - bedtools  
 Follow the [official instruction](https://bedtools.readthedocs.io/en/latest/content/installation.html)
 
@@ -63,7 +63,7 @@ wget -O - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
 - gRNAs to disrupt splice acceptor site
 - gRNAs to disrupt splice donor site
 
-KOnezumi-AID provides these gRNAs in CLI and CSV format.   
+KOnezumi-AID provides these gRNAs in standerd output and CSV format.   
 The CSV file is located in `data/output` directory and named as `<gene symbol/transcript name>_ptc_gRNA.csv` or `<gene symbol/transcript name>_splice_gRNA.csv`.
 
 ### Create data set for KOnezumi-AID
@@ -81,7 +81,8 @@ KOnezumi-AID accepts a gene symbol or a transcript name.
 
 #### Search by gene symbol
 You can obtain the gRNAs that are present in all transcript variants.  
-(If the gene has one transcript, the result is the same as searching by the transcript name)
+> [!NOTE]  
+> If the gene has one transcript, the result is the same as searching by the transcript name
 
 #### Search by transcript name
 You can obtain the transcript's gRNAs and access more information about the gRNAs.  
