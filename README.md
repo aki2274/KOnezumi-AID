@@ -90,7 +90,7 @@ You can obtain the transcript's gRNAs and access more information about the gRNA
 - exon_index: the index of the exon where the gRNA is located.
 
 ### Examples
-- Search candidate by the gene symbol  
+#### Search candidate by the gene symbol (gene symbol with multiple transcripts)
 ```
 $konezumiaid -n Rp1     
 Processing NM_001370921...
@@ -108,6 +108,7 @@ No gRNA found.
 List of gRNAs to disrupt splice donor site
 No gRNA found.
 ```
+#### Search candidate by the gene symbol (gene symbol with single transcript)  
 ```
 $konezumiaid -n Mafa    
 List of gRNAs to generate PTC (premature termination codon)
@@ -122,7 +123,7 @@ List of gRNAs to disrupt splice donor site
 No gRNA found.
 ```
 
-- Search candidate by the transcript name  
+#### Search candidate by the transcript name  
 ```
 $ konezumiaid -n NM_001370921
 List of gRNAs to generate PTC (premature termination codon)
