@@ -4,7 +4,7 @@ from pathlib import Path
 from konezumiaid.create_gene_dataclass import TranscriptRecord
 
 
-def format_output(
+def format_single_transcript_result(
     candidate_primers: list[dict],
     transcript_record: TranscriptRecord,
     flag_ptc: bool = False,
@@ -37,7 +37,7 @@ def format_output(
     return pd.DataFrame(output_primers)
 
 
-def extract_matching_seqs(candidate_gene_primers: list[list], flag_ptc: bool = False) -> list[dict]:
+def extract_multiple_transcripts_match(candidate_gene_primers: list[list], flag_ptc: bool = False) -> list[dict]:
     seq_sets = [set(d["seq"] for d in lst) for lst in candidate_gene_primers]
     common_seq = set.intersection(*seq_sets)
     common_data = [d for d in candidate_gene_primers[0] if d["seq"] in common_seq]
