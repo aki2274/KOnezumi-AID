@@ -8,7 +8,7 @@ from konezumiaid.evaluate_grna.apply_nmd_rules import (
     eliminate_in_last_exon,
     label_in_50bp_from_LEJ,
 )
-from konezumiaid.evaluate_grna.add_primer_info import link_to_crisperdirect
+from konezumiaid.evaluate_grna.add_grna_info import link_to_crisperdirect
 
 
 def apply_nmd_rules(transcript_record: TranscriptRecord, ct_cand: list[str], ga_cand: list[str]) -> list[dict]:
