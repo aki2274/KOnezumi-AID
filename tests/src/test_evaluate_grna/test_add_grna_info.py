@@ -1,4 +1,4 @@
-from konezumiaid.evaluate_grna.add_grna_info import link_to_crisperdirect
+from src.konezumiaid.evaluate_grna.add_grna_info import link_to_crisperdirect
 
 
 def test_link_to_crisperdirect():
