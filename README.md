@@ -18,7 +18,7 @@
 
 `pip install KOnezumiAID`
 
-### Required Packages (Not needed if installed via conda)
+### Required Packages (Not needed if installed via Bioconda)
 - bedtools
 
 
@@ -27,6 +27,17 @@ Follow the [official instruction](https://bedtools.readthedocs.io/en/latest/cont
 - bowtie
 
 Follow the [official instruction](https://bowtie-bio.sourceforge.net/manual.shtml#:~:text=is%20future%20work.-,Obtaining%20Bowtie,-You%20may%20download)
+
+
+> [!NOTE]
+> TI Apple silicon (ARM64) users:
+> [Since the Bioconda channel does not yet support Apple Silicon](https://github.com/bioconda/bioconda-recipes/issues/37068#issuecomment-1257790919), please use the following command to install `KOnezumi-AID`.
+> ``` bash
+> CONDA_SUBDIR=osx-64 conda create -n env-konezumiaid -c conda-forge -c bioconda python=3.10 konezumiaid -y
+> conda activate env-konezumiaid
+> conda config --env --set subdir osx-64
+> python -c "import platform; print(platform.machine())" 
+> ```
 
 ### Input data set (e.g. Mus musculus mm39)
 #### Locus information
