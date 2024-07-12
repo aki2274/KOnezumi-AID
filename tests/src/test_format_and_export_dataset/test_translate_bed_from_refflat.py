@@ -6,10 +6,7 @@ from pathlib import Path
 def test_bedtools_getfasta():
     tmp_path = Path("tests/data/bedtools")
     # Setup test files
-    expected_output = """>feature1
-    TAGC
-    >feature2
-    CTAC"""
+    expected_output = """>feature1\nTAGC\n>feature2\nGCTA"""
 
     tmp_fasta = Path(tmp_path, "test.fa")
     tmp_bed = Path(tmp_path, "test.bed")
