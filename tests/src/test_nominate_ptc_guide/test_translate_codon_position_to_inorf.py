@@ -53,7 +53,7 @@ expected = [[0, 14], [15, 39], [40, 74]], [[0, 2], [3, 10], [11, 24]]
         expected,
     ),
 )
-def test_get_range_of_exon(test_name, input_genedata, orf_seq_dict, expected):
+def test_get_exon_range(test_name, input_genedata, orf_seq_dict, expected):
     assert get_exon_range(create_dataclass(test_name, input_genedata, orf_seq_dict)) == expected
 
 
@@ -77,7 +77,7 @@ expected = [[16]]  # len(NNNNNNNNNNATGNN2CAG)-3. length of C in exon seq
         expected,
     ),
 )
-def test_get_candidate_stopcodon_index_incds_to_inexon(
+def test_translate_cds_position_to_exon(
     test_name,
     input_genedata,
     orf_seq_dict,
@@ -109,7 +109,7 @@ expected = [[1]]
         expected,
     ),
 )
-def test_get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range, expected):
+def test_get_exonindex_in_cand_codon(candidate_stopcodon, exon_range, expected):
     assert get_exonindex_in_cand_codon(candidate_stopcodon, exon_range) == expected
 
 
@@ -128,7 +128,7 @@ exprcted = [[26]]
         exprcted,
     ),
 )
-def test_add_num_to_change_orf_index(
+def test_translate_position_in_splicedexon_to_orf(
     test_name,
     input_genedata,
     orf_seq_dict,
@@ -166,7 +166,7 @@ expected = [[]]
         expected,
     ),
 )
-def test_nocandidate_get_candidate_stopcodon_index_incds_to_inexon(
+def test_non_translate_cds_position_to_exon(
     test_name,
     input_genedata,
     orf_seq_dict,
@@ -198,7 +198,7 @@ expected = [[]]
         expected,
     ),
 )
-def test_nocandidate_get_candidate_stopcodon_exon_num(candidate_stopcodon, exon_range, expected):
+def test_non_get_exonindex_in_cand_codon(candidate_stopcodon, exon_range, expected):
     assert get_exonindex_in_cand_codon(candidate_stopcodon, exon_range) == expected
 
 
@@ -217,7 +217,7 @@ exprcted = [[]]
         exprcted,
     ),
 )
-def test_nocandidate_add_num_to_change_orf_index(
+def test_non_translate_position_in_splicedexon_to_orf(
     test_name,
     input_genedata,
     orf_seq_dict,

@@ -20,7 +20,7 @@ expected = [([3], ["CAA"]), ([3], ["CAG"]), ([3], ["CGA"]), ([3], ["TGG"]), ([3,
     "test_candidate_cds_seq,expected",
     zip(test_candidate_cds_seq, expected),
 )
-def test_get_candidate_stopcodon_index(test_candidate_cds_seq, expected):
+def test_search_candidate_codon_position(test_candidate_cds_seq, expected):
     assert search_candidate_codon_position(test_candidate_cds_seq) == expected
 
 
@@ -38,5 +38,5 @@ expected = [([], []), ([], []), ([], [])]
     "test_not_candidate_cds_seq,expected",
     zip(test_not_candidate_cds_seq, expected),
 )
-def test_get_not_candidate_stopcodon_index(test_not_candidate_cds_seq, expected):
+def test_non_search_candidate_codon_position(test_not_candidate_cds_seq, expected):
     assert search_candidate_codon_position(test_not_candidate_cds_seq) == expected

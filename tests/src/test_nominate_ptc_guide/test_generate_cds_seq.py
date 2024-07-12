@@ -61,7 +61,7 @@ expected_return = [
         expected_return,
     ),
 )
-def test_get_exon_seq(test_name, input_genedata, orf_seq_dict, expected):
+def test_generate_exon_seq(test_name, input_genedata, orf_seq_dict, expected):
     assert generate_exon_seq(create_dataclass(test_name, input_genedata, orf_seq_dict)) == expected
 
 
@@ -78,7 +78,7 @@ expected_return = [0, 1]
         expected_return,
     ),
 )
-def test_get_startcodon_exon_num(test_name, input_genedata, orf_seq_dict, expected):
+def test_get_startcodon_exon_index(test_name, input_genedata, orf_seq_dict, expected):
     assert get_startcodon_exon_index(create_dataclass(test_name, input_genedata, orf_seq_dict)) == expected
 
 
@@ -95,7 +95,7 @@ expected_return = [2, 2]
         expected_return,
     ),
 )
-def test_get_stopcodon_exon_num(test_name, input_genedata, orf_seq_dict, expected):
+def test_get_stopcodon_exon_index(test_name, input_genedata, orf_seq_dict, expected):
     assert get_stopcodon_exon_index(create_dataclass(test_name, input_genedata, orf_seq_dict)) == expected
 
 
@@ -121,7 +121,7 @@ expected_return = [
         expected_return,
     ),
 )
-def test_get_cdsseq(test_name, input_genedata, orf_seq_dict, expected):
+def test_generate_cdsseq(test_name, input_genedata, orf_seq_dict, expected):
     assert (
         generate_cdsseq(
             create_dataclass(test_name, input_genedata, orf_seq_dict),

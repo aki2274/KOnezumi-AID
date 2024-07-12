@@ -44,10 +44,8 @@ seq_candidates = [
 expected = [[1], [1], [1], [2], [2], [2], [3], [3], [3], [2, 23], [2, 5], [2, 5]]
 
 
-@pytest.mark.parametrize(
-    "seq,candidates,expected", zip(input_seq, seq_candidates, expected)
-)
-def test_get_CtoT_target(seq, candidates, expected):
+@pytest.mark.parametrize("seq,candidates,expected", zip(input_seq, seq_candidates, expected))
+def test_transform_c_to_t_guideseq_to_position(seq, candidates, expected):
     assert transform_c_to_t_guideseq_to_position(seq, candidates) == expected
 
 
@@ -62,10 +60,8 @@ seq_not_candidates = [[], [], [], [], []]
 expected = [[], [], [], [], []]
 
 
-@pytest.mark.parametrize(
-    "seq,candidates,expected", zip(input_seq, seq_not_candidates, expected)
-)
-def test_get_CtoT_target_not_candidate(seq, candidates, expected):
+@pytest.mark.parametrize("seq,candidates,expected", zip(input_seq, seq_not_candidates, expected))
+def test_non_transform_c_to_t_guideseq_to_position(seq, candidates, expected):
     assert transform_c_to_t_guideseq_to_position(seq, candidates) == expected
 
 
@@ -92,10 +88,8 @@ seq_candidates = [
 expected = [[17], [18], [19], [20], [20, 43], [20, 23], [20, 17]]
 
 
-@pytest.mark.parametrize(
-    "seq,candidates,expected", zip(input_seq, seq_candidates, expected)
-)
-def test_get_AtoG_target(seq, candidates, expected):
+@pytest.mark.parametrize("seq,candidates,expected", zip(input_seq, seq_candidates, expected))
+def test_transform_g_to_a_guideseq_to_position(seq, candidates, expected):
     assert transform_g_to_a_guideseq_to_position(seq, candidates) == expected
 
 
@@ -108,8 +102,6 @@ seq_not_candidates = [[], [], []]
 expected = [[], [], []]
 
 
-@pytest.mark.parametrize(
-    "seq,candidates,expected", zip(input_seq, seq_not_candidates, expected)
-)
-def test_get_AtoG_target_not_candidates(seq, candidates, expected):
+@pytest.mark.parametrize("seq,candidates,expected", zip(input_seq, seq_not_candidates, expected))
+def test_non_transform_g_to_a_guideseq_to_position(seq, candidates, expected):
     assert transform_g_to_a_guideseq_to_position(seq, candidates) == expected

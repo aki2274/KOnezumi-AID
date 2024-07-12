@@ -41,7 +41,7 @@ expected = [
 
 
 @pytest.mark.parametrize("seq, expected", zip(seq_candidates, expected))
-def test_get_CtoT_target(seq, expected):
+def test_search_c_to_t_guide_seq(seq, expected):
     assert search_c_to_t_guide_seq(seq) == expected
 
 
@@ -56,7 +56,7 @@ expected = [[], [], [], [], []]
 
 
 @pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
-def test_get_CtoT_target_not_candidate(seq, expected):
+def test_non_search_c_to_t_guide_seq(seq, expected):
     assert search_c_to_t_guide_seq(seq) == expected
 
 
@@ -81,7 +81,7 @@ expected = [
 
 
 @pytest.mark.parametrize("seq, expected", zip(seq_candidates, expected))
-def test_get_AtoG_target(seq, expected):
+def test_search_g_to_a_guide_seq(seq, expected):
     assert search_g_to_a_guide_seq(seq) == expected
 
 
@@ -94,5 +94,5 @@ expected = [[], [], []]
 
 
 @pytest.mark.parametrize("seq, expected", zip(seq_not_candidates, expected))
-def test_get_AtoG_target_not_candidate(seq, expected):
+def test_non_search_g_to_a_guide_seq(seq, expected):
     assert search_g_to_a_guide_seq(seq) == expected

@@ -5,7 +5,7 @@ from konezumiaid.nominate_ptc_guide.make_grna_from_position import (
 )
 
 
-def test_convert_ct_grna():
+def test_extract_c_to_t_grna_from_position():
     ds = TranscriptRecord(
         transcript_seq="ATGNCAGNNNNNNNNNNNNNNNNPGGATCGANNNNCAGNNNNNNNNNNNNNNPGGCATATAA",
         transcript_start=0,
@@ -24,7 +24,7 @@ def test_convert_ct_grna():
     assert extract_c_to_t_grna_from_position(ds, indices) == expected_grna
 
 
-def test_convert_ga_grna():
+def test_extract_g_to_a_grna_from_position():
     ds = TranscriptRecord(
         transcript_seq="ATGCCPNNNNNNNNNNNNNNTGGNNNATCGAGCCPNNNNNNNNNNNNNNNNNTGGCATATAA",
         transcript_start=0,
@@ -43,7 +43,7 @@ def test_convert_ga_grna():
     assert extract_g_to_a_grna_from_position(ds, indices) == expected_grna
 
 
-def test_nocandidate_convert_ct_grna():
+def test_non_extract_c_to_t_grna_from_position():
     ds = TranscriptRecord(
         transcript_seq="ATGNCAGNNNNNNNNNNNNNNNNPGGATCGANNNNCAGNNNNNNNNNNNNNNPGGCATATAANNNNCAGNNNNNNNTTTTNNNNNPGGNNN",
         transcript_start=0,
@@ -59,7 +59,7 @@ def test_nocandidate_convert_ct_grna():
     assert extract_c_to_t_grna_from_position(ds, indices) == expected_grna
 
 
-def test_nocandidate_convert_ga_grna():
+def test_non_extract_g_to_a_grna_from_position():
     ds = TranscriptRecord(
         transcript_seq="ATGCCPNNNNNNNNNNNNNNTGGNNNATCGAGCCPNNNNNNNNNNNNNNNNNTGGCATATCCPNNNNNNNNNNNNNNAAAAGGAA",
         transcript_start=0,
