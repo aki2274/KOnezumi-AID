@@ -144,3 +144,98 @@ def test_format_single_transcript_result():
         format_single_transcript_result(candidate_splice_site, transcript_record_multi_exon).to_dict(orient="records")
         == expect_splice_site
     )
+
+
+def test_extract_multiple_transcripts_match():
+    candidate_ptc = [
+        [
+            {
+                "seq": "AAAA",
+                "aminoacid": "1M",
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+            {
+                "seq": "TTTT",
+                "aminoacid": "12L",
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+            {
+                "seq": "CCCC",
+                "aminoacid": "32P",
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+            {
+                "seq": "GGGG",
+                "aminoacid": "451A",
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+        ],
+        [
+            {
+                "seq": "AAAA",
+                "aminoacid": "1M",
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+            {
+                "seq": "TTTT",
+                "aminoacid": "1234L",
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+            {
+                "seq": "CCGG",
+                "aminoacid": "32P",
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+            {
+                "seq": "GGCC",
+                "aminoacid": "451A",
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+        ],
+    ]
+    expected_ptc = [
+        {
+            "Target sequence (20mer + PAM)": "AAAA",
+            "Target amino acid": "M",
+            "link to CRISPRdirect": "https://crisprdirect.org",
+        },
+        {
+            "Target sequence (20mer + PAM)": "TTTT",
+            "Target amino acid": "L",
+            "link to CRISPRdirect": "https://crisprdirect.org",
+        },
+    ]
+
+    target_splice_site = [
+        [
+            {
+                "seq": "AAAA",
+                "exon_index": 1,
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+            {
+                "seq": "TTTT",
+                "exon_index": 2,
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+        ],
+        [
+            {
+                "seq": "AAAA",
+                "exon_index": 1,
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+            {
+                "seq": "TTAA",
+                "exon_index": 2,
+                "link_to_crisprdirect": "https://crisprdirect.org",
+            },
+        ],
+    ]
+
+    expected_splice_site = [
+        {"Target sequence (20mer + PAM)": "AAAA", "link to CRISPRdirect": "https://crisprdirect.org"},
+    ]
+
+    assert extract_multiple_transcripts_match(candidate_ptc, flag_ptc=True).to_dict(orient="records") == expected_ptc
+    assert extract_multiple_transcripts_match(target_splice_site).to_dict(orient="records") == expected_splice_site
