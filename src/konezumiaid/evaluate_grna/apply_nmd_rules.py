@@ -37,6 +37,32 @@ def label_in_start_150bp(candidate: list[dict], transcript_record: TranscriptRec
     return candidate_
 
 
+def label_in_more_than_400bp_exon(candidate: list[dict], transcript_record: TranscriptRecord) -> list[dict]:
+    candidate_ = candidate.copy()
+    exon_lengths = [
+        end - start for start, end in zip(transcript_record.exon_start_positions, transcript_record.exon_end_positions)
+    ]
+
+    for grna in candidate_:
+        if "ct_seq" in grna:
+            edit_position = re.search(grna["ct_seq"], transcript_record.transcript_seq).start() + 1
+        elif "ga_seq" in grna:
+            edit_position = re.search(grna["ga_seq"], transcript_record.transcript_seq).start() + 16
+        else:
+            continue
+
+        exon_num = next(
+            (i for i, exon_end in enumerate(transcript_record.exon_end_positions) if edit_position <= exon_end), None
+        )
+
+        if exon_num is not None and exon_lengths[exon_num] > 400:
+            grna["in_more_than_400bp_exon"] = True
+        else:
+            grna["in_more_than_400bp_exon"] = False
+
+    return candidate_
+
+
 # the case of single exon
 def eliminate_in_back_half(candidate: list[dict], transcript_record: TranscriptRecord) -> list[dict]:
     # If the transcript is single exon, the PTC should be in the front half of the CDS.
