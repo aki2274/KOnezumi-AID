@@ -41,7 +41,10 @@ def format_output(
         if transcript_record.exon_count == 1:
             is_recomend = [not d["in_start_150bp"] for d in candidate_primers]
         else:
-            is_recomend = [not any([d["in_start_150bp"], d["in_50bp_from_LEJ"]]) for d in candidate_primers]
+            is_recomend = [
+                not any([d["in_start_150bp"], d["in_50bp_from_LEJ"], d["in_more_than_400bp_exon"]])
+                for d in candidate_primers
+            ]
         output_primers = [
             {
                 "Target sequence (20mer + PAM)": d["seq"],
