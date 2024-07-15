@@ -10,7 +10,6 @@ def format_single_transcript_result(
     flag_ptc: bool = False,
 ) -> pd.DataFrame:
     if flag_ptc:
-        target_aminoacids = [d["aminoacid"] for d in candidate_primers]
         if transcript_record.exon_count == 1:
             is_recomend = [not d["in_start_150bp"] for d in candidate_primers]
         else:
@@ -19,10 +18,10 @@ def format_single_transcript_result(
             {
                 "Target sequence (20mer + PAM)": d["seq"],
                 "Recommended": r,
-                "Target amino acid": aa,
+                "Target amino acid": d["aminoacid"],
                 "link to CRISPRdirect": d["link_to_crisprdirect"],
             }
-            for d, aa, r in zip(candidate_primers, target_aminoacids, is_recomend)
+            for d, r in zip(candidate_primers, is_recomend)
         ]
     else:
         exon_index = [d["exon_index"] for d in candidate_primers]
