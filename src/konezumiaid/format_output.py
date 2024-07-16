@@ -1,6 +1,7 @@
 from __future__ import annotations
 import pandas as pd
 from pathlib import Path
+import shutil
 from konezumiaid.create_gene_dataclass import TranscriptRecord
 
 
@@ -83,6 +84,15 @@ def show_table(
         print(df_donor_cand.to_string())
 
 
+def create_data_directory(output_folder: Path) -> None:
+    output_folder.mkdir(parents=True, exist_ok=True)
+    readme = Path("DataReadme.md")
+    readme_dest = output_folder / "Readme.md"
+    if readme_dest.exists():
+        return
+    shutil.copy(readme, readme_dest)
+
+
 def export_csv(
     name: str,
     df_ptc_gRNA: pd.DataFrame,
@@ -90,7 +100,7 @@ def export_csv(
     df_donor_cand: pd.DataFrame,
 ) -> None:
     output_folder = Path("data", "output")
-    output_folder.mkdir(parents=True, exist_ok=True)
+    create_data_directory(output_folder)
     df_splice_gRNA = pd.concat([df_acceptor_cand, df_donor_cand])
     if not df_ptc_gRNA.empty:
         df_ptc_gRNA.to_csv(output_folder / f"{name}_ptc_gRNA.csv", index=False)
