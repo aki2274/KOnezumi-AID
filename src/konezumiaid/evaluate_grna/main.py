@@ -4,6 +4,7 @@ from konezumiaid.get_reverse_complement import get_revcomp
 from konezumiaid.evaluate_grna.apply_nmd_rules import (
     create_candidates_list_dict,
     label_in_start_150bp,
+    label_in_more_than_400bp_exon,
     eliminate_in_back_half,
     eliminate_in_last_exon,
     label_in_50bp_from_LEJ,
@@ -40,6 +41,8 @@ def apply_nmd_rules(transcript_record: TranscriptRecord, ct_cand: list[str], ga_
         gRNA_list = eliminate_in_last_exon(gRNA_list, transcript_record)
         # 4. label in 50bp from LEJ
         gRNA_list = label_in_50bp_from_LEJ(gRNA_list, transcript_record)
+        # 5. label in more than 400bp exon
+        gRNA_list = label_in_more_than_400bp_exon(gRNA_list, transcript_record)
 
     # 4 or 5. combine ct_cand and ga_cand to create cand_seq
     candidates = []
