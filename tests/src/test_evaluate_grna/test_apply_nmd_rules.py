@@ -5,6 +5,7 @@ from src.konezumiaid.evaluate_grna.apply_nmd_rules import (
     eliminate_in_last_exon,
     label_in_start_150bp,
     label_in_50bp_from_LEJ,
+    label_in_more_than_400bp_exon,
     create_candidates_list_dict,
 )
 
@@ -98,6 +99,30 @@ def test_label_in_50bp_from_LEJ():
         {"ga_seq": "CCTGCGTGGCCAGCGCTGGTGGT", "in_50bp_from_LEJ": True},
     ]
     assert label_in_50bp_from_LEJ(cand_grna, ds) == expected
+
+
+def test_label_in_more_than_400bp_exon():
+    cand_grna = [
+        {"ct_seq": "CAAACTATTTACTCTTTTCTTCG"},
+        {"ct_seq": "TATTATAGGAAACTACAATGCAT"},
+        {"ga_seq": "ACTACAATGCATTAAAGAACCTG"},
+    ]
+    transcript_record = TranscriptRecord(
+        "AGACATTTGTTTACGTGAAACAAGCAGGTTGCATATCCAGTGACGTTTATACAGACCACACAAACTATTTACTCTTTTCTTCGTAAGGAAAGGTTCAACTTCTGGTAAGTACAAAACTATTTGAAATATTTCTCTTAAAAATATGGTATGCTCATTTTATTTTTGGCAATATCTTTCATATATAGAACACAAACCTCTGTTTTATCTTTAACCATTAGAACAATACATGCTATTAATAGTTATTGTCTGTTACTAAAATCTAACAGCAATCTTTGTAGCATGCTGATATTGATATAGGGAAAAGCTTTAGTGTTGGAAAATTGTGATTCCAGTTTAGTGAAATATAAGGAGAGTTTACTGTAGTTTTGCTTATAATAGCATTATATACTTATTATAGGAAACTACAATGCATTAAAGAACCTGCTTATAATTAAAAGGTTATGGCTACCACAACAACTAGTATATTTTTCTGCTGAGTATCTTTTCCCTCC",
+        0,
+        491,
+        0,
+        491,
+        4,
+        [0, 3, 406, 480],
+        [1, 404, 450, 491],
+    )
+    expected = [
+        {"ct_seq": "CAAACTATTTACTCTTTTCTTCG", "in_more_than_400bp_exon": True},
+        {"ct_seq": "TATTATAGGAAACTACAATGCAT", "in_more_than_400bp_exon": True},
+        {"ga_seq": "ACTACAATGCATTAAAGAACCTG", "in_more_than_400bp_exon": False},
+    ]
+    assert label_in_more_than_400bp_exon(cand_grna, transcript_record) == expected
 
 
 def test_create_candidates_list_dict():
