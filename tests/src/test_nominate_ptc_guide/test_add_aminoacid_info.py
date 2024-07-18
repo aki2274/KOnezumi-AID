@@ -1,4 +1,14 @@
-from src.konezumiaid.nominate_ptc_guide.add_aminoacid_info import link_position_and_aminoacid, add_aminoacid_info
+from src.konezumiaid.nominate_ptc_guide.add_aminoacid_info import (
+    transrate_codon_to_aminoacid,
+    link_position_and_aminoacid,
+    add_aminoacid_info,
+)
+
+
+def test_transrate_codon_to_aminoacid():
+    seq = "TTTTTCTTATTGTCTTCCTCATCGTATTACTAATAGTGTTGCTGATGGCTTCTCCTACTGCCTCCCCCACCGCATCACCAACAGCGTCGCCGACGGATTATCATAATGACTACCACAACGAATAACAAAAAGAGTAGCAGAAGGGTTGTCGTAGTGGCTGCCGCAGCGGATGACGAAGAGGGTGGCGGAGGG"
+    excepted = "FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG"
+    assert transrate_codon_to_aminoacid(seq) == excepted
 
 
 def test_link_position_and_aminoacid():

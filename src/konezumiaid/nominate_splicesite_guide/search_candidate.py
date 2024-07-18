@@ -1,7 +1,7 @@
 from __future__ import annotations
 from konezumiaid.get_reverse_complement import get_revcomp
 from konezumiaid.create_gene_dataclass import TranscriptRecord
-from konezumiaid.evaluate_grna.add_primer_info import link_to_crisperdirect
+from konezumiaid.evaluate_grna.add_grna_info import link_to_crisperdirect
 
 
 def search_site_candidate(
