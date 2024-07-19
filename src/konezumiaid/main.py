@@ -95,6 +95,8 @@ def execute(input_name: str) -> tuple[list[dict], list[dict], list[dict], list[d
 
 
 def main():
+    konezumiaid_dir = Path("konezumiaid_data")
+    konezumiaid_dir.mkdir(parents=True, exist_ok=True)
     path_refFlat = Path("konezumiaid_data", "refFlat_genedata_sorted.pkl")
     path_seq = Path("konezumiaid_data", "sorted_seq_dict.pkl")
     if args.subcommand == "preprocess":
