@@ -58,11 +58,11 @@ def export_primers(transcript_record: TranscriptRecord) -> list[dict]:
         }...]
     """
     # 1 Create a directory named "uniq" inside the "data" directory if it doesn't exist.
-    Path("data", "uniq").mkdir(parents=True, exist_ok=True)
+    Path("konezumiaid_data", "uniq").mkdir(parents=True, exist_ok=True)
     # 2 Define file paths for storing mismatch counts.
-    miss_0_path = Path("data", "uniq", "missmatch_0_counts.txt")
-    miss_1_path = Path("data", "uniq", "missmatch_1_counts.txt")
-    miss_2_path = Path("data", "uniq", "missmatch_2_counts.txt")
+    miss_0_path = Path("konezumiaid_data", "uniq", "missmatch_0_counts.txt")
+    miss_1_path = Path("konezumiaid_data", "uniq", "missmatch_1_counts.txt")
+    miss_2_path = Path("konezumiaid_data", "uniq", "missmatch_2_counts.txt")
     # 3 Retrieve the exon range of the transcript record.
     exon_range = get_exon_range(transcript_record)
     # 4 Generate the exon sequence.

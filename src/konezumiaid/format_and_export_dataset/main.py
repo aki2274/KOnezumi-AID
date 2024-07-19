@@ -30,17 +30,17 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
     Returns:
         None
     """
-    sorted_refflat_path = Path("data", "refFlat_genedata_sorted.pkl")
-    sorted_transcript_seq_dict_path = Path("data", "sorted_seq_dict.pkl")
+    sorted_refflat_path = Path("konezumiaid_data", "refFlat_genedata_sorted.pkl")
+    sorted_transcript_seq_dict_path = Path("konezumiaid_data", "sorted_seq_dict.pkl")
 
-    bed6_path = Path("data", "refFlat.bed")
+    bed6_path = Path("konezumiaid_data", "refFlat.bed")
 
     df_refflat = built_gene_dataframe(refflat_path)
     df_refflat = remove_transcript_duplicates(df_refflat)
     df_removed = remove_NR_transcripts(df_refflat)
     convert_refFlat_to_bed6(df_removed, bed6_path)
 
-    transcripts_fast_path = Path("data", "bed_refFlat.fa")
+    transcripts_fast_path = Path("konezumiaid_data", "bed_refFlat.fa")
     bedtools_path = Path(
         "src",
         "konezumiaid",
