@@ -89,7 +89,7 @@ def export_csv(
     df_acceptor_cand: pd.DataFrame,
     df_donor_cand: pd.DataFrame,
 ) -> None:
-    output_folder = Path("data", "output")
+    output_folder = Path("data", "konezumiaid_output")
     output_folder.mkdir(parents=True, exist_ok=True)
     datareadme_path = Path(Path(__file__).parent, "DATAREADME.md")
     output_readme_path = Path(output_folder, "DATAREADME.md")
