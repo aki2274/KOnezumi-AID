@@ -89,14 +89,14 @@ def export_csv(
     df_acceptor_cand: pd.DataFrame,
     df_donor_cand: pd.DataFrame,
 ) -> None:
-    output_folder = Path("data", "output")
+    output_folder = Path("konezumiaid_data", "output")
     output_folder.mkdir(parents=True, exist_ok=True)
-    readme_src = "DATAREADME.md"
-    readme_dst = output_folder / "DATAREADME.md"
-    with open(readme_src, "r") as f:
-        readme_text = f.read()
-    with open(readme_dst, "w") as f:
-        f.write(readme_text)
+    datareadme_path = Path(Path(__file__).parent, "DATAREADME.md")
+    output_readme_path = Path(output_folder, "DATAREADME.md")
+    with open(datareadme_path, "r") as f:
+        readme = f.read()
+    with open(output_readme_path, "w") as f:
+        f.write(readme)
     df_splice_gRNA = pd.concat([df_acceptor_cand, df_donor_cand])
     if not df_ptc_gRNA.empty:
         df_ptc_gRNA.to_csv(output_folder / f"{name}_ptc_gRNA.csv", index=False)

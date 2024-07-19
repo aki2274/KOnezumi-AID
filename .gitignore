@@ -1,6 +1,7 @@
 # custom
 data/*
 tmp*
+konezumiaid_data/*
 
 #NoteBook file
 *.ipynb
