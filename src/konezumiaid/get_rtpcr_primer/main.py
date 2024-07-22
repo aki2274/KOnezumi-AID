@@ -77,7 +77,7 @@ def export_primers(transcript_record: TranscriptRecord) -> list[dict]:
     fasta_path = Path("data", "uniq", "candidateprimer.fa")
     export_fasta(intron_len_added, fasta_path)
     # 9 Execute a shell script to calculate the uniqueness of the candidate primers.
-    path_get_uniqueness = Path("src", "konezumiaid", "get_rtpcr_primer", "get_uniqueness.sh")
+    path_get_uniqueness = Path(Path(__file__).parent, "get_uniqueness.sh")
     subprocess.run(["bash", path_get_uniqueness], check=True)
     # 10 Add the uniqueness information to the candidate primers.
     candidate_pairs = add_uniqueness(intron_len_added, miss_0_path, miss_1_path, miss_2_path)
