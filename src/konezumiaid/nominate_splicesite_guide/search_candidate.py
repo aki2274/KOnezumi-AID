@@ -56,7 +56,8 @@ def search_site_candidate(
         for cand in acceptor_cands
         if "TTTT" not in cand["seq"][:20]  # exclude PAM
         and (exon_end_pos[cand["exon_index"] - 1] - exon_start_pos[cand["exon_index"] - 1]) % 3 != 0
-        and (cand["exon_index"] - 1) <= index_exon_has_3_utr - 1
+        and (cand["exon_index"] - 1) < index_exon_has_3_utr 
+        # -1 means -1 to convert 0-based indexes to 1-based indexes.
         # exclude the target exon as having a 3'UTR.
     ]
 
@@ -67,8 +68,9 @@ def search_site_candidate(
         and (transcript_record.exon_end_positions[cand["exon_index"] - 1] - exon_start_pos[cand["exon_index"] - 1]) % 3
         != 0
         and (cand["exon_index"] - 1) < index_exon_has_3_utr - 1
-        # exclude the target exon as having a 3'UTR.
-        # and '<' means excluding the penultimate exon because the disruption dose not cause a frame shift.
+        # left -1 means -1 to convert 0-based indexes to 1-based indexes.
+        # right -1 means excluding the penultimate exon because the disruption dose not cause a frame shift.
+        # exclude the target exon as having a 3'UTR and penultimate exon.
     ]
 
     acceptor_candidates = link_to_crisperdirect(acceptor_candidates)
