@@ -6,7 +6,7 @@ from src.konezumiaid.create_gene_dataclass import TranscriptRecord
 
 def test_no_candidate():
     data = TranscriptRecord(
-        "NNNNGGCCNNNNNNNAAAANNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNCCNNNNNNNNNNNNNNNNNNAGNNNNNNNNCCNNNNNNNNNNNNNNNNGTNNNNNNNNNNNN",
+        "NNNNGGCCNNNNNNNAAAANNNNNNGTAGNCCNNNNNNNNNNNNNNNNNNGANNNNNNNCCNNNNNNNNNNNNNNNNAGNNNNNNNNNCCNNNNNNNNNNNNNNNNNNAGNNNNNNNNCCNNNCCNNNNNNNNNNNGTNNNNNAGNNNNN",
         # PAM isn't CC,there is TTTT(AAAA, because this gRNA is revers compliment), Donor isn't GT , Acceptor isn't AG,
         # the exon length is a multiple of 3 and skipping exon has only 3'UTR
         0,
@@ -25,7 +25,7 @@ def test_no_candidate():
 
 def test_has_candidate():
     data = TranscriptRecord(
-        "NNNNCCCNNNNNNNNNNNNNNNNNNGTNNNCCNNNNNNNNNNNNNNNNNNGTNNNNNNNCCNNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNN",
+        "NNNNCCCNCCNNNNNNNNNNNNNNNGTNAGCCNNNNNNNNNNNNNNNNNNGTNNNNNNNNNNNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNN",
         0,
         100,
         0,
@@ -39,21 +39,21 @@ def test_has_candidate():
     excepted = (
         [
             {
-                "seq": "NNCTNNNNNNNNNNNNNNNNNGG",
-                "exon_index": 3,
-                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=NNCTNNNNNNNNNNNNNNNNNGG&pam=NGG&db=mm39",
+                "seq": "GCTNACNNNNNNNNNNNNNNNGG",
+                "exon_index": 2,
+                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=GCTNACNNNNNNNNNNNNNNNGG&pam=NGG&db=mm39",
             }
         ],
         [
             {
-                "seq": "ACNNNNNNNNNNNNNNNNNNGGG",
+                "seq": "ACNNNNNNNNNNNNNNNGGNGGG",
                 "exon_index": 1,
-                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=ACNNNNNNNNNNNNNNNNNNGGG&pam=NGG&db=mm39",
+                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=ACNNNNNNNNNNNNNNNGGNGGG&pam=NGG&db=mm39",
             },
             {
-                "seq": "NACNNNNNNNNNNNNNNNNNNGG",
+                "seq": "NACNNNNNNNNNNNNNNNGGNGG",
                 "exon_index": 1,
-                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=NACNNNNNNNNNNNNNNNNNNGG&pam=NGG&db=mm39",
+                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=NACNNNNNNNNNNNNNNNGGNGG&pam=NGG&db=mm39",
             },
             {
                 "seq": "NACNNNNNNNNNNNNNNNNNNGG",
