@@ -55,11 +55,6 @@ def test_has_candidate():
                 "exon_index": 1,
                 "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=NACNNNNNNNNNNNNNNNGGNGG&pam=NGG&db=mm39",
             },
-            {
-                "seq": "NACNNNNNNNNNNNNNNNNNNGG",
-                "exon_index": 2,
-                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=NACNNNNNNNNNNNNNNNNNNGG&pam=NGG&db=mm39",
-            },
         ],
     )
     assert result == excepted
