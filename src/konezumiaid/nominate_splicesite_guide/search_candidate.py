@@ -41,9 +41,9 @@ def filter_candidate(
         if "TTTT" not in cand["seq"][:20]  # exclude PAM
         and (end_pos[cand["exon_index"] - 1] - start_pos[cand["exon_index"] - 1]) % 3 != 0
         and (
-            (cand["exon_index"] - 1) <= index_exon_has_3_utr
+            (cand["exon_index"] - 1) <= index_exon_has_3_utr - 2
             if acc_flag
-            else (cand["exon_index"] - 1) < index_exon_has_3_utr
+            else (cand["exon_index"] - 1) <= index_exon_has_3_utr - 3
         )
     ]
 
