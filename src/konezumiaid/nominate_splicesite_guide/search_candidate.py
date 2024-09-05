@@ -4,6 +4,50 @@ from konezumiaid.create_gene_dataclass import TranscriptRecord
 from konezumiaid.evaluate_grna.add_grna_info import link_to_crisperdirect
 
 
+def find_splice_site_candidate(
+    orf: str, positions: list[int], offset: int, target_seq: str, index_adjustment: int, acc_flag: bool = True
+) -> list[dict[int, str]]:
+    search_length = 25
+    seq_length = 23
+    candidates = []
+
+    for i, pos in enumerate(positions):
+        orf_segment = orf[pos - offset : pos - offset + search_length]
+        target_segment = orf[pos - 2 : pos] if acc_flag else orf[pos : pos + 2]
+
+        if "CC" in orf_segment[:4] and target_seq in target_segment:
+            for cc_idx in [idx for idx in range(3) if orf_segment[idx : idx + 2] == "CC"]:
+                candidate_seq = get_revcomp(orf_segment[cc_idx : cc_idx + seq_length])
+                candidates.append(
+                    {
+                        "seq": candidate_seq,
+                        "exon_index": i + index_adjustment,
+                    }
+                )
+
+    return candidates
+
+
+def filter_candidate(
+    candidates: list[dict[int, str]],
+    index_exon_has_3_utr: int,
+    start_pos: list[int],
+    end_pos: list[int],
+    acc_flag: bool = True,
+) -> list[dict[int, str]]:
+    return [
+        cand
+        for cand in candidates
+        if "TTTT" not in cand["seq"][:20]  # exclude PAM
+        and (end_pos[cand["exon_index"] - 1] - start_pos[cand["exon_index"] - 1]) % 3 != 0
+        and (
+            (cand["exon_index"] - 1) <= index_exon_has_3_utr
+            if acc_flag
+            else (cand["exon_index"] - 1) < index_exon_has_3_utr
+        )
+    ]
+
+
 def search_site_candidate(
     transcript_record: TranscriptRecord,
 ) -> tuple[list[dict[int, str], list[dict[int, str]]]]:
@@ -13,35 +57,11 @@ def search_site_candidate(
     ( If the target site is acceptor site, It is permissible to set the target exon as having a 3'UTR. )
     """
     orf = transcript_record.transcript_seq
-    acceptor_cands = [
-        {
-            "seq": get_revcomp(orf[start - 22 : start + 3][cc_idx : cc_idx + 23]),
-            # get 25bp sequence ,then extract 23bp sequence(PAM + 20bp) from the 25bp sequence
-            "exon_index": i + 2,
-            # exon index is i+2 because the first exon is not included in the list and the index starts from 0
-        }
-        for i, start in enumerate(transcript_record.exon_start_positions[1:])
-        # eliminate the first exon
-        if "CC" in orf[start - 22 : start + 3][:4] and "AG" in orf[start - 2 : start]
-        # Check if the site is a candidate(wheather it has PAM site or not) the acceptor site consensus seq is present
-        for cc_idx in [idx for idx in range(3) if orf[start - 22 : start + 3][idx : idx + 2] == "CC"]
-    ]
-
-    donor_cands = [
-        {
-            "seq": get_revcomp(orf[end - 21 : end + 4][cc_idx : cc_idx + 23]),
-            # get 25bp sequence ,then extract 23bp sequence(PAM + 20bp) from the 25bp sequence
-            "exon_index": i + 1,
-            # exon index is i+1 because the index starts from 0
-        }
-        for i, end in enumerate(transcript_record.exon_end_positions[:-1])
-        if "CC" in orf[end - 21 : end + 4][:4] and "GT" in orf[end : end + 2]
-        # Check if the site is a candidate(wheather it has PAM site or not) the donor site consensus seq is present
-        for cc_idx in [idx for idx in range(3) if orf[end - 21 : end + 4][idx : idx + 2] == "CC"]
-    ]
     exon_start_pos = transcript_record.exon_start_positions
     exon_end_pos = transcript_record.exon_end_positions
 
+    acceptor_cands = find_splice_site_candidate(orf, exon_start_pos[1:], 22, "AG", 2)
+    donor_cands = find_splice_site_candidate(orf, exon_end_pos[:-1], 21, "GT", 1, False)
     index_exon_has_3_utr = next(
         (
             i
@@ -50,25 +70,8 @@ def search_site_candidate(
         )
     )
 
-    # remove candidates that have "AAAA" or the exon length is a multiple of 3 or the exon has only 3'UTR
-    acceptor_candidates = [
-        cand
-        for cand in acceptor_cands
-        if "TTTT" not in cand["seq"][:20]  # exclude PAM
-        and (exon_end_pos[cand["exon_index"] - 1] - exon_start_pos[cand["exon_index"] - 1]) % 3 != 0
-        and (cand["exon_index"] - 1) <= index_exon_has_3_utr
-        # It is permissible to set the target exon as having a 3'UTR.
-    ]
-
-    donor_candidates = [
-        cand
-        for cand in donor_cands
-        if "TTTT" not in cand["seq"][:20]  # exclude PAM
-        and (transcript_record.exon_end_positions[cand["exon_index"] - 1] - exon_start_pos[cand["exon_index"] - 1]) % 3
-        != 0
-        and (cand["exon_index"] - 1) < index_exon_has_3_utr
-        # It is NOT acceptable.exon as having a 3'UTR.
-    ]
+    acceptor_candidates = filter_candidate(acceptor_cands, index_exon_has_3_utr, exon_start_pos, exon_end_pos)
+    donor_candidates = filter_candidate(donor_cands, index_exon_has_3_utr, exon_start_pos, exon_end_pos, False)
 
     acceptor_candidates = link_to_crisperdirect(acceptor_candidates)
     donor_candidates = link_to_crisperdirect(donor_candidates)
