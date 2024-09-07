@@ -5,19 +5,19 @@ from konezumiaid.evaluate_grna.add_grna_info import link_to_crisperdirect
 
 
 def find_splice_site_candidate(
-    orf: str, positions: list[int], offset: int, target_seq: str, index_adjustment: int, acc_flag: bool = True
+    orf: str, positions: list[int], offset: int, target_seq: str, index_adjustment: int, is_acceptor: bool = True
 ) -> list[dict[int, str]]:
-    search_length = 25
-    seq_length = 23
+    SEARCH_LENGTH = 25
+    TARGET_WIHT_PAM = 23
     candidates = []
 
     for i, pos in enumerate(positions):
-        orf_segment = orf[pos - offset : pos - offset + search_length]
-        target_segment = orf[pos - 2 : pos] if acc_flag else orf[pos : pos + 2]
+        orf_segment = orf[pos - offset : pos - offset + SEARCH_LENGTH]
+        target_segment = orf[pos - 2 : pos] if is_acceptor else orf[pos : pos + 2]
 
         if "CC" in orf_segment[:4] and target_seq in target_segment:
             for cc_idx in [idx for idx in range(3) if orf_segment[idx : idx + 2] == "CC"]:
-                candidate_seq = get_revcomp(orf_segment[cc_idx : cc_idx + seq_length])
+                candidate_seq = get_revcomp(orf_segment[cc_idx : cc_idx + TARGET_WIHT_PAM])
                 candidates.append(
                     {
                         "seq": candidate_seq,
@@ -33,7 +33,7 @@ def filter_candidate(
     index_exon_with_3_utr: int,
     start_pos: list[int],
     end_pos: list[int],
-    acc_flag: bool = True,
+    is_acceptor: bool = True,
 ) -> list[dict[int, str]]:
     filtered_candidates = []
     for cand in candidates:
@@ -43,7 +43,7 @@ def filter_candidate(
 
         has_no_tttt = "TTTT" not in grna
         is_not_multiple_of_3 = exon_length % 3 != 0
-        if acc_flag:
+        if is_acceptor:
             exon_skip_boundary = index_exon_with_3_utr - 2
         else:
             exon_skip_boundary = index_exon_with_3_utr - 3
