@@ -38,16 +38,18 @@ def filter_candidate(
     filtered_candidates = []
     for cand in candidates:
         grna = cand["seq"][:20]
-        exon_idx = cand["exon_index"] - 1
-        exon_length = end_pos[exon_idx] - start_pos[exon_idx]
+        target_exon_idx = cand["exon_index"] - 1
+        exon_length = end_pos[target_exon_idx] - start_pos[target_exon_idx]
+
         has_no_tttt = "TTTT" not in grna
         is_not_multiple_of_3 = exon_length % 3 != 0
         if acc_flag:
             exon_skip_boundary = index_exon_with_3_utr - 2
         else:
             exon_skip_boundary = index_exon_with_3_utr - 3
-        is_skip_exon_induce_nmd = exon_idx <= exon_skip_boundary
-        if has_no_tttt and is_not_multiple_of_3 and is_skip_exon_induce_nmd:
+        is_skiping_induces_nmd = target_exon_idx <= exon_skip_boundary
+
+        if has_no_tttt and is_not_multiple_of_3 and is_skiping_induces_nmd:
             filtered_candidates.append(cand)
     return filtered_candidates
 
