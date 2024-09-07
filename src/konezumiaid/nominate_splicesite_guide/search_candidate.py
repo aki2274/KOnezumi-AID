@@ -30,22 +30,26 @@ def find_splice_site_candidate(
 
 def filter_candidate(
     candidates: list[dict[int, str]],
-    index_exon_has_3_utr: int,
+    index_exon_with_3_utr: int,
     start_pos: list[int],
     end_pos: list[int],
     acc_flag: bool = True,
 ) -> list[dict[int, str]]:
-    return [
-        cand
-        for cand in candidates
-        if "TTTT" not in cand["seq"][:20]  # exclude PAM
-        and (end_pos[cand["exon_index"] - 1] - start_pos[cand["exon_index"] - 1]) % 3 != 0
-        and (
-            (cand["exon_index"] - 1) <= index_exon_has_3_utr - 2
-            if acc_flag
-            else (cand["exon_index"] - 1) <= index_exon_has_3_utr - 3
-        )
-    ]
+    filtered_candidates = []
+    for cand in candidates:
+        grna = cand["seq"][:20]
+        exon_idx = cand["exon_index"] - 1
+        exon_length = end_pos[exon_idx] - start_pos[exon_idx]
+        has_no_tttt = "TTTT" not in grna
+        is_not_multiple_of_3 = exon_length % 3 != 0
+        if acc_flag:
+            exon_skip_boundary = index_exon_with_3_utr - 2
+        else:
+            exon_skip_boundary = index_exon_with_3_utr - 3
+        is_skip_exon_induce_nmd = exon_idx <= exon_skip_boundary
+        if has_no_tttt and is_not_multiple_of_3 and is_skip_exon_induce_nmd:
+            filtered_candidates.append(cand)
+    return filtered_candidates
 
 
 def search_site_candidate(
@@ -59,10 +63,7 @@ def search_site_candidate(
     orf = transcript_record.transcript_seq
     exon_start_pos = transcript_record.exon_start_positions
     exon_end_pos = transcript_record.exon_end_positions
-
-    acceptor_cands = find_splice_site_candidate(orf, exon_start_pos[1:], 22, "AG", 2)
-    donor_cands = find_splice_site_candidate(orf, exon_end_pos[:-1], 21, "GT", 1, False)
-    index_exon_has_3_utr = next(
+    index_exon_with_3_utr = next(
         (
             i
             for i, (start, end) in enumerate(zip(exon_start_pos, exon_end_pos))
@@ -70,8 +71,12 @@ def search_site_candidate(
         )
     )
 
-    acceptor_candidates = filter_candidate(acceptor_cands, index_exon_has_3_utr, exon_start_pos, exon_end_pos)
-    donor_candidates = filter_candidate(donor_cands, index_exon_has_3_utr, exon_start_pos, exon_end_pos, False)
+    # 22 or 21 means 'G' in AG or GT is in edge of target window
+    acceptor_cands = find_splice_site_candidate(orf, exon_start_pos[1:], 22, "AG", 2)
+    donor_cands = find_splice_site_candidate(orf, exon_end_pos[:-1], 21, "GT", 1, False)
+
+    acceptor_candidates = filter_candidate(acceptor_cands, index_exon_with_3_utr, exon_start_pos, exon_end_pos)
+    donor_candidates = filter_candidate(donor_cands, index_exon_with_3_utr, exon_start_pos, exon_end_pos, False)
 
     acceptor_candidates = link_to_crisperdirect(acceptor_candidates)
     donor_candidates = link_to_crisperdirect(donor_candidates)
