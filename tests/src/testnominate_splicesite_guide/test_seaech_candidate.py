@@ -25,16 +25,17 @@ def test_no_candidate():
 
 def test_has_candidate():
     data = TranscriptRecord(
-        "NNNNCCCNNNNNNNNNNNNNNNNNNGTNNNCCNNNNNNNNNNNNNNNNNNGTNNNNNNNCCNNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNN",
+        "AGNNCCNNNNNNNNNNNNNNNNNNNGTNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNCCNNNNNNNNNNNNNNNNNAGNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        # PAM isn't CC,there is TTTT(AAAA, because this gRNA is revers compliment), Donor isn't GT , Acceptor isn't AG,
+        # the exon length is a multiple of 3 and skipping exon has only 3'UTR
         0,
-        100,
+        150,
         0,
-        100,
-        3,
-        [0, 30, 80],
-        [25, 50, 100],
+        149,
+        5,
+        [2, 30, 80, 110, 146],
+        [25, 50, 100, 137, 149],
     )
-
     result = search_site_candidate(data)
     excepted = (
         [
@@ -46,20 +47,10 @@ def test_has_candidate():
         ],
         [
             {
-                "seq": "ACNNNNNNNNNNNNNNNNNNGGG",
+                "seq": "ACNNNNNNNNNNNNNNNNNNNGG",
                 "exon_index": 1,
-                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=ACNNNNNNNNNNNNNNNNNNGGG&pam=NGG&db=mm39",
-            },
-            {
-                "seq": "NACNNNNNNNNNNNNNNNNNNGG",
-                "exon_index": 1,
-                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=NACNNNNNNNNNNNNNNNNNNGG&pam=NGG&db=mm39",
-            },
-            {
-                "seq": "NACNNNNNNNNNNNNNNNNNNGG",
-                "exon_index": 2,
-                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=NACNNNNNNNNNNNNNNNNNNGG&pam=NGG&db=mm39",
-            },
+                "link_to_crisprdirect": "https://crispr.dbcls.jp/?userseq=ACNNNNNNNNNNNNNNNNNNNGG&pam=NGG&db=mm39",
+            }
         ],
     )
     assert result == excepted
