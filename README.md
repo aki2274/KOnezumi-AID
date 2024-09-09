@@ -69,6 +69,30 @@ or
 konezumiaid preprocess <your refFlat.txt Path> <your mm39.fa Path>
 ```
 
+### Example
+
+```bash
+konezumiaid preprocess data/refFlat.txt data/mm39.fa
+```
+
+### Search candidate by gene symbol or transcript name (Refseq id)
+
+KOnezumi-AID accepts a gene symbol or a transcript name.  
+```text
+konezumiaid <-n | --name> <gene symbol | transcript name>
+```
+
+#### Search by gene symbol
+You can obtain the gRNAs that are present in all transcript variants.  
+> [!NOTE]  
+> If the gene has one transcript, the result is the same as searching by the transcript name
+
+#### Search by transcript name
+You can obtain the transcript's gRNAs and access more information about the gRNAs.  
+- in_start_150bp: The gRNA is located in the first 150bp of the transcript or not.
+- in_50bp_from_LEJ: The gRNA is located in the 50bp from the last exon junction or not.
+- exon_index: the index of the exon where the gRNA is located.
+
 ### batch processing
 KOnezumi-AID can process multiple search queries at once using the `batch` command. 
 For this purpose, a CSV or Excel file containing gene symbols or transcript names is required.
@@ -95,34 +119,6 @@ konezumiaid batch <-f | --file > <gene symbols or transcripts list CSV or Excel 
 > | Xkr4 |
 > | Rp1 |
 > | Sox17 |
-
-
-
-
-
-### Example
-
-```bash
-konezumiaid preprocess data/refFlat.txt data/mm39.fa
-```
-
-### Search candidate by gene symbol or transcript name (Refseq id)
-
-KOnezumi-AID accepts a gene symbol or a transcript name.  
-```text
-konezumiaid <-n | --name> <gene symbol | transcript name>
-```
-
-#### Search by gene symbol
-You can obtain the gRNAs that are present in all transcript variants.  
-> [!NOTE]  
-> If the gene has one transcript, the result is the same as searching by the transcript name
-
-#### Search by transcript name
-You can obtain the transcript's gRNAs and access more information about the gRNAs.  
-- in_start_150bp: The gRNA is located in the first 150bp of the transcript or not.
-- in_50bp_from_LEJ: The gRNA is located in the 50bp from the last exon junction or not.
-- exon_index: the index of the exon where the gRNA is located.
 
 ### Examples
 #### Search candidate by the gene symbol (gene symbol with multiple transcripts)
