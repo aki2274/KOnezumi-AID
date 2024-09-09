@@ -123,4 +123,6 @@ def main():
                 "The dataset is not found. Please preprocess the dataset by running 'konezumiaid preprocess'."
             )
         gene_name = args.name
+        if gene_name is None:
+            raise ValueError("Please specify the gene name.")
         execute(gene_name)
