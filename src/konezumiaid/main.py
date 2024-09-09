@@ -34,7 +34,7 @@ parser_preprocess.add_argument(
 )
 
 parser_batch = subparsers.add_parser("batch", help="Batch processing for multiple genes.")
-parser_batch.add_argument("-f", "--file", type=Path, help="Path to the gene CSV or Excel file")
+parser_batch.add_argument("-f", "--file", type=Path, help="Path to the gene CSV or Excel file", required=True)
 
 args = parser.parse_args()
 
