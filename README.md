@@ -69,6 +69,38 @@ or
 konezumiaid preprocess <your refFlat.txt Path> <your mm39.fa Path>
 ```
 
+### batch processing
+KOnezumi-AID can process multiple search queries at once using the `batch` command. 
+For this purpose, a CSV or Excel file containing gene symbols or transcript names is required.
+
+```text
+konezumiaid batch <-f | --file > <gene symbols or transcripts list CSV or Excel file>
+```
+
+> [!NOTE]
+> The CSV or Excel file must follow the format below.
+> - The file should consist of a **single column**.
+> - **No header row is required**. Data should start from the first row.
+> - Each row should contain only **one gene or transcript**.
+>
+> e.g. CSV file
+> ```text
+>BRCA1
+>TP53
+>EGFR
+>MYC
+>```
+> e.g. Excel file
+> | A |
+> |---|
+> | BRCA1 |
+> | TP53 |
+> | EGFR |
+> | MYC |
+
+
+
+
 ### Example
 
 ```bash
