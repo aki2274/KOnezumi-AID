@@ -114,7 +114,7 @@ konezumiaid batch <-f | --file > <gene symbols or transcripts list CSV or Excel 
 >Sox17
 >```
 > e.g. Excel file
-> | A |
+> |  |
 > |---|
 > | Xkr4 |
 > | Rp1 |
