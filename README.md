@@ -2,7 +2,7 @@
 [![DOI](https://zenodo.org/badge/673151657.svg)](https://zenodo.org/badge/latestdoi/673151657)
 
 # KOnezumi-AID  
-`KOnezumi-AID` is the command-line tool to automate the gRNA design for multiplex KO mouse using Target-AID
+**KOnezumi-AID** is the command-line tool to automate the gRNA design for multiplex KO mouse using Target-AID
 
 ## Installation
 ### Prerequisits
@@ -11,10 +11,14 @@
 
 ### Installation🔨
 #### From [Bioconda](https://anaconda.org/bioconda/konezumiaid) (Recommended)  
-`conda install -c conda-forge -c bioconda konezumiaid`
+```bash
+conda install -c conda-forge -c bioconda konezumiaid
+```
 
 #### From [PyPI](https://libraries.io/pypi/KOnezumiAID):
-`pip install KOnezumiAID`
+```bash
+pip install KOnezumiAID
+```
 
 #### Required Packages (Not needed if installed via Bioconda)
 - bedtools  
@@ -54,20 +58,29 @@ curl https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
 - gRNAs to disrupt splice donor site
 
 KOnezumi-AID provides these gRNAs in standerd output and CSV format.   
-The CSV file is located in `data/output` directory and named as `<gene symbol/transcript name>_ptc_gRNA.csv` or `<gene symbol/transcript name>_splice_gRNA.csv`.
+The CSV file is located in `data/output` directory and named as  
+`<gene symbol/transcript name>_ptc_gRNA.csv`  
+or  
+`<gene symbol/transcript name>_splice_gRNA.csv`.
 
 ### Create data set for KOnezumi-AID
 
-`konezumiaid preprocess <your refFlat.txt Path> <your mm39.fa Path>`
+```text
+konezumiaid preprocess <your refFlat.txt Path> <your mm39.fa Path>
+```
 
 ### Example
 
-`konezumiaid preprocess data/refFlat.txt data/mm39.fa`
+```bash
+konezumiaid preprocess data/refFlat.txt data/mm39.fa
+```
 
 ### Search candidate by gene symbol or transcript name (Refseq id)
 
 KOnezumi-AID accepts a gene symbol or a transcript name.  
-`konezumiaid <-n | --name> <gene symbol | transcript name>`
+```text
+konezumiaid <-n | --name> <gene symbol | transcript name>
+```
 
 #### Search by gene symbol
 You can obtain the gRNAs that are present in all transcript variants.  
@@ -80,9 +93,36 @@ You can obtain the transcript's gRNAs and access more information about the gRNA
 - in_50bp_from_LEJ: The gRNA is located in the 50bp from the last exon junction or not.
 - exon_index: the index of the exon where the gRNA is located.
 
+### batch processing
+KOnezumi-AID can process multiple search queries at once using the `batch` command. 
+For this purpose, a CSV or Excel file containing gene symbols or transcript names is required.
+
+```text
+konezumiaid batch <-f | --file > <gene symbols or transcripts list CSV or Excel file>
+```
+
+> [!NOTE]
+> The CSV or Excel file must follow the format below.
+> - The file should consist of a **single column**.
+> - **No header row is required**. Data should start from the first row.
+> - Each row should contain only **one gene or transcript**.
+>
+> e.g. CSV file
+> ```text
+>Xkr4
+>Rp1
+>Sox17
+>```
+> e.g. Excel file
+> |  |
+> |---|
+> | Xkr4 |
+> | Rp1 |
+> | Sox17 |
+
 ### Examples
 #### Search candidate by the gene symbol (gene symbol with multiple transcripts)
-```
+```bash
 $konezumiaid -n Rp1     
 Processing NM_001370921...
 Processing NM_001195662...
@@ -100,7 +140,7 @@ List of gRNAs to disrupt splice donor site
 No gRNA found.
 ```
 #### Search candidate by the gene symbol (gene symbol with single transcript)  
-```
+```bash
 $konezumiaid -n Mafa    
 List of gRNAs to generate PTC (premature termination codon)
   Target sequence (20mer + PAM)  Recommended Target amino acid                                                      link to CRISPRdirect
@@ -115,7 +155,7 @@ No gRNA found.
 ```
 
 #### Search candidate by the transcript name  
-```
+```bash
 $ konezumiaid -n NM_001370921
 List of gRNAs to generate PTC (premature termination codon)
    Target sequence (20mer + PAM)  Recommended Target amino acid                                                      link to CRISPRdirect

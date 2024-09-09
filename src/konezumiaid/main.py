@@ -33,6 +33,8 @@ parser_preprocess.add_argument(
     "chromosome_fasta_path", type=Path, help="Path to the chromosome fasta file.(e.g. mm39.fa)"
 )
 
+parser_batch = subparsers.add_parser("batch", help="Batch processing for multiple genes.")
+parser_batch.add_argument("-f", "--file", type=Path, help="Path to the gene CSV or Excel file", required=True)
 
 args = parser.parse_args()
 
@@ -106,10 +108,21 @@ def main():
             print("Pre-processing is already done.")
             sys.exit(0)
         execute_export(args.refflat_path, args.chromosome_fasta_path)
+    elif args.subcommand == "batch":
+        if not args.file.exists():
+            raise FileNotFoundError(f"{args.file} is not found.")
+        if args.file.suffix not in [".csv", ".xlsx"]:
+            raise ValueError("The file must be either CSV or Excel file.")
+        df = pd.read_csv(args.file, header=None) if args.file.suffix == ".csv" else pd.read_excel(args.file, header=None)
+        for gene_name in df[0]:
+            print(f"Processing {gene_name}...")
+            execute(gene_name)
     else:
         if not path_refFlat.exists() or not path_seq.exists():
             raise FileNotFoundError(
                 "The dataset is not found. Please preprocess the dataset by running 'konezumiaid preprocess'."
             )
         gene_name = args.name
+        if gene_name is None:
+            raise ValueError("Please specify the gene name.")
         execute(gene_name)
