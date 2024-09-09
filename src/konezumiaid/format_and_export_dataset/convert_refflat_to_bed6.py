@@ -9,9 +9,9 @@ def convert_refFlat_to_bed6(df_refflat: pd.DataFrame, output_file: Path) -> None
             chrom = row["chrom"]
             txStart = row["txStart"]
             txEnd = row["txEnd"]
-            transcriot_name = row["name"]
+            transcript_name = row["name"]
             score = "0"
             strand = row["strand"]
 
-            bed_line = "\t".join([chrom, txStart, txEnd, transcriot_name, score, strand])
+            bed_line = "\t".join([chrom, txStart, txEnd, transcript_name, score, strand])
             outfile.write(bed_line + "\n")
