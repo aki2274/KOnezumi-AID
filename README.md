@@ -85,18 +85,17 @@ konezumiaid batch <-f | --file > <gene symbols or transcripts list CSV or Excel 
 >
 > e.g. CSV file
 > ```text
->BRCA1
->TP53
->EGFR
->MYC
+>Xkr4
+>Rp1
+>Sox17
 >```
 > e.g. Excel file
 > | A |
 > |---|
-> | BRCA1 |
-> | TP53 |
-> | EGFR |
-> | MYC |
+> | Xkr4 |
+> | Rp1 |
+> | Sox17 |
+
 
 
 
