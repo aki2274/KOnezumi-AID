@@ -59,8 +59,7 @@ def search_site_candidate(
 ) -> tuple[list[dict[int, str], list[dict[int, str]]]]:
     """
     Search gRNA candidate for targeting the splice site. The candidate must have PAM site and the consensus sequence of the splice site.
-    Exclude candidates that have "AAAA" or the exon length is a multiple of 3 or the exon has 3'UTR.
-    ( If the target site is acceptor site, It is permissible to set the target exon as having a 3'UTR. )
+    Exclude candidates that have "AAAA" or the exon length is a multiple of 3 or the exon has 3'UTR and the exon just before that exon.
     """
     orf = transcript_record.transcript_seq
     exon_start_pos = transcript_record.exon_start_positions
