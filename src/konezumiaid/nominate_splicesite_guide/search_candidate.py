@@ -78,7 +78,7 @@ def search_site_candidate(
     donor_cands = find_splice_site_candidate(orf, exon_end_pos[:-1], 21, "GT", 1, False)
 
     acceptor_candidates = filter_candidate(acceptor_cands, index_exon_with_3_utr, exon_start_pos, exon_end_pos)
-    donor_candidates = filter_candidate(donor_cands, index_exon_with_3_utr, exon_start_pos, exon_end_pos, False)
+    donor_candidates = filter_candidate(donor_cands, index_exon_with_3_utr, exon_start_pos, exon_end_pos)
 
     acceptor_candidates = link_to_crisperdirect(acceptor_candidates)
     donor_candidates = link_to_crisperdirect(donor_candidates)
