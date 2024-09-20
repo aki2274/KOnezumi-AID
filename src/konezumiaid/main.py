@@ -50,8 +50,8 @@ def konezumiaid_main(
 
 def execute(input_name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     name = input_name
-    refflat_path = Path("konezumiaid_data", "refFlat_genedata_sorted.pkl")
-    seq_path = Path("konezumiaid_data", "sorted_seq_dict.pkl")
+    refflat_path = Path("konezumiaid_data", "unique_coding_refflat.pkl")
+    seq_path = Path("konezumiaid_data", "refseq_to_transcribed_region.pkl")
     refflat_dic = pickle.load(open(refflat_path, "rb"))
     seq_dict = pickle.load(open(seq_path, "rb"))
     if not name.startswith("NM_"):
