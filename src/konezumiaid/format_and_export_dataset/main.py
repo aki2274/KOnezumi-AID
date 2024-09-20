@@ -30,8 +30,8 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
     Returns:
         None
     """
-    sorted_refflat_path = Path("konezumiaid_data", "refFlat_genedata_sorted.pkl")
-    sorted_transcript_seq_dict_path = Path("konezumiaid_data", "sorted_seq_dict.pkl")
+    sorted_refflat_path = Path("konezumiaid_data", "unique_coding_refflat.pkl")
+    sorted_transcript_seq_dict_path = Path("konezumiaid_data", "refseq_to_transcribed_region.pkl")
 
     bed6_path = Path("konezumiaid_data", "refFlat.bed")
 
@@ -59,9 +59,9 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
     df_refflat_sorted = clean_refflat(df_refflat_sorted)
 
     transcript_seq_dict = read_fasta(transcripts_fast_path)
-    print("creating transcript_seq_dict")
+    print("creating RefSeq to transcribed region dictionary")
     transcript_seq_sorted_dict = create_strand_plus_seq_dict(df_removed, transcript_seq_dict)
-    print("created transcript_seq_dict")
+    print("created RefSeq to transcribed region dictionary")
     with open(sorted_transcript_seq_dict_path, "wb") as f:
         pickle.dump(transcript_seq_sorted_dict, f)
     sorted_refflat = df_refflat_sorted.to_dict(orient="records")
