@@ -3,6 +3,8 @@ import pandas as pd
 from pathlib import Path
 from konezumiaid.create_gene_dataclass import TranscriptRecord
 
+def flag_single_exon(transcript_record: TranscriptRecord) -> bool:
+    return transcript_record.exon_count == 1
 
 def format_single_transcript_result(
     candidate_primers: list[dict],
@@ -65,12 +67,15 @@ def show_table(
     df_ptc_gRNA: pd.DataFrame,
     df_acceptor_cand: pd.DataFrame,
     df_donor_cand: pd.DataFrame,
+    single_exon: bool = False,
 ) -> None:
     print("List of gRNAs to generate PTC (premature termination codon)")
     if df_ptc_gRNA.empty:
         print("No gRNA found.")
     else:
         print(df_ptc_gRNA.to_string())
+    if single_exon:
+        return
     print("List of gRNAs to disrupt splice acceptor site")
     if df_acceptor_cand.empty:
         print("No gRNA found.")
@@ -88,6 +93,7 @@ def export_csv(
     df_ptc_gRNA: pd.DataFrame,
     df_acceptor_cand: pd.DataFrame,
     df_donor_cand: pd.DataFrame,
+    single_exon: bool = False,
 ) -> None:
     output_folder = Path("konezumiaid_data", "output")
     output_folder.mkdir(parents=True, exist_ok=True)
