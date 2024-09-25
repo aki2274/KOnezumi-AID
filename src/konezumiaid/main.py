@@ -50,8 +50,8 @@ def konezumiaid_main(
 
 def execute(input_name: str) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
     name = input_name
-    refflat_path = Path("konezumiaid_data", "refFlat_genedata_sorted.pkl")
-    seq_path = Path("konezumiaid_data", "sorted_seq_dict.pkl")
+    refflat_path = Path("konezumiaid_data", "unique_coding_refflat.pkl")
+    seq_path = Path("konezumiaid_data", "refseq_to_transcribed_region.pkl")
     refflat_dic = pickle.load(open(refflat_path, "rb"))
     seq_dict = pickle.load(open(seq_path, "rb"))
     if not name.startswith("NM_"):
@@ -99,8 +99,8 @@ def execute(input_name: str) -> tuple[list[dict], list[dict], list[dict], list[d
 def main():
     konezumiaid_dir = Path("konezumiaid_data")
     konezumiaid_dir.mkdir(parents=True, exist_ok=True)
-    path_refFlat = Path("konezumiaid_data", "refFlat_genedata_sorted.pkl")
-    path_seq = Path("konezumiaid_data", "sorted_seq_dict.pkl")
+    path_refFlat = Path("konezumiaid_data", "unique_coding_refflat.pkl")
+    path_seq = Path("konezumiaid_data", "refseq_to_transcribed_region.pkl")
     if args.subcommand == "preprocess":
         if not shutil.which("bedtools"):
             raise Exception("bedtools is not installed. Please install bedtools before running this script.")
