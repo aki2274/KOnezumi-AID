@@ -111,13 +111,11 @@ def test_format_single_transcript_result():
     except_single_exon = [
         {
             "Target sequence (20mer + PAM)": "AAAA",
-            "Recommended": True,
             "Target amino acid": "123M",
             "link to CRISPRdirect": "https://crisprdirect.org",
         },
         {
             "Target sequence (20mer + PAM)": "TTTT",
-            "Recommended": False,
             "Target amino acid": "12L",
             "link to CRISPRdirect": "https://crisprdirect.org",
         },
