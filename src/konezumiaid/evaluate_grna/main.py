@@ -29,14 +29,15 @@ def apply_nmd_rules(transcript_record: TranscriptRecord, ct_cand: list[str], ga_
     # 1. create gRNA list
     gRNA_list = create_candidates_list_dict(ct_cand, ga_cand)
 
-    # 2. label in start 150bp
-    gRNA_list = label_in_start_150bp(gRNA_list, transcript_record)
+    
 
     if transcript_record.exon_count == 1:  # The case of single exon
-        # 3. label in front half
+        # 2. label in front half
         gRNA_list = eliminate_in_back_half(gRNA_list, transcript_record)
 
     else:  # The case of multi exon
+        # 2. label in start 150bp
+        gRNA_list = label_in_start_150bp(gRNA_list, transcript_record)
         # 3. eliminate in last exon
         gRNA_list = eliminate_in_last_exon(gRNA_list, transcript_record)
         # 4. label in 50bp from LEJ
@@ -44,7 +45,7 @@ def apply_nmd_rules(transcript_record: TranscriptRecord, ct_cand: list[str], ga_
         # 5. label in more than 400bp exon
         gRNA_list = label_in_more_than_400bp_exon(gRNA_list, transcript_record)
 
-    # 4 or 5. combine ct_cand and ga_cand to create cand_seq
+    # combine ct_cand and ga_cand to create cand_seq
     candidates = []
     for d in gRNA_list:
         tmp_dict = {}
@@ -57,6 +58,6 @@ def apply_nmd_rules(transcript_record: TranscriptRecord, ct_cand: list[str], ga_
                 tmp_dict[k] = v
         candidates.append(tmp_dict)
 
-    # 6. add primer info
+    # link to CRISPRdirect
     candidates = link_to_crisperdirect(candidates)
     return candidates
