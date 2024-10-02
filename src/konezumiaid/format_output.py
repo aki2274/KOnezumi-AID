@@ -3,8 +3,10 @@ import pandas as pd
 from pathlib import Path
 from konezumiaid.create_gene_dataclass import TranscriptRecord
 
+
 def flag_single_exon(transcript_record: TranscriptRecord) -> bool:
     return transcript_record.exon_count == 1
+
 
 def format_single_transcript_result(
     candidate_primers: list[dict],
@@ -13,18 +15,29 @@ def format_single_transcript_result(
 ) -> pd.DataFrame:
     if flag_ptc:
         if transcript_record.exon_count == 1:
-            is_recomend = [not d["in_start_150bp"] for d in candidate_primers]
+            output_primers = [
+                {
+                    "Target sequence (20mer + PAM)": d["seq"],
+                    "Target amino acid": d["aminoacid"],
+                    "link to CRISPRdirect": d["link_to_crisprdirect"],
+                }
+                for d in candidate_primers
+            ]
         else:
-            is_recomend = [not any([d["in_start_150bp"], d["in_50bp_from_LEJ"]]) for d in candidate_primers]
-        output_primers = [
-            {
-                "Target sequence (20mer + PAM)": d["seq"],
-                "Recommended": r,
-                "Target amino acid": d["aminoacid"],
-                "link to CRISPRdirect": d["link_to_crisprdirect"],
-            }
-            for d, r in zip(candidate_primers, is_recomend)
-        ]
+            # Set is_recommend to True if all conditions are False
+            is_recomend = [
+                not any([d["in_start_150bp"], d["in_50bp_from_LEJ"], d["in_more_than_400bp_exon"]])
+                for d in candidate_primers
+            ]
+            output_primers = [
+                {
+                    "Target sequence (20mer + PAM)": d["seq"],
+                    "Recommended": r,
+                    "Target amino acid": d["aminoacid"],
+                    "link to CRISPRdirect": d["link_to_crisprdirect"],
+                }
+                for d, r in zip(candidate_primers, is_recomend)
+            ]
     else:
         exon_index = [d["exon_index"] for d in candidate_primers]
         output_primers = [

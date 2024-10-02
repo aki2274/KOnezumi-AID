@@ -8,6 +8,7 @@ def test_format_single_transcript_result():
             "seq": "AAAA",
             "in_start_150bp": False,
             "in_50bp_from_LEJ": False,
+            "in_more_than_400bp_exon": False,
             "aminoacid": "1M",
             "link_to_crisprdirect": "https://crisprdirect.org",
         },
@@ -15,6 +16,7 @@ def test_format_single_transcript_result():
             "seq": "TTTT",
             "in_start_150bp": True,
             "in_50bp_from_LEJ": False,
+            "in_more_than_400bp_exon": False,
             "aminoacid": "12L",
             "link_to_crisprdirect": "https://crisprdirect.org",
         },
@@ -22,6 +24,7 @@ def test_format_single_transcript_result():
             "seq": "CCCC",
             "in_start_150bp": False,
             "in_50bp_from_LEJ": True,
+            "in_more_than_400bp_exon": False,
             "aminoacid": "32P",
             "link_to_crisprdirect": "https://crisprdirect.org",
         },
@@ -29,6 +32,7 @@ def test_format_single_transcript_result():
             "seq": "GGGG",
             "in_start_150bp": True,
             "in_50bp_from_LEJ": True,
+            "in_more_than_400bp_exon": True,
             "aminoacid": "451A",
             "link_to_crisprdirect": "https://crisprdirect.org",
         },
@@ -36,13 +40,11 @@ def test_format_single_transcript_result():
     candidate_single_exon = [
         {
             "seq": "AAAA",
-            "in_start_150bp": False,
             "aminoacid": "123M",
             "link_to_crisprdirect": "https://crisprdirect.org",
         },
         {
             "seq": "TTTT",
-            "in_start_150bp": True,
             "aminoacid": "12L",
             "link_to_crisprdirect": "https://crisprdirect.org",
         },
@@ -109,13 +111,11 @@ def test_format_single_transcript_result():
     except_single_exon = [
         {
             "Target sequence (20mer + PAM)": "AAAA",
-            "Recommended": True,
             "Target amino acid": "123M",
             "link to CRISPRdirect": "https://crisprdirect.org",
         },
         {
             "Target sequence (20mer + PAM)": "TTTT",
-            "Recommended": False,
             "Target amino acid": "12L",
             "link to CRISPRdirect": "https://crisprdirect.org",
         },
