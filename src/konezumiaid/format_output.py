@@ -24,6 +24,7 @@ def format_single_transcript_result(
                 for d in candidate_primers
             ]
         else:
+            # Set is_recommend to True if all conditions are False
             is_recomend = [
                 not any([d["in_start_150bp"], d["in_50bp_from_LEJ"], d["in_more_than_400bp_exon"]])
                 for d in candidate_primers
