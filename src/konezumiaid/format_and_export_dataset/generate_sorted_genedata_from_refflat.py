@@ -1,5 +1,6 @@
 from __future__ import annotations
 import pandas as pd
+import re
 
 
 def read_refflat(path_refFlat: str) -> list[list[str]]:
@@ -21,6 +22,9 @@ def remove_transcript_duplicates(
     export_df = unique_df[~unique_df["geneName"].isin(duplicates_df["geneName"])]
     return export_df
 
+def extract_autosomes_and_sex_chr(df_refflat: pd.DataFrame) -> pd.DataFrame:
+    # remove the alternative assemblies as chromosomes including '_alt', '_random', '_fix', and '_Un' suffix.
+    return df_refflat[df_refflat["chrom"].str.contains(r"chr\d+|chrX|chrY")]
 
 def remove_NR_transcripts(df_refflat: pd.DataFrame) -> pd.DataFrame:
     # remove the transcripts that are not in the RefSeq database

@@ -13,6 +13,7 @@ from konezumiaid.format_and_export_dataset.generate_sorted_genedata_from_refflat
     built_gene_dataframe,
     clean_refflat,
     remove_transcript_duplicates,
+    extract_autosomes_and_sex_chr,
     remove_NR_transcripts,
 )
 
@@ -37,6 +38,7 @@ def export_pkl(refflat_path: Path, chromosome_fasta_path: Path) -> None:
 
     df_refflat = built_gene_dataframe(refflat_path)
     df_refflat = remove_transcript_duplicates(df_refflat)
+    df_refflat = extract_autosomes_and_sex_chr(df_refflat)
     df_removed = remove_NR_transcripts(df_refflat)
     convert_refFlat_to_bed6(df_removed, bed6_path)
 
