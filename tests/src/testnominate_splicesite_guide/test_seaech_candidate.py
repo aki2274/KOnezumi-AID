@@ -11,7 +11,7 @@ def test_no_candidate():
         # the exon length is a multiple of 3 and skipping exon has only 3'UTR
         0,
         150,
-        0,
+        2,
         130,
         4,
         [0, 30, 80, 110, 146],
@@ -30,7 +30,7 @@ def test_has_candidate():
         # the exon length is a multiple of 3 and skipping exon has only 3'UTR
         0,
         150,
-        0,
+        4,
         149,
         5,
         [2, 30, 80, 110, 146],
