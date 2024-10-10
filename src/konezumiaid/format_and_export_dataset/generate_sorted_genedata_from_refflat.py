@@ -1,5 +1,6 @@
 from __future__ import annotations
 import pandas as pd
+import re
 
 
 def read_refflat(path_refFlat: str) -> list[list[str]]:
@@ -20,6 +21,11 @@ def remove_transcript_duplicates(
     duplicates_df = df_refflat[df_refflat.duplicated("name", keep=False)]
     export_df = unique_df[~unique_df["geneName"].isin(duplicates_df["geneName"])]
     return export_df
+
+
+def extract_autosomes_and_sex_chr(df_refflat: pd.DataFrame) -> pd.DataFrame:
+    # remove the alternative assemblies as chromosomes including '_alt', '_random', '_fix', and '_Un' suffix.
+    return df_refflat[df_refflat["chrom"].str.contains(r"chr\d+$|chrX$|chrY$")]
 
 
 def remove_NR_transcripts(df_refflat: pd.DataFrame) -> pd.DataFrame:
@@ -66,18 +72,10 @@ def clea_by_txStart(refflta_object: pd.DataFrame) -> pd.DataFrame:
     refflta_object["txEnd"] = refflta_object["txEnd"] - refflta_object["txStart"]
     refflta_object["cdsStart"] = refflta_object["cdsStart"] - refflta_object["txStart"]
     refflta_object["cdsEnd"] = refflta_object["cdsEnd"] - refflta_object["txStart"]
-    refflta_object["exonEnds"] = [
-        int(element) - refflta_object["txStart"]
-        for element in refflta_object["exonEnds"]
-    ]
-    refflta_object["exonStarts"] = [
-        int(element) - refflta_object["txStart"]
-        for element in refflta_object["exonStarts"]
-    ]
+    refflta_object["exonEnds"] = [int(element) - refflta_object["txStart"] for element in refflta_object["exonEnds"]]
+    refflta_object["exonStarts"] = [int(element) - refflta_object["txStart"] for element in refflta_object["exonStarts"]]
     refflta_object["txStart"] = 0
-    refflta_object["exonStarts"] = ",".join(
-        map(str, sorted(refflta_object["exonStarts"]))
-    )
+    refflta_object["exonStarts"] = ",".join(map(str, sorted(refflta_object["exonStarts"])))
     refflta_object["exonEnds"] = ",".join(map(str, sorted(refflta_object["exonEnds"])))
     return refflta_object
 
@@ -89,22 +87,14 @@ def clean_by_strand(refflat_object: pd.DataFrame) -> pd.DataFrame:
         refflat_object["exonEnds"] = refflat_object["exonEnds"].split(",")
         refflat_object = convert_str_int_in_df(refflat_object)
 
-        refflat_object["txStart"] = abs(
-            refflat_object["txStart"] - refflat_object["txEnd"]
-        )
-        refflat_object["cdsStart"] = abs(
-            refflat_object["cdsStart"] - refflat_object["txEnd"]
-        )
-        refflat_object["cdsEnd"] = abs(
-            refflat_object["cdsEnd"] - refflat_object["txEnd"]
-        )
+        refflat_object["txStart"] = abs(refflat_object["txStart"] - refflat_object["txEnd"])
+        refflat_object["cdsStart"] = abs(refflat_object["cdsStart"] - refflat_object["txEnd"])
+        refflat_object["cdsEnd"] = abs(refflat_object["cdsEnd"] - refflat_object["txEnd"])
         refflat_object["exonEnds"] = [
-            abs(int(element) - refflat_object["txEnd"])
-            for element in refflat_object["exonEnds"]
+            abs(int(element) - refflat_object["txEnd"]) for element in refflat_object["exonEnds"]
         ]
         refflat_object["exonStarts"] = [
-            abs(int(element) - refflat_object["txEnd"])
-            for element in refflat_object["exonStarts"]
+            abs(int(element) - refflat_object["txEnd"]) for element in refflat_object["exonStarts"]
         ]
         refflat_object["txEnd"] = 0
 
@@ -121,12 +111,8 @@ def clean_by_strand(refflat_object: pd.DataFrame) -> pd.DataFrame:
         refflat_object["cdsEnd"] = cdsStart
         refflat_object["exonStarts"] = exonEnds
         refflat_object["exonEnds"] = exonStarts
-        refflat_object["exonStarts"] = ",".join(
-            map(str, sorted(refflat_object["exonStarts"]))
-        )
-        refflat_object["exonEnds"] = ",".join(
-            map(str, sorted(refflat_object["exonEnds"]))
-        )
+        refflat_object["exonStarts"] = ",".join(map(str, sorted(refflat_object["exonStarts"])))
+        refflat_object["exonEnds"] = ",".join(map(str, sorted(refflat_object["exonEnds"])))
     return refflat_object
 
 
