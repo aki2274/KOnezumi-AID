@@ -5,6 +5,7 @@ from src.konezumiaid.format_and_export_dataset.generate_sorted_genedata_from_ref
     built_gene_dataframe,
     clean_refflat,
     remove_transcript_duplicates,
+    extract_autosomes_and_sex_chr,
 )
 
 
@@ -224,3 +225,11 @@ def test_remove_transcript_duplicates():
         },
     ]
     assert result_dataframe.to_dict(orient="records") == excepted
+
+
+def test_extract_autosomes_and_sex_chr():
+    test_chr = ["chr1", "chr2", "chrX", "chrY", "chrM", "chr1_KI270706v1_random"]
+    pd_df = pd.DataFrame({"chrom": test_chr})
+    excepted = pd.DataFrame({"chrom": ["chr1", "chr2", "chrX", "chrY"]})
+    result = extract_autosomes_and_sex_chr(pd_df)
+    assert result.to_dict(orient="records") == excepted.to_dict(orient="records")
