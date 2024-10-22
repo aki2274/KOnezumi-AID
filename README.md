@@ -93,7 +93,7 @@ You can obtain the transcript's gRNAs and access more information about the gRNA
 - in_50bp_from_LEJ: The gRNA is located in the 50bp from the last exon junction or not.
 - exon_index: the index of the exon where the gRNA is located.
 
-### batch processing
+### Batch processing
 KOnezumi-AID can process multiple search queries at once using the `batch` command. 
 For this purpose, a CSV or Excel file containing gene symbols or transcript names is required.
 
@@ -180,4 +180,9 @@ List of gRNAs to disrupt splice donor site
   Target sequence (20mer + PAM)  Exon index                                                      link to CRISPRdirect
 0       TACCTTGCCCAAGTCCATCATGG           8  https://crispr.dbcls.jp/?userseq=TACCTTGCCCAAGTCCATCATGG&pam=NGG&db=mm39
 1       TTACCTCTCACAGGTGAAGATGG          22  https://crispr.dbcls.jp/?userseq=TTACCTCTCACAGGTGAAGATGG&pam=NGG&db=mm39
+```
+
+#### version check
+```bash
+$ konezumiaid < -v | --version >
 ```
