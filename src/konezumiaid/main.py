@@ -25,7 +25,7 @@ from konezumiaid.format_output import (
 try:
     version = importlib.metadata.version("konezumiaid")
 except importlib.metadata.PackageNotFoundError:
-    version = None
+    version = "could not be retrieved"
 
 parser = argparse.ArgumentParser(
     description="This is KonezumiAID. A software to automate the design of gRNA for multiplex KO mouse using Target-AID"
