@@ -5,6 +5,7 @@ import argparse
 import sys
 import shutil
 from pathlib import Path
+import importlib.metadata
 from konezumiaid.create_gene_dataclass import TranscriptRecord
 from konezumiaid.format_and_export_dataset.main import execute_export
 from konezumiaid.create_gene_dataclass import create_dataclass
@@ -21,10 +22,16 @@ from konezumiaid.format_output import (
 
 # from konezumiaid.get_rtpcr_primer.main import export_primers
 
+try:
+    version = importlib.metadata.version("konezumiaid")
+except importlib.metadata.PackageNotFoundError:
+    version = "could not be retrieved"
+
 parser = argparse.ArgumentParser(
     description="This is KonezumiAID. A software to automate the design of gRNA for multiplex KO mouse using Target-AID"
 )
 parser.add_argument("-n", "--name", type=str, help="Gene name or transcript name (Refseq ID) you want to.")
+parser.add_argument("-v", "--version", action="version", version=f"KOnezumi-AID version {version}")
 
 subparsers = parser.add_subparsers(dest="subcommand")
 
