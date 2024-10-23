@@ -182,7 +182,7 @@ List of gRNAs to disrupt splice donor site
 1       TTACCTCTCACAGGTGAAGATGG          22  https://crispr.dbcls.jp/?userseq=TTACCTCTCACAGGTGAAGATGG&pam=NGG&db=mm39
 ```
 
-### version check
+### Version check
 ```bash
 $ konezumiaid < -v | --version >
 ```
