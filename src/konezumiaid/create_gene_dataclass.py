@@ -16,6 +16,8 @@ class TranscriptRecord:
 
 def create_dataclass(transcript_name: str, refflat: list[dict], transcript_seq_dict: dict) -> TranscriptRecord:
     # Create dataclass from the transcript name.
+    if "." in transcript_name:
+        transcript_name = transcript_name.split(".")[0]
     transcript_filtered = next(
         (transcript_data for transcript_data in refflat if transcript_data["name"] == transcript_name),
         None,
