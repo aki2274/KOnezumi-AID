@@ -94,8 +94,8 @@ You can obtain the transcript's gRNAs and access more information about the gRNA
 - Exon　index: the index of the exon where the gRNA is located.
 
 > [!NOTE]
-> The RefSeq ID version number may change over time  (e.g., NM_111111 -> NM_111111.1 -> NM_111111.2).  
-> In any version, KOnezumi-AID will operate as shown in the example.(e.g., NM_111111.2 -> NM_111111).
+> The RefSeq ID version number may change over time.    
+> Regardless of the version, KOnezumi-AID will function as shown in the example (e.g., NM_111111.2 → NM_111111) because the refFlat file does not support version numbers.
 
 ### Batch processing
 KOnezumi-AID can process multiple search queries at once using the `batch` command. 
