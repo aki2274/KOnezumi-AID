@@ -75,7 +75,7 @@ konezumiaid preprocess <your refFlat.txt Path> <your mm39.fa Path>
 konezumiaid preprocess data/refFlat.txt data/mm39.fa
 ```
 
-### Search candidate by gene symbol or transcript name (Refseq id)
+### Search candidate by gene symbol or transcript name (Refseq ID)
 
 KOnezumi-AID accepts a gene symbol or a transcript name.  
 ```text
@@ -89,9 +89,12 @@ You can obtain the gRNAs that are present in all transcript variants.
 
 #### Search by transcript name
 You can obtain the transcript's gRNAs and access more information about the gRNAs.  
-- in_start_150bp: The gRNA is located in the first 150bp of the transcript or not.
-- in_50bp_from_LEJ: The gRNA is located in the 50bp from the last exon junction or not.
-- exon_index: the index of the exon where the gRNA is located.
+- Recommended: whether the gRNA is recommended or not.
+- Target amino acid: the amino acid that the gRNA targets.
+- Exon　index: the index of the exon where the gRNA is located.
+
+> [!NOTE]
+> KOnezumi-AID ignores the minor version of the RefSeq ID (e.g., NM_111111.2 → NM_111111) because the refFlat file does not support version numbers.
 
 ### Batch processing
 KOnezumi-AID can process multiple search queries at once using the `batch` command. 
