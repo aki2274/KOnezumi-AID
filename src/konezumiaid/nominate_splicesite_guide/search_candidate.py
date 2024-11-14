@@ -70,14 +70,14 @@ def search_site_candidate(
         (
             i
             for i, (start, end) in enumerate(zip(exon_start_pos, exon_end_pos))
-            if start < transcript_record.cds_end <= end
+            if start <= transcript_record.cds_end <= end
         )
     ) 
     index_exon_with_start_codon = next(
         (
-            i 
-            for i , (start, end) in enumerate(zip(exon_start_pos, exon_end_pos))
-            if start < transcript_record.cds_start <= end
+            i
+            for i, (start, end) in enumerate(zip(exon_start_pos, exon_end_pos))
+            if start <= transcript_record.cds_start <= end
         )
     ) 
 
