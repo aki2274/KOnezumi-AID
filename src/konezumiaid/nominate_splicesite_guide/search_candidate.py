@@ -66,28 +66,31 @@ def search_site_candidate(
     orf = transcript_record.transcript_seq
     exon_start_pos = transcript_record.exon_start_positions
     exon_end_pos = transcript_record.exon_end_positions
+    index_exon_with_start_codon = next(
+        (
+            i
+            for i, (start, end) in enumerate(zip(exon_start_pos, exon_end_pos))
+            if start <= transcript_record.cds_start <= end
+        )
+    )
     index_exon_with_stop_codon = next(
         (
             i
             for i, (start, end) in enumerate(zip(exon_start_pos, exon_end_pos))
-            if start < transcript_record.cds_end <= end
+            if start <= transcript_record.cds_end <= end
         )
-    ) 
-    index_exon_with_start_codon = next(
-        (
-            i 
-            for i , (start, end) in enumerate(zip(exon_start_pos, exon_end_pos))
-            if start < transcript_record.cds_start <= end
-        )
-    ) 
-
+    )
 
     # 22 or 21 means 'G' in AG or GT is in edge of target window
     acceptor_cands = find_splice_site_candidate(orf, exon_start_pos[1:], 22, "AG", 2)
     donor_cands = find_splice_site_candidate(orf, exon_end_pos[:-1], 21, "GT", 1, False)
 
-    acceptor_candidates = filter_candidate(acceptor_cands,index_exon_with_start_codon, index_exon_with_stop_codon, exon_start_pos, exon_end_pos)
-    donor_candidates = filter_candidate(donor_cands,index_exon_with_start_codon, index_exon_with_stop_codon, exon_start_pos, exon_end_pos)
+    acceptor_candidates = filter_candidate(
+        acceptor_cands, index_exon_with_start_codon, index_exon_with_stop_codon, exon_start_pos, exon_end_pos
+    )
+    donor_candidates = filter_candidate(
+        donor_cands, index_exon_with_start_codon, index_exon_with_stop_codon, exon_start_pos, exon_end_pos
+    )
 
     acceptor_candidates = link_to_crisperdirect(acceptor_candidates)
     donor_candidates = link_to_crisperdirect(donor_candidates)
