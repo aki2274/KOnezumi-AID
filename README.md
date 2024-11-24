@@ -3,7 +3,7 @@
 <p align="center">
 <img src="KOnezumi-AID_logo.png">
 </p>
-# KOnezumi-AID  
+
 **KOnezumi-AID** is the command-line tool to automate the gRNA design for multiplex KO mouse using Target-AID
 
 ## Installation
