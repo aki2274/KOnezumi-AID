@@ -59,9 +59,9 @@ curl https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz |
 
 KOnezumi-AID provides these gRNAs in standerd output and CSV format.   
 The CSV file is located in `data/output` directory and named as  
-`<gene symbol/transcript name>_ptc_gRNA.csv`  
+`<gene symbol|transcript name>_ptc_gRNA.csv`  
 or  
-`<gene symbol/transcript name>_splice_gRNA.csv`.
+`<gene symbol|transcript name>_splice_gRNA.csv`.
 
 ### Create data set for KOnezumi-AID
 
@@ -79,7 +79,7 @@ konezumiaid preprocess data/refFlat.txt data/mm39.fa
 
 KOnezumi-AID accepts a gene symbol or a transcript name.  
 ```text
-konezumiaid <-n | --name> <gene symbol | transcript name>
+konezumiaid <-n|--name> <gene symbol|ranscript name>
 ```
 
 #### Search by gene symbol
@@ -101,7 +101,7 @@ KOnezumi-AID can process multiple search queries at once using the `batch` comma
 For this purpose, a CSV or Excel file containing gene symbols or transcript names is required.
 
 ```text
-konezumiaid batch <-f | --file > <gene symbols or transcripts list CSV or Excel file>
+konezumiaid batch <-f|--file> <gene symbols or transcripts list CSV or Excel file>
 ```
 
 > [!NOTE]
@@ -187,5 +187,5 @@ List of gRNAs to disrupt splice donor site
 
 ### Version check
 ```bash
-$ konezumiaid < -v | --version >
+$ konezumiaid <-v|--version>
 ```
