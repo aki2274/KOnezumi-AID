@@ -43,9 +43,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="2.1230882"
-     inkscape:cx="61.467065"
-     inkscape:cy="196.64751"
+     inkscape:zoom="0.75062503"
+     inkscape:cx="340.383"
+     inkscape:cy="175.18734"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="-8"
@@ -107,6 +107,6 @@
        id="text490"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:42.6667px;font-family:Montserrat;-inkscape-font-specification:Montserrat;text-align:center;white-space:pre;shape-inside:url(#rect490);display:inline;fill:#000000;stroke-width:11.3386;stroke-linecap:square;stroke-linejoin:round"
        transform="translate(-252.19494,20.597835)"><tspan
-         x="314.19481"
+         x="344.74131"
          y="209.74008"
-         id="tspan4">Design gRNAs using Target-AID</tspan></text></g></svg>
+         id="tspan4">Design gRNAs for Target-AID</tspan></text></g></svg>
