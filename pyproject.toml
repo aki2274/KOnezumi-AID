@@ -24,6 +24,7 @@ python = "^3.9"
 numpy = "^1.26.0"  
 pandas = "^2.2.2"
 primer3-py = "^2.0.1"
+regex = "^2024.11.6"
 
 [tool.poetry.scripts]
 konezumiaid = "konezumiaid.main:main"
