@@ -48,7 +48,7 @@ jobs:
           conda activate test-KOnezumi-AID
           conda install -c bioconda bowtie -y
           conda install -c bioconda bedtools -y
-          python -m pip install --upgrade pip pytest numpy pandas primer3-py
+          python -m pip install --upgrade pip pytest numpy pandas primer3-py regex
 
       - name: Run pytest on Linux🐧, macOS🍎
         env:
